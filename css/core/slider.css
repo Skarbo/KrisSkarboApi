@@ -1,0 +1,28 @@
+/* Slider wrapper */
+.slider_wrapper {
+	display: inline-block;
+	overflow: hidden;
+}
+
+.slider_wrapper .slider_content {
+	
+}
+
+.slider_wrapper .slider_scroller_wrapper {
+	background-color: #DDD;
+	line-height: 0.5em;
+}
+
+.slider_wrapper .slider_scroller_wrapper .slider_scroller_handle {
+	background-color: darkgray;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.slider_wrapper .slider_content, .slider_wrapper .slider_scroller_wrapper .slider_scroller_handle:NOT(.drag) {
+	margin-left: 0;
+	transition: margin-left 500ms ease-out;
+	-moz-transition: margin-left 500ms ease-out; /* Firefox 4 */
+	-webkit-transition: margin-left 500ms ease-out; /* Safari and Chrome */
+	-o-transition: margin-left 500ms ease-out; /* Opera */
+}

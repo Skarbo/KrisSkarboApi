@@ -1,0 +1,156 @@
+/**
+ * GUI
+ */
+/* Gui */
+.gui {
+	display: inline-table;
+	vertical-align: top;
+	border: 1px solid #AAAAAA;
+	border-radius: 4px;
+}
+
+.gui .guiComp {
+	display: table-cell;
+	vertical-align: middle;
+	text-decoration: none;
+	font-size: 1em;
+	margin: 0;
+	padding: 0.4em 1em;
+	color: #555555;
+	border-left: 1px solid #AAAAAA;
+	white-space: nowrap;
+}
+
+.gui .guiComp>div
+{
+	display: table-cell;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.gui .guiComp:not(.input) {
+	background: url("../../KrisSkarboApi/css/images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6;
+	text-align: center;
+	cursor: pointer;
+}
+
+.gui>.guiComp:FIRST-CHILD 
+{
+	border-radius: 4px 0 0 4px;
+	border-width: 0;
+}
+
+.gui>.guiComp:LAST-CHILD 
+{
+	border-radius: 0 4px 4px 0;
+	/*border-width: 1px 1px 1px 1px;*/
+}
+
+.gui .guiComp:FIRST-CHILD:LAST-CHILD 
+{
+	border-radius: 4px;
+}
+
+.gui .guiComp:not(.input):HOVER, .gui .guiComp:not(.input):FOCUS {
+	background: url("../../KrisSkarboApi/css/images/ui-bg_glass_75_dadada_1x400.png") repeat-x scroll 50% 50% #dadada;
+}
+
+.gui .guiComp[data-disabled],.gui .guiComp[disabled]
+{
+	opacity: .35;
+	cursor: default;
+}
+
+.gui.light .guiComp {
+	background: url("../../KrisSkarboApi/css/images/bg_button_1x400.png") repeat-x scroll 50% 50%
+		#F6F6F6;
+	border-color: #CCCCCC;
+	color: #1C94C4;
+}
+
+.gui.light .guiComp:HOVER, .gui.light .guiComp:FOCUS {
+	background: url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png") repeat-x scroll 50%
+		50% #fdf5ce;
+	border-color: #fbcb09;
+	color: #c77405;
+}
+
+/* ... Icon */
+.gui .icon {
+	font-family: 'Icon', Verdana, Arial, sans-serif;
+	color: #444644;
+}
+
+.gui .icon + .text, .gui .text + .icon {
+	padding-left: 0.5em;
+}
+
+.gui .icon[data-icon=triangle]:AFTER {
+	content: 'F';
+}
+
+.gui .icon[data-icon=cross]:AFTER {
+	content: 'L';
+}
+
+.gui .icon[data-icon=triangle-right]:AFTER {
+	content: 'I';
+}
+
+.gui .icon[data-icon=continuous]:AFTER {
+	content: '0';
+}
+
+.gui .icon[data-icon=check]:AFTER {
+	content: 'B';
+}
+
+/* ... Button */
+.gui .button {
+	
+}
+
+/* ... Toggle */
+.gui .toggle {
+	
+}
+
+.gui .toggle.checked .icon[data-icon=triangle]:AFTER {
+	content: 'E';
+}
+
+.gui .toggle .icon[data-icon=toggle]:AFTER {
+	content: ';';
+	color: gray;
+}
+
+.gui .toggle.checked .icon[data-icon=toggle]:AFTER {
+	color: #7C98E2;
+}
+
+.gui .toggle input[type=checkbox] {
+	display: none;
+}
+
+/* ... Radio */
+.gui.radio
+{
+	
+}
+
+.gui .radio input[type=radio] {
+	display: none;
+}
+
+.gui .radio.checked {
+	color: #c77405;
+	background-color: #fdf5ce;
+	background: url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png") repeat-x scroll 50%
+		50% #fdf5ce;
+}
+
+/* ... Input */
+.gui .input
+{
+	/*border: inherit;*/
+}

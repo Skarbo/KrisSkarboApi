@@ -1,0 +1,32 @@
+<?php
+
+class :class:DbResource
+{
+
+    // VARIABLES
+
+
+:table:
+
+:fields:
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+
+:functions:
+
+    // /FUNCTIONS
+
+
+}
+
+?>

@@ -1,0 +1,106 @@
+/* Fonts */
+@font-face {
+	font-family: 'Icon';
+	src:
+		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.eot');
+	src:
+		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.eot?#iefix')
+		format('embedded-opentype'),
+		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.woff')
+		format('woff'),
+		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.ttf')
+		format('truetype'),
+		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.svg#Icon')
+		format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Body */
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 90%;
+	color: #333333;
+	padding: 0;
+	margin: 0;
+}
+
+/* Input, button */
+input,button {
+	border: 0;
+	border-collapse: collapse;
+	margin: 0px;
+	padding: 0px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+/* Anchor */
+a {
+	outline: none;
+	-webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
+}
+
+/* Header */
+h1,h2,h3,h4,h5,h6 {
+	padding: 0;
+	margin: 0;
+}
+
+/* Wrapper */
+#wrapper {
+	width: 100%;
+}
+
+/* Italic */
+.italic {
+	font-style: italic;
+}
+
+/* Gray */
+.gray {
+	color: gray;
+}
+
+/* No padding */
+.nopadding {
+	padding: 0 !important;
+}
+
+/* Table */
+.table {
+	display: table;
+	width: 100%;
+}
+
+.table .cell,.table>*,.table .row>* {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.table .row {
+	display: table-row;
+}
+
+.table .fill {
+	width: 99%;
+}
+
+/* Right */
+.right {
+	text-align: right;
+}
+
+/* Center */
+.center {
+	text-align: center;
+}
+
+/* Top */
+.top {
+	vertical-align: top;
+}
+
+/* Hide */
+.hide {
+	display: none !important;
+}

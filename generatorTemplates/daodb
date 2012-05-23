@@ -1,0 +1,210 @@
+<?php
+
+class :class:DbDao extends :class:Dao
+{
+
+    // VARIABLES
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+    // ... CREATE
+
+
+    /**
+     * @param array $academy
+     * @return :class:Model
+     */
+    private static function create:class:( array $:variable:Array )
+    {
+
+        // Create :class:
+        $:variable: = :class:FactoryModel::create:class:();
+
+        // Return :class:
+        return $:variable:;
+
+    }
+
+    /**
+     * @param array $:variable:_list
+     * @return :class:ListModel
+     */
+    private static function create:class:List( array $:variable:ListArray )
+    {
+
+        // Initiate objects
+        $:variable:List = new :class:ListModel();
+
+        // Foreach objects
+        foreach ( $:variable:ListArray as $:variable:Array )
+        {
+            $:variable:List->add( self::create:class:( $:variable:Array ) );
+        }
+
+        // Return objects
+        return $:variable:List;
+
+    }
+
+    // ... /CREATE
+    
+    // ... GET
+    
+    /**
+     * @return SelectQueryDbCore
+     */
+    private static function getSelectQuery()
+    {
+    
+    	// Select query
+        $select_query = new SelectQueryDbCore();
+
+        // ... Build
+        $select_build = new SelectSqlbuilderDbCore();
+        $select_build->setExpression( "*" );
+        $select_build->setFrom( Resource::db()->:variable:()->getTable() );
+
+        $select_query->setQuery( $select_build );
+        
+        // Return query
+        return $select_query;
+    
+    }
+    
+    // ... /GET
+
+	/**
+     * @see ActorDao::get:class:()
+     */
+    public function get:class:( $:id: )
+    {
+    
+    	// Select query
+        $select_query = self::getSelectQuery();
+
+		// ... Build
+		$select_build = SelectSqlbuilderDbCore::get_( $select_query->getQuery() );
+		$select_build->setWhere( SB::equ( Resource::db()->:variable:()->getField:id_field:(), "::variable:_id" ) );
+
+		// ... Binds
+		$select_query->setBinds( array ( ":variable:_id" => $:id: ) );
+
+        // Do select
+        $result = $this->getDbApi()->query( $select_query );
+
+        // Return created object
+        return count( $result->getRows() ) > 0 ? $this->create:class:( $result->getRow( 0 ) ) : null;
+
+    }
+
+    /**
+     * @see :class:Dao::get:class:List()
+     */
+    public function get:class:List()
+    {
+    
+        // Select query
+        $select_query = self::getSelectQuery();
+
+        // Do select
+        $result = $this->getDbApi()->query( $select_query );
+
+        // Return created object
+        return self::create:class:List( $result->getRows() );
+
+    }
+
+    /**
+     * @see :class:Dao::add:class:()
+     */
+    public function add:class:( :class:Model $:variable: )
+    {
+
+        // Insert query
+        $insert_query = new InsertQueryDbCore();
+
+        // ... Build
+        $insert_build = new InsertSqlbuilderDbCore();
+        $insert_build->setInto( Resource::db()->:variable:()->getTable() );
+        $insert_build->setSetValues(
+                array (  ) );
+		// TODO: Add :class:
+
+        $insert_query->setQuery( $insert_build );
+
+        // ... Bind
+        $insert_query->setBinds( array () );
+
+        // Do insert
+        $result = $this->getDbApi()->query( $insert_query );
+
+        // Return object id
+        return $result->getInsertId();
+
+    }
+
+    /**
+     * @see :class:Dao::edit:class:()
+     */
+    public function edit:class:( $:id:, :class:Model $:variable: )
+    {
+    
+    	// Update query
+        $update_query = new UpdateQueryDbCore();
+
+        // ... Build
+        $update_build = new UpdateSqlbuilderDbCore();
+        $update_build->setTable( Resource::db()->:variable:()->getTable() );
+        $update_build->setSet(
+                array () );
+		$update_build->setWhere( SB::equ( Resource::db()->:variable:()->getField:id_field:(), ":id" ) );                
+		// TODO: Update :class:
+
+        $update_query->setQuery( $update_build );
+
+        // ... Bind
+        $update_query->setBinds( array (
+        	"id" => $:variable:->get:id_field:()
+        ) );
+
+        // Do update
+        $result = $this->getDbApi()->query( $update_query );
+
+        // Return boolean
+        return $result->isExecute();
+    
+    }
+
+    /**
+     * @see :class:Dao::remove:class:List()
+     */
+    public function removeAll:class:()
+    {
+
+        // Delete query
+        $delete_query = new DeleteQueryDbCore(
+                new DeleteSqlbuilderDbCore( Resource::db()->:variable:()->getTable() ) );
+
+        // Do delete
+        $result = $this->getDbApi()->query( $delete_query );
+
+        // Return number of removed objects
+        return $result->getAffectedRows();
+
+    }
+
+    // /FUNCTIONS
+
+
+}
+
+?>

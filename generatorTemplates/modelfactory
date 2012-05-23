@@ -1,0 +1,42 @@
+<?php
+
+class :class:FactoryModel extends ClassCore
+{
+
+    // VARIABLES
+
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+
+    /**
+     * @return :class:Model
+     */
+    public static function create:class:()
+    {
+
+        // Initiate model
+        $:variable: = new :class:Model();
+
+		// TODO: Implement model factory code...
+
+        // Return model
+        return $:variable:;
+
+    }
+
+    // /FUNCTIONS
+
+
+}
+
+?>

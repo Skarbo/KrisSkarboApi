@@ -1,0 +1,40 @@
+<?php
+
+class :class:Model extends Model
+{
+
+    // VARIABLES
+
+:variables:
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+:functions:
+
+	// ... STATIC
+
+	/**
+     * @param :class:Model $get
+     * @return :class:Model
+     */
+    public static function get_( $get )
+    {
+        return parent::get_( $get );
+    }
+
+	// ... /STATIC
+
+    // /FUNCTIONS
+
+}
+
+?>

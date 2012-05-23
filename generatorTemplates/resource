@@ -1,0 +1,24 @@
+<?php
+
+class DbResource extends AbstractDbResource
+{
+
+        // VARIABLES
+
+:variables:
+
+        // /VARIABLES
+
+        // CONSTRUCTOR
+
+        // /CONSTRUCTOR
+
+        // FUNCTIONS
+
+:functions:
+
+        // /FUNCTIONS
+
+}
+
+?>

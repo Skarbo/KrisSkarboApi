@@ -1,0 +1,69 @@
+<?php
+
+abstract class :class:Dao extends Dao
+{
+
+    // VARIABLES
+
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+	/**
+     * Get :class:
+     *
+     * @param :id_type: $:id:
+     * @return :class:Model
+     * @throws DbException
+     */
+    public abstract function get:class:( $:id: );
+
+    /**
+     * Get :class: List
+     *
+     * @return :class:ListModel
+     * @throws DbException
+     */
+    public abstract function get:class:List();
+
+    /**
+     * Add :class:
+     *
+     * @param :class:Model $academy
+     * @return int :class: id
+     * @throws DbException
+     */
+    public abstract function add:class:( :class:Model $:variable: );
+    
+    /**
+     * Edit :class:
+     *
+     * @param :id_type: $:id: Original id
+     * @param :class:Model $academy
+     * @return boolean True if updated
+     * @throws DbException
+     */
+    public abstract function edit:class:( $:id:, :class:Model $:variable: );
+
+    /**
+     * Remove all :class:
+     *
+     * @return int Number of removed :class:
+     * @throws DbException
+     */
+    public abstract function removeAll:class:();
+
+    // /FUNCTIONS
+
+
+}
+
+?>

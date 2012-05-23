@@ -1,0 +1,143 @@
+<?php
+
+class :class:DaoTest extends DbTest
+{
+
+    // VARIABLES
+
+
+    /**
+     * @var :class:Dao
+     */
+    private $:variable:Dao;
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    public function __construct()
+    {
+        parent::__construct( ":class:Dao Test" );
+        
+        $this->:variable:Dao = new :class:DbDao( $this->getDbApi() );
+    }
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->:variable:Dao->removeAll:class:();
+    }
+
+    // ... CREATE
+
+
+    /**
+     * @return :class:Model
+     */
+    public static function create:class:Test()
+    {
+        $:variable: = :class:FactoryModel::create:class:();
+        // TODO: Create test object
+
+        return $:variable:;
+    }
+
+    // ... /CREATE
+
+
+    public function testShouldAdd:class:()
+    {
+
+        // Create test :class:
+        $:variable: = self::create:class:Test();
+
+        // Add :class:
+        $:variable:Added = $this->:variable:Dao->add:class:( $:variable: );
+
+        // Assert add
+        $this->assertNotNull( $:variable:Added, ":class: should be added" );
+
+    }
+
+    public function testShouldGet:class:()
+    {
+
+        // Generate :class:
+        $:variable: = self::create:class:Test();
+
+        // Add :class:
+        $:variable:->set:id:( $this->:variable:Dao->add:class:( $:variable: ) );
+
+        // Get :class:
+        $:variable:Retrieved = $this->:variable:Dao->get:class:(
+                $:variable:->get:id:() );
+
+        // Assert get
+        if ( $this->assertNotNull( $:variable:Retrieved, "Retrieved :class: should not be null" ) )
+        {
+:assertGet:
+        }
+
+    }
+    
+    public function testShouldGet:class:List()
+    {
+
+        // Generate :class:
+        $:variable: = self::create:class:Test();
+
+        // Add :class:
+        $:variable:->set:id:( $this->:variable:Dao->add:class:( $:variable: ) );
+
+        // Get :class:List
+        $:variable:Retrieved = $this->:variable:Dao->get:class:List();
+
+        // Assert get
+        if ( $this->assertEqual( 1, $:variable:Retrieved->size(), "Retrieved :class: List should not be empty" ) )
+        {
+:assertGetList:
+        }
+
+    }
+    
+	public function testShouldEdit:class:()
+    {
+
+        // Create test :class:
+        $:variable: = self::create:class:Test();
+
+        // Add :class:
+        $:variable:->setId( $this->:variable:Dao->add:class:( $:variable: ) );
+
+        // Edit :class:
+        $:variable:Edited = $:variable:;
+        // TODO: Edit object
+
+        $:variable:Updated = $this->:variable:Dao->edit:class:( $:variable:->get:id:(), $:variable:Edited );
+
+        // Get :class:
+        $:variable:Retrieved = $this->:variable:Dao->get:class:( $:variable:Edited->get:id:() );
+
+        // Assert edit
+        if ( $this->assertTrue( $:variable:Updated, ":class: should be updated" ) )
+        {
+:assertEdit:
+        }
+
+    }
+
+    // /FUNCTIONS
+
+
+}
+
+?>
