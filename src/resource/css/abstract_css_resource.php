@@ -26,6 +26,7 @@ class AbstractCssResource extends ClassCore
     private $gray = "gray";
 
     private $nopadding = "nopadding";
+    private $hint = "hint";
 
     // /VARIABLES
 
@@ -111,6 +112,11 @@ class AbstractCssResource extends ClassCore
     {
         return $this->transitionsApiFile;
     }
+	public function getHint()
+    {
+        return $this->hint;
+    }
+
 
 }
 
