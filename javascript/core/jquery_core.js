@@ -1,7 +1,7 @@
 (function($) {
-	
+
 	// SERIALIZE FORM TO JSON
-	
+
 	$.fn.serializeJSON = function() {
 		var json = {};
 		jQuery.map($(this).serializeArray(), function(n, i) {
@@ -9,7 +9,7 @@
 		});
 		return json;
 	};
-	
+
 	// /SERIALIZE FORM TO JSON
 
 	// INPUT HINT
@@ -20,50 +20,62 @@
 	var inputhintMethods = {
 		init : function(options) {
 			var data = $(this).data(INPUTHINT_DATA);
-			
+
 			// Data init
 			if (!data) {
 				options = $.extend({
 					"class" : INPUTHINT_CLASS
-				}, options);					
+				}, options);
 				$(this).data(INPUTHINT_DATA, {
 					options : options
-				});				
+				});
 				data = $(this).data(INPUTHINT_DATA);
 			}
 
-			return this.each(function() {
-				var $input = jQuery(this), title = $input.attr("title"), $form = jQuery(this.form), $win = jQuery(window), hintClass = data.options.class;
+			return this
+					.each(function() {
+						var $input = jQuery(this), title = $input.attr("title"), $form = jQuery(this.form), $win = jQuery(window), hintClass = data.options.class;
 
-				function remove() {
-					if ($input.val() === title && $input.hasClass(hintClass)) {
-						$input.val("").removeClass(hintClass);
-					}
-				}
-
-				if (title) {
-					$input.blur(function() {
-						if (this.value === "") {
-							$input.val(title).addClass(hintClass);
+						function remove() {
+							if ($input.val() === title && $input.hasClass(hintClass)) {
+								$input.val("").removeClass(hintClass);
+							}
 						}
-					}).focus(remove).blur();
 
-					$form.submit(remove);
-					$win.unload(remove);
-				}
-			});
-			
+						if (title) {
+							$input.blur(function() {
+								if (this.value === "") {
+									$input.val(title).addClass(hintClass);
+								}
+							}).focus(remove).blur();
+
+							$form.submit(remove);
+							$win.unload(remove);
+						}
+					});
+
 		},
 		value : function(value) {
 			var $this = $(this), data = $this.data(INPUTHINT_DATA);
-			value = value || "";
 
-			$this.each(function(i) {
-				$(this).val(value);
-				if (value != "") {
-					$(this).val(value).removeClass(data.options.class);
-				}
-			});
+			if (value != undefined && value != "") {
+				$this.each(function(i) {
+					$(this).val(value);
+					if (value != "") {
+						$(this).val(value).removeClass(data.options.class);
+					}
+				});
+			} else if (value == undefined) {
+				var values = [];
+				$this.each(function(i) {
+					values.push($(this).hasClass(data.options.class) ? "" : $(this).val());
+				});
+				return values.length == 0 ? "" : (values.length == 1 ? values[0] : values);
+			} else if (value == "") {
+				$this.each(function(i) {
+					$(this).val("").blur();
+				});
+			}
 		}
 	};
 

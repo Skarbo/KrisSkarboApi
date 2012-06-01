@@ -6,6 +6,7 @@ class DebugDbResource
     private $table = "debug";
 
     private $fieldId = "debug_id";
+    private $fieldSession = "debug_session";
     private $fieldLevel = "debug_level";
     private $fieldData = "debug_data";
     private $fieldFile = "debug_file";
@@ -63,6 +64,11 @@ class DebugDbResource
     public function getFieldRegistered()
     {
         return $this->fieldRegistered;
+    }
+
+    public function getFieldSession()
+    {
+        return $this->fieldSession;
     }
 
 }

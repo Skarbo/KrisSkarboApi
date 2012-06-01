@@ -20,6 +20,7 @@ class DebugHandler extends Handler
      */
     private $debug_dao;
     private $level;
+    private $session;
 
     // /VARIABLES
 
@@ -31,6 +32,9 @@ class DebugHandler extends Handler
     {
         // Set DebugDao
         $this->debug_dao = $debug_dao;
+
+        // Set next session
+        $this->session = $this->getDebugDao()->getNextSession();
 
         // Delete all Debug's
         $this->getDebugDao()->removeDebugs();
@@ -83,6 +87,22 @@ class DebugHandler extends Handler
         $this->level = $level;
     }
 
+    /**
+     * @return integer
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param integer $session
+     */
+    public function setSession( $session )
+    {
+        $this->session = $session;
+    }
+
     // ... /GETTERS/SETTERS
 
 
@@ -102,6 +122,9 @@ class DebugHandler extends Handler
         // Initiate Debug
         $debug = new DebugModel();
 
+        // Set session
+        $debug->setSession( $this->getSession() );
+
         // Set level
         $debug->setLevel( $level );
 
@@ -111,16 +134,14 @@ class DebugHandler extends Handler
         // Set file (remove path)
         $debug->setFile(
                 str_replace(
-                        str_replace( "/", "\\",
-                                dirname( $_SERVER[ "DOCUMENT_ROOT" ] ) ), "",
+                        str_replace( "/", "\\", dirname( $_SERVER[ "DOCUMENT_ROOT" ] ) ), "",
                         $debug_exception->getFile() ) );
 
         // Set line
         $debug->setLine( $debug_exception->getLine() );
 
         // Set trace
-        $debug->setTrace(
-                print_r( $debug_exception->getTraceAsString(), true ) );
+        $debug->setTrace( print_r( $debug_exception->getTraceAsString(), true ) );
 
         // Set backtrack
         $debug->setBacktrack( $debug_exception->getBacktrack() );
@@ -131,8 +152,7 @@ class DebugHandler extends Handler
                         array_map(
                                 function ( $data )
                                 {
-                                    return is_object( $data ) ? get_class(
-                                            $data ) : gettype( $data );
+                                    return is_object( $data ) ? get_class( $data ) : gettype( $data );
                                 }, $debug_exception->getData() ) ) );
 
         // Add Debug
@@ -159,7 +179,7 @@ class DebugHandler extends Handler
     // ... /STATIC
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

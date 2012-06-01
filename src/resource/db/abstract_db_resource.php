@@ -20,7 +20,7 @@ class AbstractDbResource extends ClassCore
     // FUNCTIONS
 
     /**
-     * @return ErrorBuildingDbResource
+     * @return ErrorDbResource
      */
     public static function error()
     {
@@ -29,7 +29,7 @@ class AbstractDbResource extends ClassCore
     }
 
     /**
-     * @return DebugBuildingDbResource
+     * @return DebugDbResource
      */
     public static function debug()
     {

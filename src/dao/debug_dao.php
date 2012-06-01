@@ -28,12 +28,20 @@ abstract class DebugDao extends Dao
     public abstract function addDebug( DebugModel $debug );
 
     /**
-     * Removes all Debug's
+     * Removes all Debug's that are older than 5 sessions
      *
      * @return integer Number of removed Debug's
      * @throws DbException
      */
     public abstract function removeDebugs();
+
+    /**
+     * Retrieves the next session
+     *
+     * @return integer Next session
+     * @throws DbException
+     */
+    public abstract function getNextSession();
 
     // /FUNCTIONS
 

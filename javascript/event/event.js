@@ -1,7 +1,8 @@
 /**
  * Event interface
  */
-function Event() {
+function Event(options) {
+	this.options = options || {};
 }
 
 // FUNCTIONS
@@ -11,6 +12,13 @@ function Event() {
  */
 Event.prototype.getType = function() {
 	throw "Event type must be overwritten";
+};
+
+/**
+ * @returns {Object}
+ */
+Event.prototype.getOptions = function() {
+	return this.options;
 };
 
 // /FUNCTIONS

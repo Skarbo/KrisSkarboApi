@@ -445,6 +445,16 @@ abstract class SqlbuilderDbCore extends ClassCore
     }
 
     /**
+     * @param string $left
+     * @param string $right
+     * @return string "(LEFT - RIGHT )"
+     */
+    public static function minus( $left, $right )
+    {
+        return self::par( "${left} - ${right}" );
+    }
+
+    /**
      * @param string $field
      * @param string $in
      * @return string "$field IN ( in )"

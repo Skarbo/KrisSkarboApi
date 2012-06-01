@@ -7,6 +7,7 @@ class DebugModel extends Model
 
 
     private $id;
+    private $session;
     private $level;
     private $data;
     private $file;
@@ -119,6 +120,16 @@ class DebugModel extends Model
     public function setRegistered( $registered )
     {
         $this->registered = $registered;
+    }
+
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    public function setSession( $session )
+    {
+        $this->session = $session;
     }
 
 }

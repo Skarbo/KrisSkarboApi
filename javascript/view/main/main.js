@@ -27,9 +27,9 @@ MainView.prototype.doBindEventHandler = function() {
 /**
  * Binds event handlers, called after draw
  */
-MainView.prototype.after = function() {
-	View.prototype.after.call(this);
-
+MainView.prototype.draw = function(controller) {		
+	View.prototype.draw.call(this, controller);
+	
 	// Call bind event handler
 	this.doBindEventHandler();
 };
