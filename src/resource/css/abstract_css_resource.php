@@ -11,6 +11,7 @@ class AbstractCssResource extends ClassCore
 
     private static $GUI;
 
+    private $jqueryMobileApiFile = "jquery.mobile-1.1.0.min.css";
     private $transitionsApiFile = "transition.min.css";
 
     private $table = "table";
@@ -27,6 +28,7 @@ class AbstractCssResource extends ClassCore
 
     private $nopadding = "nopadding";
     private $hint = "hint";
+    private $hide = "hide";
 
     // /VARIABLES
 
@@ -36,6 +38,8 @@ class AbstractCssResource extends ClassCore
 
     public function __construct()
     {
+        $this->jqueryMobileApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$API_FOLDER,
+                $this->jqueryMobileApiFile );
         $this->transitionsApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$API_FOLDER,
                 $this->transitionsApiFile );
     }
@@ -112,11 +116,21 @@ class AbstractCssResource extends ClassCore
     {
         return $this->transitionsApiFile;
     }
-	public function getHint()
+
+    public function getHint()
     {
         return $this->hint;
     }
 
+    public function getJqueryMobileApiFile()
+    {
+        return $this->jqueryMobileApiFile;
+    }
+
+    public function getHide()
+    {
+        return $this->hide;
+    }
 
 }
 

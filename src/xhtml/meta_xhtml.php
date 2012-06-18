@@ -22,6 +22,7 @@ class MetaXhtml extends AbstractXhtml
     static $CONTENT_VIEWPORT_MINCALE_1 = "minimum-scale=1.0";
     static $CONTENT_VIEWPORT_MAXSCALE_1 = "maximum-scale=1.0";
     static $CONTENT_VIEWPORT_USERSCALABLE_NO = "user-scalable=no";
+    static $CONTENT_VIEWPORT_INITIALSCALE_1 = "initial-scale=1";
     static $NAME_VIEWPORT = "viewport";
 
     protected $content;

@@ -92,5 +92,39 @@
 	};
 
 	// /INPUT HINT
+	
+	// TOUCH ACTIVE
+	
+	var TOUCHACTIVE_CLASS = "touching";
+	
+	var touchActiveMethods = {
+			init : function(options){
+				var clas = options && options.class ? options.class : TOUCHACTIVE_CLASS;
+				return $(this).bind("touchstart.hovering touchend.hovering touchend.hovering touchcancel.hovering", { "clas" : clas },
+						function(event) {
+					if (event.type == "touchstart") {
+						$(this).addClass(event.data.clas);
+					} else {
+						$(this).removeClass(event.data.clas);
+					}
+				});
+				
+			}
+	};
+	
+	$.fn.touchActive = function(method) {
+
+		if (inputhintMethods[method]) {
+			return touchActiveMethods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+		} else if (typeof method === 'object' || !method) {
+			return touchActiveMethods.init.apply(this, arguments);
+		} else {
+			$.error('Method ' + method + ' does not exist on jQuery.touchActive');
+		}
+
+	};
+
+	
+	// /TOUCH ACTIVE
 
 })(jQuery);

@@ -1,0 +1,25 @@
+<?php
+
+interface :class:Dao extends StandardDao
+{
+
+    // VARIABLES
+
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+    // /FUNCTIONS
+
+
+}
+
+?>

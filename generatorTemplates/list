@@ -1,6 +1,6 @@
 <?php
 
-class :class:ListModel extends IteratorCore
+class :class:ListModel extends StandardListModel
 {
 
     // VARIABLES

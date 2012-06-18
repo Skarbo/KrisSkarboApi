@@ -20,6 +20,8 @@ class Generator
     private static $TEMPLATE_DB_RESOURCES = "resources";
     private static $TEMPLATE_DAO = "dao";
     private static $TEMPLATE_DAO_DB = "daodb";
+    private static $TEMPLATE_DAO_STANDARD = "standarddao";
+    private static $TEMPLATE_DAO_DB_STANDARD = "standarddaodb";
     private static $TEMPLATE_TEST = "test";
     private static $TEMPLATE_TEST_DAO = "testdao";
 
@@ -34,12 +36,16 @@ class Generator
     private static $GENERATED_TEST = "test";
     private static $GENERATED_TEST_DAO = "dao";
 
+    const MODE_DAO_DB = "db";
+    const MODE_DAO_STANDARD = "standard";
+
     private $dbHost;
     private $dbUser;
     private $dbPassword;
     private $dbDatabase;
     private $dbLink;
     private $dbSelected;
+    private $modeDao;
 
     /**
      * Which tables to skip
@@ -54,12 +60,13 @@ class Generator
     // CONSTRUCTOR
 
 
-    public function __construct( $dbHost, $dbUser, $dbPassword, $dbDatabase )
+    public function __construct( $dbHost, $dbUser, $dbPassword, $dbDatabase, $modeDao = self::MODE_DAO_DB )
     {
         $this->dbHost = $dbHost;
         $this->dbUser = $dbUser;
         $this->dbPassword = $dbPassword;
         $this->dbDatabase = $dbDatabase;
+        $this->modeDao = $modeDao;
     }
 
     public function __destruct()
@@ -118,8 +125,9 @@ class Generator
      * @param string $str "property_name"
      * @return string "PropertyName"
      */
-    private static function getCamelcaseUnderscore( $str )
+    private static function getCamelcaseUnderscore( $str, $ignoreFirst = "" )
     {
+        $str = $ignoreFirst && strpos( $str, $ignoreFirst ) === 0 ? substr( $str, strlen( $ignoreFirst ) ) : $str;
         return implode( "",
                 array_map(
                         function ( $var, $i )
@@ -133,7 +141,7 @@ class Generator
 
     private function getDbTables()
     {
-        $sql = sprintf( "SHOW TABLES FROM %s", $this->dbDatabase );
+        $sql = sprintf( "SHOW TABLES FROM `%s`", $this->dbDatabase );
         $result = mysql_query( $sql );
 
         if ( !$result )
@@ -144,7 +152,9 @@ class Generator
         $tables = array ();
         while ( $row = mysql_fetch_row( $result ) )
         {
-            $tables[] = $row[ 0 ];
+            if ( !in_array($row[ 0 ], $this->skipTables) ) {
+                $tables[] = $row[ 0 ];
+            }
         }
 
         mysql_free_result( $result );
@@ -159,7 +169,7 @@ class Generator
     private function getDbTableFields( $table )
     {
 
-        $result = mysql_query( sprintf( 'select * from %s', $table ) );
+        $result = mysql_query( sprintf( 'SELECT * FROM `%s`', $table ) );
         if ( !$result )
         {
             die( sprintf( 'Getting table \"%s\" properties failed: %s', $table, mysql_error() ) );
@@ -350,7 +360,7 @@ class Generator
             // Generate model factory
             $this->doGenerateModelFactory(
                     sprintf( "%s/%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_MODEL_PATH,
-                            self::$GENERATED_MODEL_FACTORY_PATH ), $table );
+                            self::$GENERATED_MODEL_FACTORY_PATH ), $table, $tableFields[ $table ] );
 
             // Generate resources
             $this->doGenerateDbResourceTable(
@@ -358,19 +368,39 @@ class Generator
                             self::$GENERATED_RESOURCE_DB_PATH ), $table, $tableFields[ $table ] );
 
             // Generate dao
-            $this->doGenerateDao(
-                    sprintf( "%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_DAO ), $table,
-                    $tableFields[ $table ] );
+            if ( $this->modeDao == self::MODE_DAO_STANDARD )
+            {
+                $this->doGenerateDaoStandard(
+                        sprintf( "%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_DAO ), $table,
+                        $tableFields[ $table ] );
+            }
+            else
+            {
+                $this->doGenerateDao( sprintf( "%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_DAO ),
+                        $table, $tableFields[ $table ] );
+            }
 
             // Generate dao db
-            $this->doGenerateDaoDb(
-                    sprintf( "%s/%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_DAO,
-                            self::$GENERATED_DAO_DB ), $table, $tableFields[ $table ] );
+            if ( $this->modeDao == self::MODE_DAO_STANDARD )
+            {
+                $this->doGenerateDaoDbStandard(
+                        sprintf( "%s/%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_DAO,
+                                self::$GENERATED_DAO_DB ), $table, $tableFields[ $table ] );
+            }
+            else
+            {
+                $this->doGenerateDaoDb(
+                        sprintf( "%s/%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_DAO,
+                                self::$GENERATED_DAO_DB ), $table, $tableFields[ $table ] );
+            }
 
             // Generate test dao
-            $this->doGenerateTestDao(
-                    sprintf( "%s/%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_TEST,
-                            self::$GENERATED_TEST_DAO ), $table, $tableFields[ $table ] );
+            if ( $this->modeDao == self::MODE_DAO_DB )
+            {
+                $this->doGenerateTestDao(
+                        sprintf( "%s/%s/%s/%s", $path, self::$GENERATED_PATH, self::$GENERATED_TEST,
+                                self::$GENERATED_TEST_DAO ), $table, $tableFields[ $table ] );
+            }
 
         }
 
@@ -465,9 +495,7 @@ EOF;
         $functions = array ();
         foreach ( $fields as $field )
         {
-            $fieldCamelCase = strpos( $field[ "name" ], $fieldPrefix ) === 0 ? self::getCamelcaseUnderscore(
-                    substr( $field[ "name" ], strlen( $fieldPrefix ) ) ) : self::getCamelcaseUnderscore(
-                    $field[ "name" ] );
+            $fieldCamelCase = self::getCamelcaseUnderscore( $field[ "name" ], $fieldPrefix );
             //var_dump($table, $field["name"], strpos( $field[ "name" ], $fieldPrefix ) === 0, $fieldCamelCase, "<br />");
 
 
@@ -509,8 +537,12 @@ EOF;
 
     }
 
-    private function doGenerateModelFactory( $path, $table )
+    private function doGenerateModelFactory( $path, $table, $fields )
     {
+
+        $setter = <<<EOF
+        \$%s->set%s( \$%s );
+EOF;
 
         // Get template contents
         $factoryFileContents = file_get_contents(
@@ -522,9 +554,20 @@ EOF;
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_factory_model.php", $filename ) );
 
+        $arguments = array();
+        $setters = array();
+        foreach ( $fields as $field )
+        {
+            $fieldCamelCase = self::getCamelcaseUnderscore( $field[ "name" ], $fieldPrefix );
+            $arguments[] = sprintf( "$%s", $fieldCamelCase );
+            $setters[] = sprintf( $setter, lcfirst($className), ucfirst( $fieldCamelCase ), $fieldCamelCase );
+        }
+
         $factoryFile = $factoryFileContents;
         $factoryFile = str_replace( ":class:", $className, $factoryFile );
         $factoryFile = str_replace( ":variable:", lcfirst( $className ), $factoryFile );
+        $factoryFile = str_replace( ":arguments:", implode( ", ", $arguments ), $factoryFile );
+        $factoryFile = str_replace( ":setters:", implode( "\n", $setters ), $factoryFile );
 
         // Write file contentes
         $this->doWriteFileContents( $filePath, $factoryFile );
@@ -670,6 +713,27 @@ EOF;
 
     }
 
+    private function doGenerateDaoStandard( $path, $table, $fields )
+    {
+
+        // Get template contents
+        $fileContents = file_get_contents(
+                sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_DAO_STANDARD ) );
+
+        // Get table info
+        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+
+        // Create folders and file
+        $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_dao.php", $filename ) );
+
+        $daoFile = $fileContents;
+        $daoFile = str_replace( ":class:", $className, $daoFile );
+
+        // Write file contentes
+        $this->doWriteFileContents( $filePath, $daoFile );
+
+    }
+
     private function doGenerateDaoDb( $path, $table, $fields )
     {
 
@@ -702,6 +766,55 @@ EOF;
         $dbFile = str_replace( ":id:", $idName, $dbFile );
         $dbFile = str_replace( ":id_field:", $fieldCamelCase, $dbFile );
         $dbFile = str_replace( ":variable:", lcfirst( $className ), $dbFile );
+
+        // Write file contentes
+        $this->doWriteFileContents( $filePath, $dbFile );
+
+    }
+
+    private function doGenerateDaoDbStandard( $path, $table, $fields )
+    {
+
+        $fieldBind = <<<EOF
+        \$fields[ Resource::db()->:class:()->getField:function:() ] = "::field:";
+        \$binds[ ":field:" ] = \$model->get:function:();
+EOF;
+        $factoryArgument = "Core::arrayAt( \$modelArray, Resource::db()->%s()->getField%s() )";
+
+        // Get template contents
+        $fileContents = file_get_contents(
+                sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_DAO_DB_STANDARD ) );
+
+        // Get table info
+        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+
+        // Create folders and file
+        $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_db_dao.php", $filename ) );
+
+        $idName = lcfirst( $className );
+        $fieldsBinds = array ();
+        $factoryArguments = array ();
+        foreach ( $fields as $field )
+        {
+            if ( $field[ "primary_key" ] )
+            {
+                $idName = self::getCamelcaseUnderscore( $field[ "name" ] );
+                $idNameFunction = ucfirst( self::getCamelcaseUnderscore( $field[ "name" ], $fieldPrefix ) );
+            }
+
+            $fieldCamelCase = self::getCamelcaseUnderscore( $field[ "name" ], $fieldPrefix );
+            $fieldsBinds[] = str_replace( ":class:", lcfirst( $className ),
+                    str_replace( ":field:", $fieldCamelCase, str_replace( ":function:", ucfirst( $fieldCamelCase ), $fieldBind ) ) );
+            $factoryArguments[] = sprintf( $factoryArgument, lcfirst( $className ), ucfirst( $fieldCamelCase ) );
+        }
+
+        $dbFile = $fileContents;
+        $dbFile = str_replace( ":class:", $className, $dbFile );
+        $dbFile = str_replace( ":id:", $idName, $dbFile );
+        $dbFile = str_replace( ":id_field:", $idNameFunction, $dbFile );
+        $dbFile = str_replace( ":variable:", lcfirst( $className ), $dbFile );
+        $dbFile = str_replace( ":fields_binds:", implode( "\n", $fieldsBinds ), $dbFile );
+        $dbFile = str_replace( ":factory_arguments:", implode( ", ", $factoryArguments ), $dbFile );
 
         // Write file contentes
         $this->doWriteFileContents( $filePath, $dbFile );
@@ -825,8 +938,10 @@ EOF;
 
 }
 
-$generator = new Generator( "localhost", "root", "", "campusguide_test" );
+//$generator = new Generator( "localhost", "root", "", "campusguide_test" );
 
-$generator->doGenerate( realpath( "./" ) );
+
+//$generator->doGenerate( realpath( "./" ) );
+
 
 ?>

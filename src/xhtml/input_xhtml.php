@@ -18,6 +18,8 @@ class InputXhtml extends AbstractXhtml
     static $TYPE_FILE = "file";
     static $TYPE_RADIO = "radio";
     static $TYPE_TEXT = "text";
+    static $TYPE_SEARCH = "search";
+    static $TYPE_EMAIL = "email";
 
     static $CHECKED_CHECKED = "checked";
 
@@ -36,6 +38,7 @@ class InputXhtml extends AbstractXhtml
     protected $src;
     protected $type;
     protected $value;
+    protected $required;
 
     // CONSTRUCT
 
@@ -253,6 +256,23 @@ class InputXhtml extends AbstractXhtml
         $this->value = $value;
         return $this;
     }
+
+    function getRequired()
+    {
+        return $this->required;
+    }
+
+    /**
+     * @param mixed $required boolean|string
+     * @return InputXhtml
+     */
+    function required( $required )
+    {
+        $this->required = is_bool($required) ? ( $required ? "required" : null ) : $required;
+        return $this;
+    }
+
+
 
 }
 

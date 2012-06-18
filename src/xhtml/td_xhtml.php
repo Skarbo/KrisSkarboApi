@@ -28,7 +28,7 @@ class TdXhtml extends AbstractContentXhtml
     }
 
     /**
-     * @return XHTMLtd
+     * @return TdXhtml
      */
     function abbr( $abbr )
     {
@@ -42,7 +42,7 @@ class TdXhtml extends AbstractContentXhtml
     }
 
     /**
-     * @return XHTMLtd
+     * @return TdXhtml
      */
     function align( $align )
     {
@@ -56,7 +56,7 @@ class TdXhtml extends AbstractContentXhtml
     }
 
     /**
-     * @return XHTMLtd
+     * @return TdXhtml
      */
     function colspan( $colspan )
     {
@@ -70,7 +70,7 @@ class TdXhtml extends AbstractContentXhtml
     }
 
     /**
-     * @return XHTMLtd
+     * @return TdXhtml
      */
     function rowspan( $rowspan )
     {
@@ -84,7 +84,7 @@ class TdXhtml extends AbstractContentXhtml
     }
 
     /**
-     * @return XHTMLtd
+     * @return TdXhtml
      */
     function valign( $valign )
     {

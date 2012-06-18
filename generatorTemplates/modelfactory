@@ -21,13 +21,13 @@ class :class:FactoryModel extends ClassCore
     /**
      * @return :class:Model
      */
-    public static function create:class:()
+    public static function create:class:( :arguments: )
     {
 
         // Initiate model
         $:variable: = new :class:Model();
 
-		// TODO: Implement model factory code...
+:setters:		
 
         // Return model
         return $:variable:;

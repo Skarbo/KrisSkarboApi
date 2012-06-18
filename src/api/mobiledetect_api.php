@@ -208,4 +208,12 @@ isset( $_SERVER[ 'HTTP_X_NOKIA_IPADDRESS' ] ) || isset(
 
     }
 
+    /**
+     * @return boolean True if mobile or tablet
+     */
+    public function isDevice()
+    {
+        return $this->isMobile() || $this->isTablet();
+    }
+
 }

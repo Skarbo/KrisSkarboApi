@@ -1,0 +1,97 @@
+<?php
+
+class :class:DbDao extends StandardDbDao implements :class:Dao
+{
+
+    // VARIABLES
+
+    // /VARIABLES
+
+
+    // CONSTRUCTOR
+
+
+    // /CONSTRUCTOR
+
+
+    // FUNCTIONS
+
+    // ... GET
+
+
+    /**
+     * @see StandardDbDao::getTable()
+     */
+    protected function getTable()
+    {
+        return Resource::db()->:variable:()->getTable();
+    }
+
+    /**
+     * @see StandardDbDao::getPrimaryField()
+     */
+    protected function getPrimaryField()
+    {
+        return Resource::db()->:variable:()->getField:id_field:();
+    }
+
+    /**
+     * @see StandardDbDao::getForeignField()
+     */
+    protected function getForeignField()
+    {
+        return Resource::db()->:variable:()->getField:id_field:();
+    }
+
+    /**
+     * @see StandardDbDao::getInsertUpdateFieldsBinds()
+     */
+    protected function getInsertUpdateFieldsBinds( StandardModel $model, $foreignId = null, $isInsert = false )
+    {
+
+        $fields = array ();
+        $binds = array ();
+        $model = :class:Model::get_( $model );
+
+:fields_binds:
+
+        return array ( $fields, $binds );
+
+    }
+
+    /**
+     * @see StandardDbDao::getInitiatedList()
+     */
+    protected function getInitiatedList()
+    {
+        return new :class:ListModel();
+    }
+
+    // ... /GET
+
+
+    // ... CREATE
+
+
+    /**
+     * @see StandardDbDao::createModel()
+     */
+    protected function createModel( array $modelArray )
+    {
+
+        $model = :class:FactoryModel::create:class:( :factory_arguments: );
+
+        $model->setId( intval( Core::arrayAt( $modelArray, $this->getPrimaryField() ) ) );
+
+        return $model;
+
+    }
+
+    // ... /CREATE
+
+    // /FUNCTIONS
+
+
+}
+
+?>

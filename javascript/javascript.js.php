@@ -27,6 +27,7 @@ $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( dirname(
 $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( dirname( __FILE__ ) . "/model" ) );
 $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( dirname( __FILE__ ) . "/db" ) );
 $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( dirname( __FILE__ ) . "/gui" ) );
+$JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( dirname( __FILE__ ) . "/dao" ) );
 
 // Javascript generate
 //JavascriptUtil::generate( $JAVASCRIPT_FILES, __FILE__ );

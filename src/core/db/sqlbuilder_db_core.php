@@ -190,7 +190,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      */
     public static function pun( $table, $field )
     {
-        return "$table.$field";
+        return "`$table`.$field";
     }
 
     /**
@@ -259,6 +259,16 @@ abstract class SqlbuilderDbCore extends ClassCore
     public static function sum( $sum )
     {
         return "SUM( $sum )";
+    }
+
+    /**
+     * @param srting $name
+     * @param string $delimiter
+     * @param int $count
+     * @return string SUBSTRING_INDEX(name, delimiter, count)
+     */
+    public static function substringIndex( $name, $delimiter, $count) {
+        return sprintf("SUBSTRING_INDEX(%s, %s, %d)", $name, $delimiter, $count );
     }
 
     /**

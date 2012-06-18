@@ -10,6 +10,7 @@ class AbstractJavascriptResource extends ClassCore
     protected static $ROOT_API = "api";
 
     private $jqueryApiFile = "jquery-1.7.1.min.js";
+    private $jqueryMobileApiFile = "jquery.mobile-1.1.0.min.js";
     private $jqueryUiApiFile = "jquery-ui-1.8.18.custom.min.js";
     private $jqueryHistoryApiFile = "jquery.history.js";
     private $kineticApiFile = "kinetic-v3.9.3.js";
@@ -28,6 +29,8 @@ class AbstractJavascriptResource extends ClassCore
         // TODO: To absolute
         $this->jqueryApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->jqueryApiFile );
+        $this->jqueryMobileApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+                $this->jqueryMobileApiFile );
         $this->jqueryUiApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->jqueryUiApiFile );
         $this->jqueryHistoryApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
@@ -78,6 +81,11 @@ class AbstractJavascriptResource extends ClassCore
     public function getTransitionsApiFile()
     {
         return $this->transitionsApiFile;
+    }
+
+    public function getJqueryMobileApiFile()
+    {
+        return $this->jqueryMobileApiFile;
     }
 
 }
