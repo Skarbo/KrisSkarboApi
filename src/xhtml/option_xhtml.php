@@ -63,11 +63,12 @@ class OptionXhtml extends AbstractContentXhtml
     }
 
     /**
+     * @param mixed $selected boolean|string
      * @return OptionXhtml
      */
     function selected( $selected )
     {
-        $this->selected = $selected;
+        $this->selected = is_bool( $selected ) ? ( $selected ? self::$SELECTED_SELECTED : null ) : $selected;
         return $this;
     }
 

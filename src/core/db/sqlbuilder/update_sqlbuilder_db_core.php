@@ -125,7 +125,7 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     {
 
         // Update
-        $update = "UPDATE {$this->getTable()}";
+        $update = "UPDATE `{$this->getTable()}`";
 
         // Set
         $set = $this->getSet() ? $this->getCreatedSet() : "";

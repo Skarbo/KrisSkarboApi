@@ -155,7 +155,7 @@ StandardAjaxDao.prototype.getList = function(id, callback) {
  *            callback
  * @return {Object}
  */
-StandardAjaxDao.prototype.add = function(foreignId, object, callback) {
+StandardAjaxDao.prototype.add = function(object, foreignId, callback) {
 	// Generate url
 	var url = Core.sprintf(this
 			.getUri(StandardAjaxDao.URI_POST_SINGLE_ADD), foreignId ? foreignId : "");

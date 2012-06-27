@@ -180,17 +180,30 @@ StandardDao.prototype.getForeign = function(foreignId, callback, forceAjax) {
 };
 
 /**
- * @param {integer}
- *            foreignId
  * @param {Object}
  *            object
+ * @param {integer}
+ *            foreignId
  * @param {function}
  *            callback
- * @return {Object}
  */
-StandardDao.prototype.add = function(foreignId, object, callback) {
+StandardDao.prototype.add = function(object, foreignId, callback) {
 	var context = this;
-	this.ajax.add(foreignId, object, function(single, list) {
+	this.ajax.add(object, foreignId, function(single, list) {
+		context.addSingleToList(single);
+		callback(single, list);
+	});
+};
+
+/**
+ * @param {Number} id
+ * @param {Object} object
+ * @param {Number} foreignId
+ * @param {function} callback
+ */
+StandardDao.prototype.edit = function(id, object, callback) {
+	var context = this;
+	this.ajax.edit(id, object, function(single, list) {
 		context.addSingleToList(single);
 		callback(single, list);
 	});

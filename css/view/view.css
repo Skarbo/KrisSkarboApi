@@ -21,6 +21,11 @@
 	-webkit-tap-highlight-color: RGBA(0, 0, 0, 0);
 }
 
+*:FOCUS
+{
+	outline: none;
+}
+
 /* Body */
 body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;

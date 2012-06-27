@@ -29,6 +29,7 @@ class AbstractCssResource extends ClassCore
     private $nopadding = "nopadding";
     private $hint = "hint";
     private $hide = "hide";
+    private $touch = "touch";
 
     // /VARIABLES
 
@@ -130,6 +131,11 @@ class AbstractCssResource extends ClassCore
     public function getHide()
     {
         return $this->hide;
+    }
+
+    public function getTouch()
+    {
+        return $this->touch;
     }
 
 }

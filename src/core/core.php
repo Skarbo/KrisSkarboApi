@@ -23,6 +23,23 @@ class Core
 
     /**
      * @param array $array
+     * @param mixed $value
+     * @param mixed $index [null]
+     */
+    static function arrayAdd( array $array, $value, $index = null )
+    {
+        if ( is_null( $index ) )
+        {
+            $array[] = $value;
+        }
+        else
+        {
+            $array[ $index ] = $value;
+        }
+    }
+
+    /**
+     * @param array $array
      * @param mixed $index
      * @param mixed $default [null]
      * @return mixed value, null if not exist
