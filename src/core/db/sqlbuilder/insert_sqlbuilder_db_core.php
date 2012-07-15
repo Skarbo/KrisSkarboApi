@@ -43,7 +43,7 @@ class InsertSqlbuilderDbCore extends SqlbuilderDbCore
      */
     public function getInto()
     {
-        return $this->into;
+        return sprintf( "%s%s", $this->getPrefix(), $this->into );
     }
 
     /**

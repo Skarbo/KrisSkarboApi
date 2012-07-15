@@ -10,6 +10,7 @@ abstract class DbApi
     protected $database = NULL;
     protected $username = NULL;
     protected $password = NULL;
+    protected $prefix = "";
     protected $port = "3306";
 
     // /VARIABLES
@@ -24,12 +25,13 @@ abstract class DbApi
      * @param $username
      * @param $password
      */
-    public function __construct( $hostname, $database, $username, $password )
+    public function __construct( $hostname, $database, $username, $password, $prefix = "" )
     {
         $this->hostname = $hostname;
         $this->database = $database;
         $this->username = $username;
         $this->password = $password;
+        $this->prefix = $prefix;
 
         register_shutdown_function( array ( $this, "disconnect" ) );
     }

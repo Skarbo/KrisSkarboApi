@@ -245,7 +245,7 @@ abstract class Api
                 Core::arrayAt( $this->getDatabaseConfig(), $this->getMode() ), array ( null, null, null, null ) );
 
         // Return Database API
-        return new PdoDbApi( $db_host, $db_database, $db_user, $db_password );
+        return new PdoDbApi( $db_host, $db_database, $db_user, $db_password, $this->getDbPrefix() );
 
     }
 
@@ -261,6 +261,14 @@ abstract class Api
      * @return DbbackupHandler
      */
     protected abstract function getDbbackupHandler();
+
+    /**
+     * @return string Database prefix
+     */
+    protected function getDbPrefix()
+    {
+        return "";
+    }
 
     // ... /GET
 

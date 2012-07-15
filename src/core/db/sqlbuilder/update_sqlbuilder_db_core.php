@@ -51,7 +51,7 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function getTable()
     {
-        return $this->table;
+        return sprintf( "%s%s", $this->getPrefix(), $this->table );
     }
 
     /**

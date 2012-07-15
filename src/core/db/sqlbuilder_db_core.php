@@ -41,6 +41,7 @@ abstract class SqlbuilderDbCore extends ClassCore
 
     // ... /CONSTANTS
 
+    private $prefix = "";
 
     // /VARIABLES
 
@@ -508,6 +509,15 @@ abstract class SqlbuilderDbCore extends ClassCore
 
     //	... /STATIC
 
+    public function setPrefix( $prefix )
+    {
+        $this->prefix = $prefix;
+    }
+
+    protected function getPrefix()
+    {
+        return $this->prefix;
+    }
 
     // /FUNCTIONS
 

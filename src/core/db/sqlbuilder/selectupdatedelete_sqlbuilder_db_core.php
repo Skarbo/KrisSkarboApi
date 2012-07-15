@@ -41,7 +41,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
      */
     public function getFrom()
     {
-        return $this->from;
+        return sprintf( "%s%s", $this->getPrefix(), $this->from );
     }
 
     /**
