@@ -71,6 +71,11 @@ class PdoDbApi extends DbApi
     public function query( QueryDbCore $query )
     {
 
+        if ( is_subclass_of($query, QueryDbCore::class_() ) && $query->getQuery() )
+        {
+            $query->getQuery()->setPrefix($this->prefix);
+        }
+
         switch ( get_class( $query ) )
         {
             case SelectQueryDbCore::class_() :
