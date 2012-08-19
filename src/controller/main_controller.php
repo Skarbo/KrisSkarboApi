@@ -93,7 +93,7 @@ abstract class MainController extends Controller
      */
     public function render( AbstractXhtml &$root )
     {
-        parent::render( &$root );
+        parent::render( $root );
 
         // Create HTML element
         $html = Xhtml::html();

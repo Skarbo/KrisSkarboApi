@@ -9,7 +9,7 @@ class AbstractJavascriptResource extends ClassCore
     protected static $ROOT_FOLDER = "javascript";
     protected static $ROOT_API = "api";
 
-    private $jqueryApiFile = "jquery-1.7.1.min.js";
+    private $jqueryApiFile = "jquery-1.8.0.min.js";
     private $jqueryMobileApiFile = "jquery.mobile-1.1.0.min.js";
     private $jqueryUiApiFile = "jquery-ui-1.8.18.custom.min.js";
     private $jqueryHistoryApiFile = "jquery.history.js";

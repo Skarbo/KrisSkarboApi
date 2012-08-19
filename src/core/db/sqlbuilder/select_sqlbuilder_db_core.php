@@ -113,8 +113,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function addJoin( $join, $type = null )
     {
-        $this->from .= Core::cc( "", ( ( !empty( $type ) ) ? " {$type}" : "" ),
-                " JOIN {$join}" );
+        $this->from .= Core::cc( "", ( ( !empty( $type ) ) ? " {$type}" : "" ), " JOIN {$join}" );
     }
 
     /**
@@ -125,8 +124,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function addNaturalJoin( $table, $on = null, $type = null )
     {
-        $this->from .= Core::cc( "", " NATURAL {$type} JOIN {$table}",
-                ( ( !empty( $on ) ) ? " ON {$on}" : "" ) );
+        $this->from .= Core::cc( "", " NATURAL {$type} JOIN {$table}", ( ( !empty( $on ) ) ? " ON {$on}" : "" ) );
     }
 
     /**
@@ -151,7 +149,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
         $select = "SELECT {$this->getExpression()}";
 
         // From
-        $from = $this->getFrom() ? "FROM {$this->getFrom()}" : "";
+        $from = $this->getFrom() ? "FROM {$this->getCreatedFrom()}" : "";
 
         // Where
         $where = $this->getWhere() ? "WHERE {$this->getWhere()}" : "";
@@ -169,8 +167,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
         $limit = !Core::isEmpty( $this->getLimit() ) ? $this->getCreatedLimit() : "";
 
         // Return query
-        return Core::trimWhitespace(
-                "$select $from $where $group_by $having $order_by $limit" );
+        return Core::trimWhitespace( "$select $from $where $group_by $having $order_by $limit" );
 
     }
 
@@ -180,7 +177,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public static function get_( $get )
     {
-        return parent::get_($get);
+        return parent::get_( $get );
     }
 
     // /FUNCTIONS

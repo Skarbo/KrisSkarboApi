@@ -43,7 +43,7 @@ class DeleteSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     {
 
         // Delete
-        $delete = "DELETE FROM `{$this->getFrom()}`";
+        $delete = "DELETE FROM `{$this->getCreatedFrom()}`";
 
         // Where
         $where = $this->getWhere() ? "WHERE {$this->getWhere()}" : "";

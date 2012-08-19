@@ -51,7 +51,7 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function getTable()
     {
-        return sprintf( "%s%s", $this->getPrefix(), $this->table );
+        return $this->table;
     }
 
     /**
@@ -83,6 +83,14 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
 
     // ... GET
 
+
+    /**
+ * @return string Prefix before table
+ */
+    private function getCreatedTable()
+    {
+        return sprintf( "%s%s", $this->getPrefix(), $this->getTable() );
+    }
 
     /**
      * @return string "key = value [, ...]"
@@ -125,7 +133,7 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     {
 
         // Update
-        $update = "UPDATE `{$this->getTable()}`";
+        $update = "UPDATE `{$this->getCreatedTable()}`";
 
         // Set
         $set = $this->getSet() ? $this->getCreatedSet() : "";
@@ -140,8 +148,7 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
         $limit = !Core::isEmpty( $this->getLimit() ) ? $this->getCreatedLimit() : "";
 
         // Return query
-        return Core::trimWhitespace(
-                "$update $set $where $order_by $limit" );
+        return Core::trimWhitespace( "$update $set $where $order_by $limit" );
 
     }
 

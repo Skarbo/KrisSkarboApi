@@ -43,7 +43,7 @@ class InsertSqlbuilderDbCore extends SqlbuilderDbCore
      */
     public function getInto()
     {
-        return sprintf( "%s%s", $this->getPrefix(), $this->into );
+        return $this->getInto();
     }
 
     /**
@@ -112,12 +112,19 @@ class InsertSqlbuilderDbCore extends SqlbuilderDbCore
 
 
     /**
+    * @return string Prefix before into
+    */
+    private function getCreatedInto()
+    {
+        return sprintf( "%s%s", $this->getPrefix(), $this->getInto() );
+    }
+
+    /**
      * @return string "(column, column, ...)"
      */
     private function getCreatedSet()
     {
-        return ( $this->getSet() ) ? Core::cc( "", "(",
-                implode( ", ", $this->getSet() ), ")" ) : "";
+        return ( $this->getSet() ) ? Core::cc( "", "(", implode( ", ", $this->getSet() ), ")" ) : "";
     }
 
     /**
@@ -179,7 +186,7 @@ class InsertSqlbuilderDbCore extends SqlbuilderDbCore
     {
 
         // Insert
-        $insert = "INSERT INTO {$this->getInto()}";
+        $insert = "INSERT INTO {$this->getCreatedInto()}";
 
         // Set
         $set = $this->getCreatedSet();

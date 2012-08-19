@@ -41,7 +41,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
      */
     public function getFrom()
     {
-        return sprintf( "%s%s", $this->getPrefix(), $this->from );
+        return $this->from;
     }
 
     /**
@@ -109,6 +109,14 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
 
 
     /**
+     * @return string From with prefix
+     */
+    protected function getCreatedFrom()
+    {
+        return sprintf( "%s%s", $this->getPrefix(), $this->getFrom() );
+    }
+
+    /**
      * @return string Order by string
      */
     protected function getCreatedOrderBy()
@@ -163,7 +171,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
     // ... /ADD
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }
