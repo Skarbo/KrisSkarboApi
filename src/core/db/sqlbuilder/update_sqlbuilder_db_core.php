@@ -21,11 +21,11 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      * @param string $table
      * @param array $set Array( "column" => "value" )
      * @param string $where
-     * @param DoublearrayCore $order_by
+     * @param array $order_by
      * @param string $limit
      * @param string $offset
      */
-    function __construct( $table = null, array $set = array(), $where = null, DoublearrayCore $order_by = null, $limit = null, $offset = null )
+    function __construct( $table = null, array $set = array(), $where = null, array $order_by = array(), $limit = null, $offset = null )
     {
         $this->setTable( $table );
         $this->setSet( $set );
@@ -129,11 +129,14 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     /**
      * @see BuilderCoreDb::build()
      */
-    public function build()
+    public function build( $prefix = null )
     {
 
+        // Set prefix
+        $this->setPrefix( $prefix );
+
         // Update
-        $update = "UPDATE `{$this->getCreatedTable()}`";
+        $update = "UPDATE {$this->getCreatedTable()}";
 
         // Set
         $set = $this->getSet() ? $this->getCreatedSet() : "";

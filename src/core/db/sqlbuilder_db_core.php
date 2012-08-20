@@ -60,7 +60,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      *
      * @return string
      */
-    public abstract function build();
+    public abstract function build( $prefix = null );
 
     //	... STATIC
 
@@ -517,6 +517,15 @@ abstract class SqlbuilderDbCore extends ClassCore
     protected function getPrefix()
     {
         return $this->prefix;
+    }
+
+    /**
+     * @param SqlbuilderDbCore $get
+     * @return SqlbuilderDbCore
+     */
+    public static function get_( $get )
+    {
+        return $get;
     }
 
     // /FUNCTIONS

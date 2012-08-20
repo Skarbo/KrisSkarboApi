@@ -471,12 +471,12 @@ abstract class Api
     /**
      * Main execution
      *
-     * @param DoublearrayCore $mapping URI mapping
+     * @param array $mapping URI mapping
      * @param KillHandler $kill Kill handler
      * @param integer $mode Execution mode
      * @throws Exception
      */
-    public function doRequest( DoublearrayCore $mapping )
+    public function doRequest( array $mapping )
     {
 
         // Initiate Error handler
@@ -493,13 +493,14 @@ abstract class Api
             $controller_name = Controller::getController();
 
             // Controller exists in mapping
-            if ( !$mapping->get( $controller_name ) )
+            if ( !Core::arrayAt( $mapping, $controller_name ) )
             {
                 throw new Exception( "Controller mapping \"{$controller_name}\" does not exist" );
             }
 
             // Controller exists
-            $controller_class = Core::arrayAt( $mapping->get( $controller_name ), self::MAP_CONTROLLER );
+            $controller_class = Core::arrayAt( Core::arrayAt( $mapping, $controller_name ),
+                    self::MAP_CONTROLLER );
 
             if ( !class_exists( $controller_class, true ) )
             {
@@ -507,7 +508,7 @@ abstract class Api
             }
 
             // View exists
-            $view_class = Core::arrayAt( $mapping->get( $controller_name ), self::MAP_VIEW );
+            $view_class = Core::arrayAt( Core::arrayAt( $mapping, $controller_name ), self::MAP_VIEW );
 
             if ( !class_exists( $view_class, true ) )
             {

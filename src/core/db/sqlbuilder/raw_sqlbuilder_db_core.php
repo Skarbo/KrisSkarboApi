@@ -56,7 +56,7 @@ class RawSqlbuilderDbCore extends SqlbuilderDbCore
     /**
      * @see BuilderCoreDb::build()
      */
-    public function build()
+    public function build( $prefix = null )
     {
         return Core::trimWhitespace( $this->getQuery() );
     }

@@ -15,11 +15,11 @@ class DeleteSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     /**
      * @param string $from
      * @param string $where
-     * @param DoublearrayCore $order_by
+     * @param array $order_by
      * @param string $limit
      * @param string $offset
      */
-    function __construct( $from = null, $where = null, DoublearrayCore $order_by = null, $limit = null, $offset = null )
+    function __construct( $from = null, $where = null, array $order_by = array(), $limit = null, $offset = null )
     {
         $this->setFrom( $from );
         $this->setWhere( $where );
@@ -39,11 +39,14 @@ class DeleteSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     /**
      * @see BuilderCoreDb::build()
      */
-    public function build()
+    public function build( $prefix = null )
     {
 
+        // Set prefix
+        $this->setPrefix( $prefix );
+
         // Delete
-        $delete = "DELETE FROM `{$this->getCreatedFrom()}`";
+        $delete = "DELETE FROM {$this->getCreatedFrom()}";
 
         // Where
         $where = $this->getWhere() ? "WHERE {$this->getWhere()}" : "";

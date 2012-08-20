@@ -88,8 +88,7 @@ class DebugDbDao extends DebugDao
         $select_build->setExpression( SB::as_( AbstractResource::db()->debug()->getFieldSession(), "session" ) );
         $select_build->setFrom( AbstractResource::db()->debug()->getTable() );
         $select_build->setOrderBy(
-                new DoublearrayCore(
-                        array ( array ( AbstractResource::db()->debug()->getFieldSession(), SB::$DESC ) ) ) );
+                        array ( array ( AbstractResource::db()->debug()->getFieldSession(), SB::$DESC ) ) );
         $select_build->setLimit( 1 );
 
         $select_query->setQuery( $select_build );

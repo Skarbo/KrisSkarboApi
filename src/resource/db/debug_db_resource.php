@@ -18,7 +18,7 @@ class DebugDbResource
 
     public function getTable()
     {
-        return $this->table;
+        return DB_PREFIX . $this->table;
     }
 
     public function getFieldId()

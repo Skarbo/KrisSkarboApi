@@ -11,7 +11,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
     /**
      * Represents order by statement
      *
-     * @var DoublearrayCore array ( array ( col, sort ) )
+     * @var array array ( array ( col, sort ) )
      */
     private $orderBy;
     /** Represents limit statement in select expresion */
@@ -53,7 +53,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
     }
 
     /**
-     * @return DoublearrayCore array ( array ( col, sort ) )
+     * @return array array ( array ( col, sort ) )
      */
     public function getOrderBy()
     {
@@ -61,9 +61,9 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
     }
 
     /**
-     * @param DoublearrayCore $orderBy array ( array ( col, sort ) )
+     * @param array $orderBy array ( array ( col, sort ) )
      */
-    public function setOrderBy( DoublearrayCore $orderBy )
+    public function setOrderBy( array $orderBy )
     {
         $this->orderBy = $orderBy;
     }
@@ -126,7 +126,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
                         function ( $a )
                         {
                             return implode( " ", $a );
-                        }, $this->getOrderBy()->getArray() ) );
+                        }, Core::empty_( $this->getOrderBy(), array() ) ) );
         $order_by = !empty( $order_byString ) ? "ORDER BY {$order_byString}" : "";
 
         return $order_by;

@@ -7,7 +7,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
 
 
     /** Represents the expression */
-    private $expression;
+    private $expression = array ();
     /** Represents group by statement in select expression */
     private $groupBy;
     /** Represents the having */
@@ -19,7 +19,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     // CONSTRUCTOR
 
 
-    function __construct( $expression = null, $from = null, $where = null, $group_by = null, DoublearrayCore $order_by = null, $limit = null, $offset = null )
+    function __construct( $expression = null, $from = null, $where = null, $group_by = null, array $order_by = array(), $limit = null, $offset = null )
     {
         $this->setExpression( $expression );
         $this->setFrom( $from );
@@ -42,7 +42,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
 
 
     /**
-     * @return string
+     * @return array
      */
     public function getExpression()
     {
@@ -50,11 +50,11 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     }
 
     /**
-     * @param string $expression
+     * @param mixed $expression
      */
     public function setExpression( $expression )
     {
-        $this->expression = $expression;
+        $this->expression = is_array( $expression ) ? $expression : array ( $expression );
     }
 
     /**
@@ -98,11 +98,18 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     /**
      * Add expression to expression
      *
-     * @param string $expression
+     * @param mixed $expression
      */
     public function addExpression( $expression )
     {
-        $this->expression .= $this->getExpression() && $expression ? ", {$expression}" : "{$expression}";
+        if ( is_array( $expression ) )
+        {
+            $this->expression = array_merge( $this->getExpression(), $expression );
+        }
+        else
+        {
+            $this->expression[] = $expression;
+        }
     }
 
     /**
@@ -139,14 +146,40 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     // ... /ADD
 
 
+    // ... GET
+
+
+    /**
+     * @return string "expression, expression"
+     */
+    protected function getExpressionCreated()
+    {
+        return implode( ", ",
+                array_map(
+                        function ( $var )
+                        {
+                            if ( is_object( $var ) && is_a( $var, SqlbuilderDbCore::class_() ) )
+                            {
+                                return SB::par( SqlbuilderDbCore::get_( $var )->build( $this->getPrefix() ) );
+                            }
+                            return $var;
+                        }, array_filter( $this->getExpression() ) ) );
+    }
+
+    // ... /GET
+
+
     /**
      * @see BuilderCoreDb::build()
      */
-    public function build()
+    public function build( $prefix = null )
     {
 
+        // Set prefix
+        $this->setPrefix( $prefix );
+
         // Select
-        $select = "SELECT {$this->getExpression()}";
+        $select = "SELECT {$this->getExpressionCreated()}";
 
         // From
         $from = $this->getFrom() ? "FROM {$this->getCreatedFrom()}" : "";

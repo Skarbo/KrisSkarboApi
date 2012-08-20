@@ -43,7 +43,7 @@ class InsertSqlbuilderDbCore extends SqlbuilderDbCore
      */
     public function getInto()
     {
-        return $this->getInto();
+        return $this->into;
     }
 
     /**
@@ -182,8 +182,11 @@ class InsertSqlbuilderDbCore extends SqlbuilderDbCore
     /**
      * @see BuilderCoreDb::build()
      */
-    public function build()
+    public function build( $prefix = null )
     {
+
+        // Set prefix
+        $this->setPrefix( $prefix );
 
         // Insert
         $insert = "INSERT INTO {$this->getCreatedInto()}";

@@ -32,47 +32,35 @@ class ErrorDbDao extends ErrorDao
         $error = new ErrorModel();
 
         $error->setId(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldId() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldId() ) );
         $error->setKill(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldKill() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldKill() ) );
         $error->setCode(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldCode() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldCode() ) );
         $error->setMessage(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldMessage() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldMessage() ) );
         $error->setFile(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldFile() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldFile() ) );
         $error->setLine(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldLine() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldLine() ) );
         $error->setOccured(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldOccured() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldOccured() ) );
         $error->setUrl(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldUrl() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldUrl() ) );
         $error->setBacktrack(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldBacktrack() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldBacktrack() ) );
         $error->setTrace(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldTrace() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldTrace() ) );
         $error->setQuery(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldQuery() ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldQuery() ) );
         $error->setException(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldException() ) );
-        $error->setUpdated( strtotime(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldUpdated() ) ) );
-        $error->setRegistered( strtotime(
-                Core::arrayAt( $error_array,
-                        AbstractResource::db()->error()->getFieldRegistered() ) ) );
+                Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldException() ) );
+        $error->setUpdated(
+                strtotime(
+                        Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldUpdated() ) ) );
+        $error->setRegistered(
+                strtotime(
+                        Core::arrayAt( $error_array, AbstractResource::db()->error()->getFieldRegistered() ) ) );
 
         // Return error
         return $error;
@@ -116,8 +104,7 @@ class ErrorDbDao extends ErrorDao
 
         $insert_builder->setInto( AbstractResource::db()->error()->getTable() );
         $insert_builder->setSetValues(
-                array (
-                        AbstractResource::db()->error()->getFieldKill() => ":error_kill",
+                array ( AbstractResource::db()->error()->getFieldKill() => ":error_kill",
                         AbstractResource::db()->error()->getFieldCode() => ":error_code",
                         AbstractResource::db()->error()->getFieldMessage() => ":error_message",
                         AbstractResource::db()->error()->getFieldFile() => ":error_file",
@@ -128,8 +115,7 @@ class ErrorDbDao extends ErrorDao
                         AbstractResource::db()->error()->getFieldQuery() => ":error_query",
                         AbstractResource::db()->error()->getFieldException() => ":error_exception" ) );
         $insert_builder->setDuplicate(
-                array (
-                        AbstractResource::db()->error()->getFieldKill() => ":error_kill",
+                array ( AbstractResource::db()->error()->getFieldKill() => ":error_kill",
                         AbstractResource::db()->error()->getFieldMessage() => ":error_message",
                         AbstractResource::db()->error()->getFieldBacktrack() => ":error_backtrack",
                         AbstractResource::db()->error()->getFieldTrace() => ":error_trace",
@@ -179,14 +165,9 @@ class ErrorDbDao extends ErrorDao
         $select_build->setExpression( "*" );
         $select_build->setFrom( AbstractResource::db()->error()->getTable() );
         $select_build->setOrderBy(
-                new DoublearrayCore(
-                        array (
-                                array (
-                                        AbstractResource::db()->error()->getFieldUpdated(),
-                                        SB::$ASC ),
-                                array (
-                                        AbstractResource::db()->error()->getFieldRegistered(),
-                                        SB::$ASC ) ) ) );
+                array (
+                        array ( AbstractResource::db()->error()->getFieldUpdated(), SB::$ASC ),
+                        array ( AbstractResource::db()->error()->getFieldRegistered(), SB::$ASC ) ) );
 
         $select_query->setQuery( $select_build );
 
