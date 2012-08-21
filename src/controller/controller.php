@@ -33,21 +33,14 @@ abstract class Controller extends ClassCore
 
 
     /**
-     * @var DbApi
+     * @var Api
      */
-    private $db_api;
+    private $api;
     /**
      * @var View
      */
     private $view;
-    /**
-     * @var AbstractDefaultLocale
-     */
-    private $locale;
-    /**
-     * @var integer
-     */
-    private $mode;
+
     /** Status code */
     private $status_code = self::STATUS_OK;
 
@@ -58,25 +51,12 @@ abstract class Controller extends ClassCore
 
 
     /**
-     * @param DbApi $db_api
-     * @param AbstractDefaultLocale $locale
-     * @param View $view
-     * @param integer Mode
+     * @param Api $api
      */
-    public function __construct( DbApi $db_api, AbstractDefaultLocale $locale, View $view, $mode )
+    public function __construct( Api $api, View $view )
     {
-
-        $this->db_api = $db_api;
-        $this->view = $view;
-        $this->locale = $locale;
-        $this->mode = $mode;
-
-        // Set Controller to View
-        if ( $view )
-        {
-            $this->getView()->setController( $this );
-        }
-
+        $this->api = $api;
+        $this->setView( $view );
     }
 
     // /CONSTRUCTOR
@@ -87,22 +67,6 @@ abstract class Controller extends ClassCore
 
     // ... GETTERS/SETTERS
 
-
-    /**
-     * @return DbApi
-     */
-    public function getDbApi()
-    {
-        return $this->db_api;
-    }
-
-    /**
-     * @param DbApi $db_api
-     */
-    public function setDbApi( DbApi $db_api )
-    {
-        $this->db_api = $db_api;
-    }
 
     /**
      * @return View
@@ -118,22 +82,6 @@ abstract class Controller extends ClassCore
     public function setView( View $view )
     {
         $this->view = $view;
-    }
-
-    /**
-     * @return AbstractDefaultLocale
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @param AbstractDefaultLocale $locale
-     */
-    public function setLocale( AbstractDefaultLocale $locale )
-    {
-        $this->locale = $locale;
     }
 
     /**
@@ -157,6 +105,46 @@ abstract class Controller extends ClassCore
 
     // ... GET
 
+
+    /**
+     * @return Api
+     */
+    private function getApi()
+    {
+        return $this->api;
+    }
+
+    /**
+     * @return DbApi
+     */
+    protected function getDbApi()
+    {
+        return $this->getApi()->getDbApi();
+    }
+
+    /**
+     * @return AbstractDefaultLocale
+     */
+    public function getLocale()
+    {
+        return $this->getApi()->getLocale();
+    }
+
+    /**
+     * @return integer Mode
+     */
+    public function getMode()
+    {
+        return $this->getApi()->getMode();
+    }
+
+    /**
+     * @return integer Mode
+     */
+    public function getModeDefault()
+    {
+        return $this->getApi()->getModeDefault();
+    }
 
     /**
      * Path info is given as the first parameter in the query
@@ -240,15 +228,7 @@ abstract class Controller extends ClassCore
      */
     public static function getPostRaw()
     {
-        return $GLOBALS['HTTP_RAW_POST_DATA'];
-    }
-
-    /**
-     * @return integer Mode
-     */
-    public function getMode()
-    {
-        return $this->mode;
+        return $GLOBALS[ 'HTTP_RAW_POST_DATA' ];
     }
 
     /**
@@ -277,6 +257,15 @@ abstract class Controller extends ClassCore
     public function getLastModified()
     {
         return filemtime( __FILE__ );
+    }
+
+    /**
+     * @see ClassCore::get_()
+     * @return Controller
+     */
+    public static function get_( $get )
+    {
+        return $get;
     }
 
     // ... /GET

@@ -8,10 +8,12 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
 
     /** Represents the expression */
     private $expression = array ();
+    /** Represents join statement  */
+    protected $join = array ();
     /** Represents group by statement in select expression */
     private $groupBy;
     /** Represents the having */
-    private $having;
+    private $having = array ();
 
     // /VARIABLES
 
@@ -54,7 +56,8 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function setExpression( $expression )
     {
-        $this->expression = is_array( $expression ) ? $expression : array ( $expression );
+        $this->expression = array ();
+        $this->addExpression( $expression );
     }
 
     /**
@@ -86,10 +89,25 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function setHaving( $having )
     {
-        $this->having = $having;
+        $this->having = array ();
+        $this->addHaving( $having );
     }
 
     // ... /GETTERS/SETTERS
+
+
+    // ... GET
+
+
+    /**
+     * @return array:
+     */
+    private function getJoin()
+    {
+        return $this->join;
+    }
+
+    // ... /GET
 
 
     // ... ADD
@@ -102,7 +120,11 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function addExpression( $expression )
     {
-        if ( is_array( $expression ) )
+        if ( !$expression )
+        {
+            return;
+        }
+        else if ( is_array( $expression ) )
         {
             $this->expression = array_merge( $this->getExpression(), $expression );
         }
@@ -120,18 +142,11 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function addJoin( $join, $type = null )
     {
-        $this->from .= Core::cc( "", ( ( !empty( $type ) ) ? " {$type}" : "" ), " JOIN {$join}" );
-    }
-
-    /**
-     * Add natural join to where sentence
-     *
-     * @param string $table
-     * @param string $type LEFT|RIGHT|INNER|OUTER
-     */
-    public function addNaturalJoin( $table, $on = null, $type = null )
-    {
-        $this->from .= Core::cc( "", " NATURAL {$type} JOIN {$table}", ( ( !empty( $on ) ) ? " ON {$on}" : "" ) );
+        if ( !$join )
+        {
+            return;
+        }
+        $this->join[] = $type ? sprintf( "%s JOIN %s", $type, $join ) : sprintf( "JOIN %s", $join );
     }
 
     /**
@@ -140,7 +155,11 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
      */
     public function addHaving( $having, $add = "AND" )
     {
-        $this->having .= !empty( $add ) && $this->getHaving() && $having ? " {$add} {$having}" : "{$having}";
+        if ( !$having )
+        {
+            return;
+        }
+        $this->having[] = $this->getHaving() ? sprintf( "%s %s", $add, $having ) : $having;
     }
 
     // ... /ADD
@@ -160,7 +179,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
                         {
                             if ( is_object( $var ) && is_a( $var, SqlbuilderDbCore::class_() ) )
                             {
-                                return SB::par( SqlbuilderDbCore::get_( $var )->build( $this->getPrefix() ) );
+                                return SB::par( SqlbuilderDbCore::get_( $var )->build() );
                             }
                             return $var;
                         }, array_filter( $this->getExpression() ) ) );
@@ -172,26 +191,26 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     /**
      * @see BuilderCoreDb::build()
      */
-    public function build( $prefix = null )
+    public function build()
     {
-
-        // Set prefix
-        $this->setPrefix( $prefix );
 
         // Select
         $select = "SELECT {$this->getExpressionCreated()}";
 
         // From
-        $from = $this->getFrom() ? "FROM {$this->getCreatedFrom()}" : "";
+        $from = $this->getFrom() ? sprintf( "FROM %s", implode( ", ", $this->getFrom() ) ) : "";
+
+        // Join
+        $join = $this->getJoin() ? implode( " ", $this->getJoin() ) : "";
 
         // Where
-        $where = $this->getWhere() ? "WHERE {$this->getWhere()}" : "";
+        $where = $this->getWhere() ? sprintf( "WHERE %s", implode( " ", $this->getWhere() ) ) : "";
 
         // Group by
         $group_by = $this->getGroupBy() ? "GROUP BY {$this->getGroupBy()}" : "";
 
         // Having
-        $having = $this->getHaving() ? "HAVING {$this->getHaving()}" : "";
+        $having = $this->getHaving() ? sprintf( "HAVING %s", implode( " ", $this->getHaving() ) ) : "";
 
         // Order by
         $order_by = $this->getOrderBy() ? $this->getCreatedOrderBy() : "";
@@ -200,7 +219,7 @@ class SelectSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
         $limit = !Core::isEmpty( $this->getLimit() ) ? $this->getCreatedLimit() : "";
 
         // Return query
-        return Core::trimWhitespace( "$select $from $where $group_by $having $order_by $limit" );
+        return Core::trimWhitespace( "$select $from $join $where $group_by $having $order_by $limit" );
 
     }
 

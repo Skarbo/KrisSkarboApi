@@ -7,7 +7,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
 
 
     /** Represents from statement in select expression */
-    protected $from;
+    protected $from = array ();
     /**
      * Represents order by statement
      *
@@ -19,7 +19,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
     /** Represents offset statement in select limit expresion */
     private $offset;
     /** Represents where statement */
-    private $where;
+    private $where = array ();
 
     // /VARIABLES
 
@@ -37,7 +37,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
 
 
     /**
-     * @return string
+     * @return array
      */
     public function getFrom()
     {
@@ -49,7 +49,8 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
      */
     public function setFrom( $from )
     {
-        $this->from = $from;
+        $this->from = array ();
+        $this->addFrom( $from );
     }
 
     /**
@@ -87,7 +88,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getWhere()
     {
@@ -99,7 +100,8 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
      */
     public function setWhere( $where )
     {
-        $this->where = $where;
+        $this->where = array ();
+        $this->addWhere( $where );
     }
 
     // ... /GETTERS/SETTERS
@@ -107,14 +109,6 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
 
     // ... GET
 
-
-    /**
-     * @return string From with prefix
-     */
-    protected function getCreatedFrom()
-    {
-        return sprintf( "%s%s", $this->getPrefix(), $this->getFrom() );
-    }
 
     /**
      * @return string Order by string
@@ -126,7 +120,7 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
                         function ( $a )
                         {
                             return implode( " ", $a );
-                        }, Core::empty_( $this->getOrderBy(), array() ) ) );
+                        }, Core::empty_( $this->getOrderBy(), array () ) ) );
         $order_by = !empty( $order_byString ) ? "ORDER BY {$order_byString}" : "";
 
         return $order_by;
@@ -155,7 +149,11 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
      */
     function addWhere( $where, $add = "AND" )
     {
-        $this->where .= ( !empty( $add ) && $this->getWhere() ) ? " {$add} {$where}" : "{$where}";
+        if ( !$where )
+        {
+            return;
+        }
+        $this->where[] = $this->where ? sprintf( "%s %s", $add, $where ) : $where;
     }
 
     /**
@@ -165,7 +163,11 @@ abstract class SelectupdatedeleteSqlbuilderDbCore extends SqlbuilderDbCore
      */
     function addFrom( $from )
     {
-        $this->from .= $this->getFrom() && $from ? ", {$from}" : "{$from}";
+        if ( !$from )
+        {
+            return;
+        }
+        $this->from[] = $from;
     }
 
     // ... /ADD

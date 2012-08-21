@@ -1,5 +1,7 @@
 <?php
 
+define("DB_PREFIX", "");
+
 abstract class Api
 {
 
@@ -55,6 +57,8 @@ abstract class Api
     private $locale;
     /** Execution mode */
     private $mode;
+    /** Default execution mode */
+    private $modeDefault;
     /** Debug handler */
     private $debug_handler;
     /**
@@ -71,12 +75,14 @@ abstract class Api
     /**
      * Calls autoload setup, error handling setup, database and locale setup
      */
-    public function __construct( $mode = self::MODE_PROD )
+    public function __construct( $modeDefault = self::MODE_PROD )
     {
-        $this->mode = $mode;
+        $this->modeDefault = $modeDefault;
+        $this->mode = in_array( Core::arrayAt( Controller::getQuery(), "mode", array () ), self::$MODES ) ? Core::arrayAt(
+                Controller::getQuery(), "mode" ) : $modeDefault;
         $this->doTimeSetup();
         $this->doErrorhandlingSetup();
-        $this->doDatabaseAndLocaleSetup( $mode );
+        $this->doDatabaseAndLocaleSetup( $this->getMode() );
 
         // Destruct function
         //register_shutdown_function( array ( $this, "destruct" ) );
@@ -255,6 +261,14 @@ abstract class Api
     public function getMode()
     {
         return $this->mode;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getModeDefault()
+    {
+        return $this->modeDefault;
     }
 
     /**
@@ -516,11 +530,13 @@ abstract class Api
             }
 
             // Initiate View
-            $view = new $view_class();
+            $view = View::get_( new $view_class() );
 
             // Initiate Controller
-            $controller = new $controller_class( $this->getDbApi(), $this->getLocale(), $view,
-                    $this->getMode() );
+            $controller = Controller::get_( new $controller_class( $this, $view ) );
+
+            // Set view controller
+            $view->setController( $controller );
 
         }
         catch ( Exception $e )

@@ -46,7 +46,9 @@ abstract class View extends ClassCore
 
     // ... GETTERS/SETTERS
 
+
     // ... GET
+
 
     /**
      * Last time modified
@@ -58,9 +60,32 @@ abstract class View extends ClassCore
         return filemtime( __FILE__ );
     }
 
+    /**
+     * @param boolean $force True if not return null
+     * @return int Mode, null if mode is default mode
+     */
+    protected function getMode( $force = false )
+    {
+        if ( $force )
+        {
+            return $this->getController()->getMode();
+        }
+        return $this->getController()->getMode() == $this->getController()->getModeDefault() ? null : $this->getController()->getMode();
+    }
+
+    /**
+     * @return AbstractDefaultLocale
+     */
+    protected function getLocale()
+    {
+        return $this->getController()->getLocale();
+    }
+
     // ... /GET
 
+
     // ... IS
+
 
     protected function isNoCache()
     {
@@ -68,6 +93,7 @@ abstract class View extends ClassCore
     }
 
     // ... /IS
+
 
     /**
      * Called before draw
@@ -110,6 +136,15 @@ abstract class View extends ClassCore
      */
     public function after()
     {
+    }
+
+    /**
+     * @see ClassCore::get_()
+     * @return View
+     */
+    public static function get_( $get )
+    {
+        return $get;
     }
 
     // /FUNCTIONS

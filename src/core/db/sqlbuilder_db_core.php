@@ -41,7 +41,6 @@ abstract class SqlbuilderDbCore extends ClassCore
 
     // ... /CONSTANTS
 
-    private $prefix = "";
 
     // /VARIABLES
 
@@ -60,7 +59,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      *
      * @return string
      */
-    public abstract function build( $prefix = null );
+    public abstract function build();
 
     //	... STATIC
 
@@ -268,8 +267,9 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param int $count
      * @return string SUBSTRING_INDEX(name, delimiter, count)
      */
-    public static function substringIndex( $name, $delimiter, $count) {
-        return sprintf("SUBSTRING_INDEX(%s, %s, %d)", $name, $delimiter, $count );
+    public static function substringIndex( $name, $delimiter, $count )
+    {
+        return sprintf( "SUBSTRING_INDEX(%s, %s, %d)", $name, $delimiter, $count );
     }
 
     /**
@@ -503,21 +503,11 @@ abstract class SqlbuilderDbCore extends ClassCore
      */
     public static function toDaysCount( $field, $to )
     {
-        return self::par(
-                Core::cc( " ", self::toDays( $field ), self::$MINUS, self::toDays( $to ) ) );
+        return self::par( Core::cc( " ", self::toDays( $field ), self::$MINUS, self::toDays( $to ) ) );
     }
 
     //	... /STATIC
 
-    public function setPrefix( $prefix )
-    {
-        $this->prefix = $prefix;
-    }
-
-    protected function getPrefix()
-    {
-        return $this->prefix;
-    }
 
     /**
      * @param SqlbuilderDbCore $get

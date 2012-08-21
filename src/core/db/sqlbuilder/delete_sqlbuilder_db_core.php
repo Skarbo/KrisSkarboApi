@@ -39,17 +39,14 @@ class DeleteSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     /**
      * @see BuilderCoreDb::build()
      */
-    public function build( $prefix = null )
+    public function build()
     {
 
-        // Set prefix
-        $this->setPrefix( $prefix );
-
         // Delete
-        $delete = "DELETE FROM {$this->getCreatedFrom()}";
+        $delete =  sprintf ("DELETE FROM %s", implode( ", ", $this->getFrom() ) );
 
         // Where
-        $where = $this->getWhere() ? "WHERE {$this->getWhere()}" : "";
+        $where = $this->getWhere() ? sprintf( "WHERE %s", implode( " ", $this->getWhere() ) ) : "";
 
         // Order by
         $order_by = $this->getOrderBy() ? $this->getCreatedOrderBy() : "";

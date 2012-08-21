@@ -85,14 +85,6 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
 
 
     /**
- * @return string Prefix before table
- */
-    private function getCreatedTable()
-    {
-        return sprintf( "%s%s", $this->getPrefix(), $this->getTable() );
-    }
-
-    /**
      * @return string "key = value [, ...]"
      */
     private function getCreatedSet()
@@ -129,20 +121,17 @@ class UpdateSqlbuilderDbCore extends SelectupdatedeleteSqlbuilderDbCore
     /**
      * @see BuilderCoreDb::build()
      */
-    public function build( $prefix = null )
+    public function build()
     {
 
-        // Set prefix
-        $this->setPrefix( $prefix );
-
         // Update
-        $update = "UPDATE {$this->getCreatedTable()}";
+        $update = "UPDATE {$this->getTable()}";
 
         // Set
         $set = $this->getSet() ? $this->getCreatedSet() : "";
 
         // Where
-        $where = $this->getWhere() ? "WHERE {$this->getWhere()}" : "";
+        $where = $this->getWhere() ? sprintf( "WHERE %s", implode( " ", $this->getWhere() ) ) : "";
 
         // Order by
         $order_by = $this->getOrderBy() ? $this->getCreatedOrderBy() : "";

@@ -34,6 +34,8 @@ class BuilderDbCoreTest extends UnitTestCase
         $select_builder->addExpression( new SelectSqlbuilderDbCore( "expression3", "from3" ) );
         $select_builder->setFrom( "from" );
         $select_builder->addFrom( "from2" );
+        $select_builder->addJoin( "table1" );
+        $select_builder->addJoin( SB::join( "table2", "from.join = table2.join" ), SB::$LEFT );
         $select_builder->setWhere( "con = 'dition'" );
         $select_builder->addWhere( "con2 = 'dition2'" );
         $select_builder->addWhere( "con3 = 'dition3'", "OR" );
@@ -44,7 +46,9 @@ class BuilderDbCoreTest extends UnitTestCase
         $select_builder->setOrderBy( array ( array ( "order", "by" ), array ( "order2", "by2" ) ) );
         $select_builder->setLimit( "limit", "offset" );
 
-        $select_query = Core::cc( " ", "SELECT expression, expression2, ( SELECT expression3 FROM from3 ) FROM from, from2",
+        $select_query = Core::cc( " ",
+                "SELECT expression, expression2, ( SELECT expression3 FROM from3 ) FROM from, from2",
+                "JOIN table1 LEFT JOIN table2 ON from.join = table2.join",
                 "WHERE con = 'dition' AND con2 = 'dition2' OR con3 = 'dition3'",
                 "GROUP BY groupby HAVING having AND having2 OR having3", "ORDER BY order by, order2 by2",
                 "LIMIT limit, offset" );
