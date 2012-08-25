@@ -78,8 +78,8 @@ abstract class Api
     public function __construct( $modeDefault = self::MODE_PROD )
     {
         $this->modeDefault = $modeDefault;
-        $this->mode = in_array( Core::arrayAt( Controller::getQuery(), "mode", array () ), self::$MODES ) ? Core::arrayAt(
-                Controller::getQuery(), "mode" ) : $modeDefault;
+        $this->mode = in_array( Core::arrayAt( Controller::getQuery(), "mode", array () ), self::$MODES ) ? intval( Core::arrayAt(
+                Controller::getQuery(), "mode" ) ) : $modeDefault;
         $this->doTimeSetup();
         $this->doErrorhandlingSetup();
         $this->doDatabaseAndLocaleSetup( $this->getMode() );
@@ -251,7 +251,7 @@ abstract class Api
                 Core::arrayAt( $this->getDatabaseConfig(), $this->getMode() ), array ( null, null, null, null ) );
 
         // Return Database API
-        return new PdoDbApi( $db_host, $db_database, $db_user, $db_password, $this->getDbPrefix() );
+        return new PdoDbApi( $db_host, $db_database, $db_user, $db_password );
 
     }
 
@@ -275,14 +275,6 @@ abstract class Api
      * @return DbbackupHandler
      */
     protected abstract function getDbbackupHandler();
-
-    /**
-     * @return string Database prefix
-     */
-    protected function getDbPrefix()
-    {
-        return "";
-    }
 
     // ... /GET
 

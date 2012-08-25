@@ -13,9 +13,11 @@ class AbstractJavascriptResource extends ClassCore
     private $jqueryMobileApiFile = "jquery.mobile-1.1.0.min.js";
     private $jqueryUiApiFile = "jquery-ui-1.8.18.custom.min.js";
     private $jqueryHistoryApiFile = "jquery.history.js";
-    private $kineticApiFile = "kinetic-v3.9.3.js";
+    private $kineticApiFile = "kinetic-v4.0.0.js";
     private $jqueryDragApiFile = "jquery.event.drag-2.0.min.js";
     private $transitionsApiFile = "fasw.transitions.min.js";
+    private $hammerApiFile = "hammer.js";
+    private $hammerJqueryApiFile = "jquery.hammer.js";
 
     // /VARIABLES
 
@@ -41,6 +43,10 @@ class AbstractJavascriptResource extends ClassCore
                 $this->jqueryDragApiFile );
         $this->transitionsApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->transitionsApiFile );
+        $this->hammerApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+                $this->hammerApiFile );
+        $this->hammerJqueryApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+                $this->hammerJqueryApiFile );
 
     }
 
@@ -86,6 +92,16 @@ class AbstractJavascriptResource extends ClassCore
     public function getJqueryMobileApiFile()
     {
         return $this->jqueryMobileApiFile;
+    }
+
+    public function getHammerApiFile()
+    {
+        return $this->hammerApiFile;
+    }
+
+    public function getHammerJqueryApiFile()
+    {
+        return $this->hammerJqueryApiFile;
     }
 
 }
