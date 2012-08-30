@@ -7,6 +7,7 @@ class ButtonXhtml extends AbstractContentXhtml
 
 
     public static $TYPE_BUTTON = "button";
+    public static $TYPE_RESET = "reset";
     public static $TYPE_SUBMIT = "submit";
 
     protected $disabled;

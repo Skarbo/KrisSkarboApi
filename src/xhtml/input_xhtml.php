@@ -12,6 +12,7 @@ class InputXhtml extends AbstractXhtml
 
     static $TYPE_PASSWORD = "password";
     static $TYPE_SUBMIT = "submit";
+    static $TYPE_RESET = "reset";
     static $TYPE_HIDDEN = "hidden";
     static $TYPE_CHECKBOX = "checkbox";
     static $TYPE_BUTTON = "button";

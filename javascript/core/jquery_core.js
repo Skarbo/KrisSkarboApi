@@ -34,7 +34,7 @@
 
 			return this
 					.each(function() {
-						var $input = jQuery(this), title = $input.attr("title"), $form = jQuery(this.form), $win = jQuery(window), hintClass = data.options.class;
+						var $input = jQuery(this), title = $input.attr("title") || $input.attr("data-hint"), $form = jQuery(this.form), $win = jQuery(window), hintClass = data.options.class;
 
 						function remove() {
 							if ($input.val() === title && $input.hasClass(hintClass)) {
@@ -43,6 +43,7 @@
 						}
 
 						if (title) {
+							$input.attr("title", title);
 							$input.blur(function() {
 								if (this.value === "") {
 									$input.val(title).addClass(hintClass);

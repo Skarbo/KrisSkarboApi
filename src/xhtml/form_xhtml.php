@@ -79,7 +79,7 @@ class FormXhtml extends AbstractContentXhtml
      */
     function autocomplete( $autocomplete )
     {
-        $this->autocomplete = $autocomplete;
+        $this->autocomplete = is_bool( $autocomplete ) ? ($autocomplete ? "on" : "off") : $autocomplete;
         return $this;
     }
 

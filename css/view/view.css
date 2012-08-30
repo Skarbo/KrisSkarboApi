@@ -1,17 +1,7 @@
 /* Fonts */
 @font-face {
 	font-family: 'Icon';
-	src:
-		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.eot');
-	src:
-		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.eot?#iefix')
-		format('embedded-opentype'),
-		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.woff')
-		format('woff'),
-		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.ttf')
-		format('truetype'),
-		url('../../KrisSkarboApi/css/fonts/boxoffice/boxoffice-webfont.svg#Icon')
-		format('svg');
+	src: url('../../KrisSkarboApi/font/icon.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }

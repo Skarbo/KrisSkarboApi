@@ -5,8 +5,6 @@
 .gui {
 	display: inline-table;
 	vertical-align: top;
-	border: 1px solid #AAAAAA;
-	border-radius: 4px;
 }
 
 .gui .guiComp {
@@ -15,64 +13,39 @@
 	text-decoration: none;
 	font-size: 1em;
 	margin: 0;
-	padding: 0.4em 1em;
-	color: #555555;
-	border-left: 1px solid #AAAAAA;
 	white-space: nowrap;
 }
 
-.gui .guiComp>div
-{
+.gui .guiComp>div {
 	display: table-cell;
 	vertical-align: middle;
 	white-space: nowrap;
 }
 
-.gui .guiComp:not(.input) {
-	background: url("../../KrisSkarboApi/css/images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6;
+.gui .guiComp:not(.input ) {
 	text-align: center;
 	cursor: pointer;
 }
 
-.gui>.guiComp:FIRST-CHILD 
-{
-	border-radius: 4px 0 0 4px;
-	border-width: 0;
+.gui>.guiComp:FIRST-CHILD {
+	
 }
 
-.gui>.guiComp:LAST-CHILD 
-{
-	border-radius: 0 4px 4px 0;
-	/*border-width: 1px 1px 1px 1px;*/
+.gui>.guiComp:LAST-CHILD {
+	
 }
 
-.gui .guiComp:FIRST-CHILD:LAST-CHILD 
-{
-	border-radius: 4px;
+.gui .guiComp:FIRST-CHILD:LAST-CHILD {
+	
 }
 
-.gui .guiComp:not(.input):HOVER, .gui .guiComp:not(.input):FOCUS {
-	background: url("../../KrisSkarboApi/css/images/ui-bg_glass_75_dadada_1x400.png") repeat-x scroll 50% 50% #dadada;
+.gui .guiComp:not(.input ):HOVER,.gui .guiComp:not(.input ):FOCUS {
+	
 }
 
-.gui .guiComp[data-disabled],.gui .guiComp[disabled]
-{
+.gui .guiComp[data-disabled],.gui .guiComp[disabled] {
 	opacity: .35;
 	cursor: default;
-}
-
-.gui.light .guiComp {
-	background: url("../../KrisSkarboApi/css/images/bg_button_1x400.png") repeat-x scroll 50% 50%
-		#F6F6F6;
-	border-color: #CCCCCC;
-	color: #1C94C4;
-}
-
-.gui.light .guiComp:HOVER, .gui.light .guiComp:FOCUS {
-	background: url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png") repeat-x scroll 50%
-		50% #fdf5ce;
-	border-color: #fbcb09;
-	color: #c77405;
 }
 
 /* ... Icon */
@@ -81,7 +54,7 @@
 	color: #444644;
 }
 
-.gui .icon + .text, .gui .text + .icon {
+.gui .icon+.text,.gui .text+.icon {
 	padding-left: 0.5em;
 }
 
@@ -107,7 +80,7 @@
 
 /* ... Button */
 .gui .button {
-	
+	background-color: inherit;
 }
 
 /* ... Toggle */
@@ -133,8 +106,7 @@
 }
 
 /* ... Radio */
-.gui.radio
-{
+.gui.radio {
 	
 }
 
@@ -143,14 +115,86 @@
 }
 
 .gui .radio.checked {
-	color: #c77405;
-	background-color: #fdf5ce;
-	background: url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png") repeat-x scroll 50%
-		50% #fdf5ce;
+	
 }
 
 /* ... Input */
-.gui .input
-{
-	/*border: inherit;*/
+.gui .input {
+	
+}
+
+/* ... File */
+.gui .file {
+	
+}
+
+.gui .file input[type=file] {
+	display: none;
+}
+
+/*
+ * Theme 0
+ */
+.gui.theme0 {
+	border: 1px solid #AAAAAA;
+	border-radius: 4px;
+}
+
+.gui.theme0 .guiComp {
+	padding: 0.4em 1em;
+	color: #555555;
+	border-left: 1px solid #AAAAAA;
+}
+
+.gui.theme0 .guiComp>div {
+	white-space: nowrap;
+}
+
+.gui.theme0 .guiComp:not(.input ) {
+	background: url("../../KrisSkarboApi/css/images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6;
+	cursor: pointer;
+}
+
+.gui.theme0>.guiComp:FIRST-CHILD {
+	border-radius: 4px 0 0 4px;
+	border-width: 0;
+}
+
+.gui.theme0>.guiComp:LAST-CHILD {
+	border-radius: 0 4px 4px 0;
+}
+
+.gui.theme0 .guiComp:FIRST-CHILD:LAST-CHILD {
+	border-radius: 4px;
+}
+
+.gui.theme0 .guiComp:not(.input ):HOVER,.gui.theme0 .guiComp:not(.input):FOCUS {
+	background: url("../../KrisSkarboApi/css/images/ui-bg_glass_75_dadada_1x400.png") repeat-x scroll 50% 50% #dadada;
+}
+
+.gui.theme0 .guiComp[data-disabled],.gui.theme0 .guiComp[disabled] {
+	opacity: .35;
+	cursor: default;
+}
+
+/* ... Radio */
+.gui.theme0 .radio.checked {
+	color: #c77405;
+	background-color: #fdf5ce;
+	background: url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png") repeat-x scroll 50% 50% #fdf5ce;
+}
+
+/*
+ * Theme light
+ */
+.gui.light .guiComp {
+	background: url("../../KrisSkarboApi/css/images/bg_button_1x400.png") repeat-x scroll 50% 50% #F6F6F6;
+	border-color: #CCCCCC;
+	color: #1C94C4;
+}
+
+.gui.light .guiComp:HOVER,.gui.light .guiComp:FOCUS {
+	background: url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png") repeat-x scroll 50% 50% #fdf5ce;
+	border-color: #fbcb09;
+	color: #c77405;
 }
