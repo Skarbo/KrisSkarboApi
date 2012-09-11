@@ -115,3 +115,9 @@ input.hint
 {
 	color: #888 !important;
 }
+
+/* Collapse */
+.collapse.collapsed + *
+{
+	display: none;
+}

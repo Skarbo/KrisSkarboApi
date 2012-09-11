@@ -37,7 +37,7 @@ EventHandler.prototype.registerListener = function(eventType, eventListener) {
  * @param {String}
  *            Event type
  */
-EventHandler.prototype.handle = function(event, waitFor) {
+EventHandler.prototype.handle = function(event, waitFor, waitForFunc) {
 	// Must be an Event
 	if (Core.objectClass(event) != "Event") {
 		console.error("Cannot handle Event. Argument is of object class \"" + Core.objectClass(event) + "\".");
@@ -49,6 +49,7 @@ EventHandler.prototype.handle = function(event, waitFor) {
 		if (!this.wait[waitFor]) {
 			this.wait[waitFor] = [];
 		}
+		event.waitForFunc = waitForFunc;
 		this.wait[waitFor].push(event);
 		return;
 	}
@@ -57,19 +58,25 @@ EventHandler.prototype.handle = function(event, waitFor) {
 	this.callEvent(event);
 
 	// Call wait for queue
-	if (this.wait[event.getType()] != null) {
+	if (this.wait[event.getType()] != null && this.wait[event.getType()].length > 0) {
 		for (i in this.wait[event.getType()]) {
-			this.callEvent(this.wait[event.getType()][i]);
+			if (this.wait[event.getType()][i].waitForFunc) {
+				if (this.wait[event.getType()][i].waitForFunc(event)) {
+					this.callEvent(this.wait[event.getType()][i]);
+					delete this.wait[event.getType()][i];
+				}
+			} else {
+				this.callEvent(this.wait[event.getType()][i]);
+				delete this.wait[event.getType()][i];
+			}
 		}
 
-		// Delete wait queue
-		delete this.wait[event.getType()];
 	}
 
 	// Add to history
 	if (jQuery.inArray(event.getType(), this.history) == -1) {
 		this.history.push(event.getType());
-	}	
+	}
 
 };
 
@@ -88,8 +95,7 @@ EventHandler.prototype.callEvent = function(event) {
 
 		// Function must be function
 		if (typeof func != "function") {
-			console.error("Cannot handle event \"" + event.getType() + "\", listener registered for index \"" + i
-					+ "\" is not a function");
+			console.error("Cannot handle event \"" + event.getType() + "\", listener registered for index \"" + i + "\" is not a function");
 			return;
 		}
 
