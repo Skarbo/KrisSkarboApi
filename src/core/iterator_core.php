@@ -131,7 +131,7 @@ abstract class IteratorCore extends ClassCore implements Iterator
     }
 
     /**
-     * @return Model
+     * @return StandardModel
      */
     public function getId( $id )
     {

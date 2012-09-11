@@ -122,7 +122,7 @@ Gui.randomString = function(length) {
 			$this.addClass(Gui.GUI_CLASS);
 
 			// For each children
-			var element, dataType, icon, span, checked, id, radio, sprite, value, input;
+			var element, dataType, icon, span, checked, id, radio, sprite, value, input, name;
 			$this.children().filter("." + Gui.GUI_COMP_CLASS).each(function(i, child) {
 
 				// Element
@@ -293,27 +293,24 @@ Gui.randomString = function(length) {
 					// Toggle
 
 					// Get id
-					id = element.attr("id");
+					id = element.attr("data-id");
 
+					// Get name
+					name = element.attr("data-name");
+					
+					// Get value
+					value = element.attr("data-value");
+					
 					// Is checked
 					checked = element.hasClass(Gui.CHECKED_CLASS) || jQuery.inArray(id, settings["checked"]) > -1;
 
 					// Create checkbox
 					checkbox = $('<input />', {
 						'type' : 'checkbox',
-						'checked' : checked
-					});
-
-					// Create icon
-					icon = $("<div />", {
-						'class' : Gui.ICON_CLASS,
-						'data-icon' : element.attr('data-icon')
-					});
-
-					// Create span
-					span = $("<div />", {
-						'class' : Gui.TEXT_CLASS,
-						'html' : element.html()
+						'checked' : checked,
+						'id' : id,
+						'name' : name,
+						'value' : value
 					});
 
 					// Add class
@@ -324,27 +321,11 @@ Gui.randomString = function(length) {
 						element.addClass(Gui.CHECKED_CLASS);
 					}
 
-					// Remove data icon attribute
-					element.attr('data-icon', null);
-
-					// Empty content
-					element.empty();
-
-					// Append element
-					if (span.text() != "") {
-						element.append(span);
-					}
-
-					if (element.attr("data-icon-placing") == "right") {
-						element.append(icon);
-					} else {
-						element.prepend(icon);
-					}
-
+					// Append checkbox
 					element.append(checkbox);
 
 					// Handle click
-					element.click(function(event) {
+					element.on("click", { "checkbox" : checkbox, "id" : id }, function(event) {
 						// Prevent default
 						event.preventDefault();
 
@@ -356,24 +337,18 @@ Gui.randomString = function(length) {
 							return false;
 						}
 
-						// Get checkbox
-						var toggleCheckbox = target.find("input[type=checkbox]");
-
-						// Get id
-						var toggleId = target.attr("id");
-
 						// Is checked
-						var toggleChecked = !toggleCheckbox.is(":checked");
+						var toggleChecked = !event.data.checkbox.is(":checked");
 
 						// Set checked
-						toggleCheckbox.attr("checked", toggleChecked);
+						event.data.checkbox.attr("checked", toggleChecked);
 
 						// Toggle class
 						target.toggleClass(Gui.CHECKED_CLASS);
 
 						// Handle toggle
-						if (settings['handler'][toggleId]) {
-							settings['handler'][toggleId](toggleChecked);
+						if (settings['handler'][event.data.id]) {
+							settings['handler'][event.data.id](toggleChecked);
 						}
 					});
 
@@ -386,7 +361,7 @@ Gui.randomString = function(length) {
 					id = element.attr("id") ? element.attr("id") : "radio_" + Gui.randomString();
 
 					// Get name
-					name = element.attr("data-radio-name") || "name_" + Gui.randomString();
+					name = element.attr("data-radio-name") || element.attr("data-name") || "name_" + Gui.randomString();
 
 					// Get value
 					value = element.attr("data-value") || element.text();

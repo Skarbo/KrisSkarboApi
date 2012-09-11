@@ -37,7 +37,7 @@ class ErrorDbResource
 
     public function getTable()
     {
-        return DB_PREFIX . $this->table;
+        return Core::constant( "DB_PREFIX" ) . $this->table;
     }
 
     public function getFieldId()
@@ -105,7 +105,7 @@ class ErrorDbResource
         return $this->fieldUpdated;
     }
 
-	public function getFieldRegistered()
+    public function getFieldRegistered()
     {
         return $this->fieldRegistered;
     }

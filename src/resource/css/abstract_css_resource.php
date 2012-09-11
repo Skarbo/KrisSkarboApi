@@ -22,6 +22,7 @@ class AbstractCssResource extends ClassCore
     private $right = "right";
     private $center = "center";
     private $top = "top";
+    private $middle = "middle";
 
     private $italic = "italic";
     private $gray = "gray";
@@ -96,6 +97,11 @@ class AbstractCssResource extends ClassCore
     public function getTop()
     {
         return $this->top;
+    }
+
+    public function getMiddle()
+    {
+        return $this->middle;
     }
 
     public function getItalic()

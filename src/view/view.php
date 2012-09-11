@@ -64,13 +64,9 @@ abstract class View extends ClassCore
      * @param boolean $force True if not return null
      * @return int Mode, null if mode is default mode
      */
-    protected function getMode( $force = false )
+    public function getMode( $force = false )
     {
-        if ( $force )
-        {
-            return $this->getController()->getMode();
-        }
-        return $this->getController()->getMode() == $this->getController()->getModeDefault() ? null : $this->getController()->getMode();
+        return $this->getController()->getMode( !$force );
     }
 
     /**

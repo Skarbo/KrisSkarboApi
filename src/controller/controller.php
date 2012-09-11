@@ -131,19 +131,16 @@ abstract class Controller extends ClassCore
     }
 
     /**
+     * @param boolean $notDefault Set true if not to give default mode
      * @return integer Mode
      */
-    public function getMode()
+    public function getMode( $notDefault = false )
     {
-        return $this->getApi()->getMode();
-    }
-
-    /**
-     * @return integer Mode
-     */
-    public function getModeDefault()
-    {
-        return $this->getApi()->getModeDefault();
+        if ( !$notDefault )
+        {
+            return $this->getApi()->getMode();
+        }
+        return $this->getApi()->getMode() == $this->getApi()->getModeDefault() ? null : $this->getApi()->getMode();
     }
 
     /**
@@ -221,6 +218,19 @@ abstract class Controller extends ClassCore
     public static function getPost()
     {
         return $_POST;
+    }
+
+    /**
+     * @return array Normalized files data
+     */
+    public static function getFiles()
+    {
+        $newfiles = array ();
+        foreach ( $_FILES as $fieldname => $fieldvalue )
+            foreach ( $fieldvalue as $paramname => $paramvalue )
+                foreach ( ( array ) $paramvalue as $index => $value )
+                    $newfiles[ $fieldname ][ $index ][ $paramname ] = $value;
+        return $newfiles;
     }
 
     /**

@@ -40,6 +40,7 @@ class InputXhtml extends AbstractXhtml
     protected $type;
     protected $value;
     protected $required;
+    protected $placeholder;
 
     // CONSTRUCT
 
@@ -273,7 +274,20 @@ class InputXhtml extends AbstractXhtml
         return $this;
     }
 
+    function getPlaceholder()
+    {
+        return $this->placeholder;
+    }
 
+    /**
+     * @param string $placeholder string
+     * @return InputXhtml
+     */
+    function placeholder( $placeholder )
+    {
+        $this->placeholder = $placeholder;
+        return $this;
+    }
 
 }
 

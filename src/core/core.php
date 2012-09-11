@@ -491,6 +491,16 @@ class Core
     }
 
     /**
+     * @param string $name
+     * @param string $default
+     * @return string Defined constant, default if not exist
+     */
+    public static function constant( $name, $default = "" )
+    {
+        return defined( $name ) ? constant( $name ) : $default;
+    }
+
+    /**
      * @param String $text
      * @return String Decoded HTML text
      */

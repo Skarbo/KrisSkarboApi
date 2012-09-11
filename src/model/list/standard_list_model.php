@@ -39,6 +39,26 @@ abstract class StandardListModel extends IteratorCore
     }
 
     /**
+     * @param mixed $id Standard model id
+     * @return StandardModel Removed model, null if not found
+     */
+    public function removeId( $id )
+    {
+        for ( $this->rewind(), $i = 0; $this->valid(); $this->next(), $i++ )
+        {
+            $model = $this->current();
+
+            if ( $model->getId() == $id )
+            {
+                $this->remove( $i );
+                return $model;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return StandardModel
      * @see IteratorCore::current()
      */

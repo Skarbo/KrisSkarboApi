@@ -1,6 +1,6 @@
 <?php
 
-define("DB_PREFIX", "");
+define( "DB_PREFIX", "" );
 
 abstract class Api
 {
@@ -78,8 +78,8 @@ abstract class Api
     public function __construct( $modeDefault = self::MODE_PROD )
     {
         $this->modeDefault = $modeDefault;
-        $this->mode = in_array( Core::arrayAt( Controller::getQuery(), "mode", array () ), self::$MODES ) ? intval( Core::arrayAt(
-                Controller::getQuery(), "mode" ) ) : $modeDefault;
+        $this->mode = in_array( Core::arrayAt( Controller::getQuery(), "mode", array () ), self::$MODES ) ? intval(
+                Core::arrayAt( Controller::getQuery(), "mode" ) ) : $modeDefault;
         $this->doTimeSetup();
         $this->doErrorhandlingSetup();
         $this->doDatabaseAndLocaleSetup( $this->getMode() );

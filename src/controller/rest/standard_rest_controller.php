@@ -263,7 +263,7 @@ abstract class StandardRestController extends RestController
      */
     protected static function isSearchCommand()
     {
-        return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_SEARCH && self::getSearchString();
+        return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_SEARCH;
     }
 
     // ... /IS
@@ -326,13 +326,14 @@ abstract class StandardRestController extends RestController
     protected function doGetForeignCommand()
     {
 
-        // Set Model
-        $this->setModel( $this->getStandardDao()->getForeign( array ( self::getId() ) ) );
-
         // Set Model list
         $this->setModelList( $this->getStandardDao()->getForeign( self::getIds() ) );
 
-        // Set status scode
+        // Add to list
+        if ( !$this->getModelList()->isEmpty() )
+            $this->setModel( $this->getModelList()->get( 0 ) );
+
+            // Set status scode
         $this->setStatusCode( self::STATUS_OK );
 
     }
@@ -376,7 +377,7 @@ abstract class StandardRestController extends RestController
         $this->setModel( $this->getStandardDao()->get( $this->getModel()->getId() ) );
 
         // Set Model list
-        $this->setModelList( $this->getStandardDao()->getForeign( $this->getModel()->getForeignId() ) );
+        $this->setModelList( $this->getForeignStandardDao()->getForeign( $this->getModel()->getForeignId() ) );
 
         // Set status scode
         $this->setStatusCode( self::STATUS_CREATED );
@@ -465,6 +466,9 @@ abstract class StandardRestController extends RestController
         {
             throw new BadrequestException( sprintf( "Id \"%d\" does not exist", self::getId() ) );
         }
+
+        // Set foreign Model
+        $this->setForeignModel( $this->getForeignStandardDao()->get( $this->getModel()->getForeignId() ) );
     }
 
     // ... /BEFORE
