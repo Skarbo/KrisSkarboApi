@@ -180,7 +180,10 @@ abstract class StandardRestController extends RestController
     public function getLastModified()
     {
         return max( filemtime( __FILE__ ), $this->getModelList()->getLastModified(),
-                $this->getModel() ? $this->getModel()->getLastModified() : null, parent::getLastModified() );
+                $this->getModel() ? $this->getModel()->getLastModified() : null,
+                $this->getForeignModel() ? $this->getForeignModel()->getLastModified() : null,
+                $this->getForeignModelList() ? $this->getForeignModelList()->getLastModified() : null,
+                parent::getLastModified() );
     }
 
     /**
@@ -203,9 +206,17 @@ abstract class StandardRestController extends RestController
 
 
     /**
+     * @return boolean True if touch foreign object on manipulation
+     */
+    protected function isTouchOnManipulate()
+    {
+        return false;
+    }
+
+    /**
      * @return boolean True if command is get
      */
-    protected static function isGetCommand()
+    public static function isGetCommand()
     {
         return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_GET && count( self::getIds() ) == 1;
     }
@@ -213,7 +224,7 @@ abstract class StandardRestController extends RestController
     /**
      * @return boolean True if command is get multiple
      */
-    protected static function isGetMultipleCommand()
+    public static function isGetMultipleCommand()
     {
         return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_GET && count( self::getIds() ) > 1;
     }
@@ -221,7 +232,7 @@ abstract class StandardRestController extends RestController
     /**
      * @return boolean True if command is get all
      */
-    protected static function isGetAllCommand()
+    public static function isGetAllCommand()
     {
         return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_GET && !self::getId();
     }
@@ -229,7 +240,7 @@ abstract class StandardRestController extends RestController
     /**
      * @return boolean True if command is get foreign
      */
-    protected static function isGetForeignCommand()
+    public static function isGetForeignCommand()
     {
         return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_GET_FOREIGN && self::getId();
     }
@@ -237,7 +248,7 @@ abstract class StandardRestController extends RestController
     /**
      * @return boolean True if command is add
      */
-    protected static function isAddCommand()
+    public static function isAddCommand()
     {
         return self::isPost() && self::getURI( self::URI_COMMAND ) == self::COMMAND_ADD;
     }
@@ -245,7 +256,7 @@ abstract class StandardRestController extends RestController
     /**
      * @return boolean True if command is edit
      */
-    protected static function isEditCommand()
+    public static function isEditCommand()
     {
         return self::isPost() && self::getURI( self::URI_COMMAND ) == self::COMMAND_EDIT && self::getId();
     }
@@ -253,7 +264,7 @@ abstract class StandardRestController extends RestController
     /**
      * @return boolean True if command is remove
      */
-    protected static function isRemoveCommand()
+    public static function isRemoveCommand()
     {
         return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_REMOVE && self::getId();
     }
@@ -261,7 +272,7 @@ abstract class StandardRestController extends RestController
     /**
      * @return boolean True if command is search
      */
-    protected static function isSearchCommand()
+    public static function isSearchCommand()
     {
         return self::isGet() && self::getURI( self::URI_COMMAND ) == self::COMMAND_SEARCH;
     }
@@ -270,6 +281,9 @@ abstract class StandardRestController extends RestController
 
 
     // ... DO
+
+
+    // ... ... COMMANDS
 
 
     /**
@@ -356,6 +370,9 @@ abstract class StandardRestController extends RestController
         // Set Model list
         $this->setModelList( $this->getStandardDao()->getForeign( $this->getForeignModel()->getId() ) );
 
+        // Touch foreign object
+        $this->doTouchForeign();
+
         // Set status scode
         $this->setStatusCode( self::STATUS_CREATED );
 
@@ -379,6 +396,9 @@ abstract class StandardRestController extends RestController
         // Set Model list
         $this->setModelList( $this->getForeignStandardDao()->getForeign( $this->getModel()->getForeignId() ) );
 
+        // Touch foreign object
+        $this->doTouchForeign();
+
         // Set status scode
         $this->setStatusCode( self::STATUS_CREATED );
 
@@ -396,6 +416,9 @@ abstract class StandardRestController extends RestController
         // Set Model list
         $this->setModelList(
                 $this->getStandardDao()->getForeign( array ( $this->getModel()->getForeignId() ) ) );
+
+        // Touch foreign object
+        $this->doTouchForeign();
 
         // Set status scode
         $this->setStatusCode( self::STATUS_OK );
@@ -416,6 +439,25 @@ abstract class StandardRestController extends RestController
 
         // Set status code
         $this->setStatusCode( self::STATUS_OK );
+
+    }
+
+    // ... ... /COMMANDS
+
+
+    /**
+     * Touches foreign object, sets updated foreign object
+     */
+    protected function doTouchForeign()
+    {
+        if ( !$this->isTouchOnManipulate() || !$this->getModel() )
+            return;
+
+            // Touch foreign object
+        $touched = $this->getForeignStandardDao()->touch( $this->getModel()->getForeignId() );
+
+        // Get foreign object
+        $this->setForeignModel( $this->getForeignStandardDao()->get( $this->getModel()->getForeignId() ) );
 
     }
 
@@ -517,7 +559,8 @@ abstract class StandardRestController extends RestController
         }
         else
         {
-            throw new BadrequestException( sprintf( "Unknown command \"%s\"", self::getURI( self::URI_COMMAND ) ) );
+            throw new BadrequestException( sprintf( "Unknown command \"%s\"", self::getURI( self::URI_COMMAND ) ),
+                    BadrequestException::UNKNOWN_COMMAND );
         }
     }
 

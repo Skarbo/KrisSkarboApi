@@ -70,6 +70,14 @@ abstract class StandardDbDao extends DbDao implements StandardDao
     protected abstract function getForeignField();
 
     /**
+     * @return string Touch field
+     */
+    protected function getTouchField()
+    {
+        return "";
+    }
+
+    /**
      * @param StandardModel $model
      * @param int $foreignId
      * @param boolean True if insert
@@ -350,6 +358,38 @@ abstract class StandardDbDao extends DbDao implements StandardDao
 
         // Return created list
         return $this->createList( $result->getRows() );
+
+    }
+
+    /**
+     * @see StandardDao::touch()
+     * @throws DbException
+     */
+    public function touch( $id )
+    {
+
+        if ( !$this->getTouchField() )
+            return null;
+
+            // Update query
+        $update_query = new UpdateQueryDbCore();
+
+        // ... Build
+        $update_build = new UpdateSqlbuilderDbCore();
+        $update_build->setTable( $this->getTable() );
+        $update_build->setSet( array ( $this->getTouchField() => SB::$CURRENT_TIMESTAMP ) );
+        $update_build->setWhere( SB::equ( $this->getPrimaryField(), ":id" ) );
+
+        $update_query->setQuery( $update_build );
+
+        // ... Bind
+        $update_query->setBinds( array ( "id" => $id ) );
+
+        // Do update
+        $result = $this->getDbApi()->query( $update_query );
+
+        // Return boolean
+        return $result->isExecute();
 
     }
 

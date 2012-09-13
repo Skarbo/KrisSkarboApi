@@ -12,8 +12,8 @@ function Core() {
  * @return {float} Rounded number
  */
 Core.roundNumber = function(num, dec) {
-	var result = Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
-	return result.toFixed(dec);
+	dec = dec || 1;
+	return Math.round(parseFloat(num) * Math.pow(10, dec)) / Math.pow(10, dec);
 };
 
 /**

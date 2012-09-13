@@ -39,6 +39,23 @@ abstract class StandardListModel extends IteratorCore
     }
 
     /**
+     * @return array Foreign ids in list
+     */
+    public function getForeignIds()
+    {
+        $foreignIds = array ();
+
+        for ( $this->rewind(); $this->valid(); $this->next() )
+        {
+            $model = $this->current();
+
+            $foreignIds[] = $model->getForeignId();
+        }
+
+        return array_unique( $foreignIds );
+    }
+
+    /**
      * @param mixed $id Standard model id
      * @return StandardModel Removed model, null if not found
      */
