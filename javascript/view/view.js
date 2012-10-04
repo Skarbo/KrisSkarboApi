@@ -20,6 +20,7 @@ View.prototype.getController = function() {
 	return this.controller;
 };
 
+
 /**
  * Draws view, called at render
  * 

@@ -41,8 +41,7 @@ StandardAjaxDao.prototype.getMode = function() {
 };
 
 StandardAjaxDao.prototype.getUri = function(uri) {
-	return Core.sprintf(StandardAjaxDao.URI_API, this
-			.getUriControllerName(), uri, this.getMode());
+	return Core.sprintf(StandardAjaxDao.URI_API, this.getUriControllerName(), uri, this.getMode());
 };
 
 // ... /GET
@@ -56,8 +55,7 @@ StandardAjaxDao.prototype.getUri = function(uri) {
  */
 StandardAjaxDao.prototype.get = function(id, callback) {
 	// Generate url
-	var url = Core.sprintf(this
-			.getUri(StandardAjaxDao.URI_GET_SINGLE_GET), id);
+	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_GET_SINGLE_GET), id);
 
 	// Do ajax
 	$.ajax({
@@ -103,9 +101,7 @@ StandardAjaxDao.prototype.getAll = function(callback) {
  */
 StandardAjaxDao.prototype.getForeign = function(id, callback) {
 	// Generate url
-	var url = Core.sprintf(this
-			.getUri(StandardAjaxDao.URI_GET_LIST_FOREIGN_GET), this
-			.getUriIds(id));
+	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_GET_LIST_FOREIGN_GET), this.getUriIds(id));
 
 	// Do ajax
 	$.ajax({
@@ -122,16 +118,14 @@ StandardAjaxDao.prototype.getForeign = function(id, callback) {
 
 /**
  * @param {integer}
- *            id
+ *            ids
  * @param {function}
  *            callback
  * @return {Object}
  */
-StandardAjaxDao.prototype.getList = function(id, callback) {
+StandardAjaxDao.prototype.getList = function(ids, callback) {
 	// Generate url
-	var url = Core.sprintf(this
-			.getUri(StandardAjaxDao.URI_GET_SINGLE_GET), this
-			.getUriIds(id));
+	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_GET_SINGLE_GET), this.getUriIds(ids));
 
 	// Do ajax
 	$.ajax({
@@ -157,15 +151,16 @@ StandardAjaxDao.prototype.getList = function(id, callback) {
  */
 StandardAjaxDao.prototype.add = function(object, foreignId, callback) {
 	// Generate url
-	var url = Core.sprintf(this
-			.getUri(StandardAjaxDao.URI_POST_SINGLE_ADD), foreignId ? foreignId : "");
+	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_POST_SINGLE_ADD), foreignId ? foreignId : "");
 
 	// Do ajax
 	$.ajax({
 		url : url,
 		dataType : "json",
-		type: "POST",
-		data : { 'object' : object },
+		type : "POST",
+		data : {
+			'object' : object
+		},
 		success : function(data) {
 			callback(data["single"], data["list"]);
 		},
@@ -184,15 +179,16 @@ StandardAjaxDao.prototype.add = function(object, foreignId, callback) {
  */
 StandardAjaxDao.prototype.edit = function(id, object, callback) {
 	// Generate url
-	var url = Core.sprintf(this
-			.getUri(StandardAjaxDao.URI_POST_SINGLE_EDIT), id);
+	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_POST_SINGLE_EDIT), id);
 
 	// Do ajax
 	$.ajax({
 		url : url,
 		dataType : "json",
-		type: "POST",
-		data : { 'object' : object },
+		type : "POST",
+		data : {
+			'object' : object
+		},
 		success : function(data) {
 			callback(data["single"], data["list"]);
 		},
@@ -209,8 +205,24 @@ StandardAjaxDao.prototype.edit = function(id, object, callback) {
  */
 StandardAjaxDao.prototype.remove = function(id, callback) {
 	// Generate url
-	var url = Core.sprintf(this
-			.getUri(StandardAjaxDao.URI_GET_SINGLE_REMOVE), id);
+	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_GET_SINGLE_REMOVE), id);
+
+	// Do ajax
+	$.ajax({
+		url : url,
+		dataType : "json",
+		success : function(data) {
+			callback(data["single"], data["list"]);
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		}
+	});
+};
+
+StandardAjaxDao.prototype.query = function(uri, callback) {
+	// Generate url
+	var url = this.getUri(uri);
 
 	// Do ajax
 	$.ajax({

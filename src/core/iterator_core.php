@@ -80,6 +80,23 @@ abstract class IteratorCore extends ClassCore implements Iterator
         return $element;
     }
 
+    public function removeAll()
+    {
+        $this->array = array ();
+        $this->position = 0;
+    }
+
+    /**
+     * @param integer $offset
+     * @return IteratorCore
+     */
+    public function slice( $offset )
+    {
+        $iterator = clone $this;
+        $iterator ->array = array_merge( array (), array_slice( $this->array, $offset ) );
+        return $iterator;
+    }
+
     /**
      * @param IteratorCore $iterator
      */
@@ -118,15 +135,30 @@ abstract class IteratorCore extends ClassCore implements Iterator
         $iterator->array = array ();
 
         // Foreach objects
-        for ( $i = 0; $i < $this->size(); $i++ )
+        for ( $this->rewind(); $this->valid(); $this->next() )
         {
-            if ( $func( $this->get( $i ) ) )
+            $object = $this->current();
+            if ( $func( $object ) )
             {
-                $iterator->add( $this->get( $i ) );
+                $iterator->add( $object );
             }
         }
 
         // Return cloned iterator
+        return $iterator;
+    }
+
+    /**
+     * @param integer $limit
+     * @return IteratorCore
+     */
+    public function limit( $limit )
+    {
+        $iterator = clone $this;
+        for ( $this->rewind(), $i = 0; $this->valid() && $i < $limit; $this->next(), $i++ )
+        {
+            $iterator->add( $this->current() );
+        }
         return $iterator;
     }
 

@@ -16,7 +16,7 @@ abstract class AbstractXhtml
     protected $_attributes = array ();
     protected $_attribute_enclose = self::ATTR_ENCLOSE_DOUBLE;
 
-    protected $class;
+    protected $class = array();
     protected $style;
     protected $id;
     protected $title;
@@ -154,8 +154,7 @@ abstract class AbstractXhtml
      */
     function class_( $class, $_ = NULL )
     {
-        $this->class = implode( " ",
-                func_get_args() );
+        $this->class = (array) func_get_args();
         return $this;
     }
 
@@ -166,8 +165,7 @@ abstract class AbstractXhtml
      */
     function addClass( $class, $_ = NULL )
     {
-        $this->class .= ( $this->class ? " " : "" ) . implode( " ",
-                func_get_args() );
+        $this->class = array_unique( array_merge( $this->class, func_get_args() ) );
         return $this;
     }
 
@@ -468,9 +466,8 @@ abstract class AbstractXhtml
 
     protected function param( $param, $value = NULL )
     {
-        return ( !( empty( $value ) && !is_numeric( $value ) ) ) ? sprintf(
-                "%s=%s%s%s", $param, $this->getAttributeEnclose(), $value,
-                $this->getAttributeEnclose() ) : NULL;
+        return ( !( empty( $value ) && !is_numeric( $value ) ) ) ? sprintf( "%s=%s%s%s", $param,
+                $this->getAttributeEnclose(), $value, $this->getAttributeEnclose() ) : NULL;
     }
 
     protected function noEndTag( $code, $param )
@@ -498,10 +495,9 @@ abstract class AbstractXhtml
         {
 
             // Param is not a class variable and value not null
-            if ( strcmp( substr( $param, 0, 1 ), "_" ) != 0 && !( empty(
-                    $value ) && !is_numeric( $value ) ) )
+            if ( strcmp( substr( $param, 0, 1 ), "_" ) != 0 && !( empty( $value ) && !is_numeric( $value ) ) )
             {
-                $param_array[] = $this->param( $param, $value );
+                $param_array[] = $this->param( $param, is_array( $value ) ? implode(" ", $value) : $value );
             }
 
         }
@@ -510,17 +506,24 @@ abstract class AbstractXhtml
         if ( !$this->get_endTag() )
         {
             return trim(
-                    $this->noEndTag( $this->get_code(),
-                            implode( " ", $param_array ) ) );
+                    $this->noEndTag( $this->get_code(), implode( " ", $param_array ) ) );
         }
         // End tag
         else
         {
             return trim(
-                    $this->endTag( $this->get_code(),
-                            implode( " ", $param_array ), $this->get_content() ) );
+                    $this->endTag( $this->get_code(), implode( " ", $param_array ), $this->get_content() ) );
         }
 
+    }
+
+    /**
+     * @param AbstractXhtml $get
+     * @return AbstractXhtml
+     */
+    public static function get_( $get )
+    {
+        return $get;
     }
 
 }

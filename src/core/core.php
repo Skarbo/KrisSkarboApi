@@ -333,6 +333,24 @@ class Core
     }
 
     /**
+     * @param mixed $array1
+     * @param mixed $array2
+     * @return array
+     */
+    public static function arrayMerge( $array1, $array2 )
+    {
+        foreach ( $array2 as $key => $value )
+        {
+            if ( array_key_exists( $key, $array1 ) && is_array( $value ) )
+                $array1[ $key ] = self::arrayMerge( $array1[ $key ], $array2[ $key ] );
+            else
+                $array1[ $key ] = $value;
+        }
+        return $array1;
+
+    }
+
+    /**
      * Append param and values to link
      *
      * @param string $link NULL Represents the link to be appended, null if current link is to be appended
@@ -720,6 +738,22 @@ class Core
     }
 
     /**
+     * @param mixed $search Search
+     * @param array $search Regex expressions
+     * @return boolean True if array contains search
+     */
+    static function search( $search, array $expressions )
+    {
+        $search = is_array( $search ) ? $search : array ( $search );
+        return ( bool ) array_filter(
+                array_map(
+                        function ( $var ) use($search )
+                        {
+                            return preg_grep( sprintf( '/%s/', $var ), $search );
+                        }, $expressions ) );
+    }
+
+    /**
      * Fills zero
      *
      * @param integer $number 2
@@ -916,30 +950,42 @@ class Core
      * Collects recursivly files in directory
      *
      * @param string $path ['.']
-     * @param array $ignore [array]
+     * @param array $restrict [array] Array( include, ignore => Array( files, folders => Array() ) )
      * @param int $level [0]
      * @return array Array( files )
      */
-    static function getDirectory( $path = '.', array $ignore = array(), $level = 0 )
+    static function getDirectory( $path = '.', array $restrict = array(), $level = 0 )
     {
         $DS = DIRECTORY_SEPARATOR;
-        $ignoreArray = array_merge( array ( 'cgi-bin', '.', '..', '.svn' ), $ignore );
+        $ignoreArray = array ( 'cgi-bin', '.', '..', '.svn', '.git' );
         $dh = @opendir( $path );
         $files = array ();
+
+        if ( $level == 0 )
+        {
+            $restrict = array_merge(
+                    array ( "include" => array ( "files" => array (), "folders" => array () ),
+                            "ignore" => array ( "files" => array (), "folders" => array () ) ), $restrict );
+        }
 
         while ( false !== ( $file = readdir( $dh ) ) )
         {
             if ( !in_array( $file, $ignoreArray ) )
             {
                 // File
-                if ( !is_dir( "{$path}{$DS}{$file}" ) )
+                if ( !is_dir( "{$path}{$DS}{$file}" ) && ( !empty( $restrict[ "ignore" ][ "files" ] ) ? !self::search(
+                        $file, $restrict[ "ignore" ][ "files" ] ) : true ) && ( !empty( $restrict[ "include" ][ "files" ] ) ? self::search(
+                        $file, $restrict[ "include" ][ "files" ] ) : true ) )
                 {
                     array_unshift( $files, "{$path}{$DS}{$file}" );
                 }
                 // Folder
-                else if ( is_dir( "{$path}{$DS}{$file}" ) )
+                else if ( is_dir( "{$path}{$DS}{$file}" ) && ( !empty( $restrict[ "ignore" ][ "folders" ] ) ? !self::search(
+                        $file, $restrict[ "ignore" ][ "folders" ] ) : true ) && ( !empty(
+                        $restrict[ "include" ][ "folders" ] ) ? self::search( $file, $restrict[ "include" ][ "folders" ] ) : true ) )
                 {
-                    $files = array_merge( $files, self::getDirectory( "{$path}{$DS}{$file}", $ignore, ( $level + 1 ) ) );
+                    $files = array_merge( $files,
+                            self::getDirectory( "{$path}{$DS}{$file}", $restrict, ( $level + 1 ) ) );
                 }
             }
         }

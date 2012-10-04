@@ -50,6 +50,11 @@
 
 /* ... Icon */
 .gui .icon {
+}
+
+
+/*
+.gui .icon {
     font-family: 'Icon', Verdana, Arial, sans-serif;
     color: #444644;
 }
@@ -76,7 +81,7 @@
 
 .gui .icon[data-icon=check]:AFTER {
     content: 'B';
-}
+}*/
 
 /* ... Button */
 .gui .button {

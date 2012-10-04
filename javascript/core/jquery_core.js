@@ -1,4 +1,4 @@
-(function($) {
+$(function() {
 
 	// SERIALIZE FORM TO JSON
 
@@ -32,28 +32,27 @@
 				data = $(this).data(INPUTHINT_DATA);
 			}
 
-			return this
-					.each(function() {
-						var $input = jQuery(this), title = $input.attr("title") || $input.attr("data-hint"), $form = jQuery(this.form), $win = jQuery(window), hintClass = data.options.class;
+			return this.each(function() {
+				var input = $(this), title = input.attr("title") || input.attr("data-hint"), form = $(this.form), win = $(window), hintClass = data.options.clas;
 
-						function remove() {
-							if ($input.val() === title && $input.hasClass(hintClass)) {
-								$input.val("").removeClass(hintClass);
-							}
+				function remove() {
+					if (input.val() === title && input.hasClass(hintClass)) {
+						input.val("").removeClass(hintClass);
+					}
+				}
+
+				if (title) {
+					input.attr("title", title);
+					input.blur(function() {
+						if (this.value === "") {
+							input.val(title).addClass(hintClass);
 						}
+					}).focus(remove).blur();
 
-						if (title) {
-							$input.attr("title", title);
-							$input.blur(function() {
-								if (this.value === "") {
-									$input.val(title).addClass(hintClass);
-								}
-							}).focus(remove).blur();
-
-							$form.submit(remove);
-							$win.unload(remove);
-						}
-					});
+					form.submit(remove);
+					win.unload(remove);
+				}
+			});
 
 		},
 		value : function(value) {
@@ -63,13 +62,13 @@
 				$this.each(function(i) {
 					$(this).val(value);
 					if (value != "") {
-						$(this).val(value).removeClass(data.options.class);
+						$(this).val(value).removeClass(data.options.clas);
 					}
 				});
 			} else if (value == undefined) {
 				var values = [];
 				$this.each(function(i) {
-					values.push($(this).hasClass(data.options.class) ? "" : $(this).val());
+					values.push($(this).hasClass(data.options.clas) ? "" : $(this).val());
 				});
 				return values.length == 0 ? "" : (values.length == 1 ? values[0] : values);
 			} else if (value == "") {
@@ -93,26 +92,27 @@
 	};
 
 	// /INPUT HINT
-	
+
 	// TOUCH ACTIVE
-	
+
 	var TOUCHACTIVE_CLASS = "touching";
-	
+
 	var touchActiveMethods = {
-			init : function(options){
-				var clas = options && options.class ? options.class : TOUCHACTIVE_CLASS;
-				return $(this).bind("touchstart.hovering touchend.hovering touchend.hovering touchcancel.hovering", { "clas" : clas },
-						function(event) {
-					if (event.type == "touchstart") {
-						$(this).addClass(event.data.clas);
-					} else {
-						$(this).removeClass(event.data.clas);
-					}
-				});
-				
-			}
+		init : function(options) {
+			var clas = options && options.clas ? options.clas : TOUCHACTIVE_CLASS;
+			return $(this).bind("touchstart.hovering touchend.hovering touchend.hovering touchcancel.hovering", {
+				"clas" : clas
+			}, function(event) {
+				if (event.type == "touchstart") {
+					$(this).addClass(event.data.clas);
+				} else {
+					$(this).removeClass(event.data.clas);
+				}
+			});
+
+		}
 	};
-	
+
 	$.fn.touchActive = function(method) {
 
 		if (inputhintMethods[method]) {
@@ -125,7 +125,6 @@
 
 	};
 
-	
 	// /TOUCH ACTIVE
 
-})(jQuery);
+});

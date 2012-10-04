@@ -57,7 +57,7 @@ abstract class AbstractException extends Exception
     }
 
     /**
-     * @return integer
+     * @return mixed
      */
     public function getCustomCode()
     {

@@ -1,6 +1,6 @@
 <?php
 
-abstract class View extends ClassCore
+abstract class View extends ClassCore implements InterfaceView
 {
 
     // VARIABLES
@@ -60,19 +60,12 @@ abstract class View extends ClassCore
         return filemtime( __FILE__ );
     }
 
-    /**
-     * @param boolean $force True if not return null
-     * @return int Mode, null if mode is default mode
-     */
     public function getMode( $force = false )
     {
         return $this->getController()->getMode( !$force );
     }
 
-    /**
-     * @return AbstractDefaultLocale
-     */
-    protected function getLocale()
+    public function getLocale()
     {
         return $this->getController()->getLocale();
     }

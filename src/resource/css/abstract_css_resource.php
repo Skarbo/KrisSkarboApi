@@ -19,6 +19,7 @@ class AbstractCssResource extends ClassCore
     private $tableRow = "row";
     private $tableCellFill = "fill";
 
+    private $left = "left";
     private $right = "right";
     private $center = "center";
     private $top = "top";
@@ -31,6 +32,7 @@ class AbstractCssResource extends ClassCore
     private $hint = "hint";
     private $hide = "hide";
     private $touch = "touch";
+    private $hover = "hover";
 
     // /VARIABLES
 
@@ -142,6 +144,16 @@ class AbstractCssResource extends ClassCore
     public function getTouch()
     {
         return $this->touch;
+    }
+
+    public function getLeft()
+    {
+        return $this->left;
+    }
+
+    public function getHover()
+    {
+        return $this->hover;
     }
 
 }

@@ -118,7 +118,7 @@ class InputXhtml extends AbstractXhtml
      */
     function autocomplete( $autocomplete )
     {
-        $this->autocomplete = $autocomplete;
+        $this->autocomplete = is_bool($autocomplete) && !$autocomplete ? self::$AUTOCOMPLETE_OFF: $autocomplete;
         return $this;
     }
 

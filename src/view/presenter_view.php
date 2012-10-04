@@ -1,6 +1,6 @@
 <?php
 
-abstract class PresenterView extends ClassCore
+abstract class PresenterView extends ClassCore implements InterfaceView
 {
 
     // VARIABLES
@@ -45,6 +45,22 @@ abstract class PresenterView extends ClassCore
     public function setView( MainView $view )
     {
         $this->view = $view;
+    }
+
+    /**
+     * @see InterfaceView::getLocale()
+     */
+    public function getLocale()
+    {
+        return $this->getView()->getLocale();
+    }
+
+    /**
+     * @see InterfaceView::getMode()
+     */
+    public function getMode( $force = false )
+    {
+        return $this->getView()->getMode( $force );
     }
 
     // ... /GETTERS/SETTERS

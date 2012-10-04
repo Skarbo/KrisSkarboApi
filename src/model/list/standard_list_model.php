@@ -48,11 +48,10 @@ abstract class StandardListModel extends IteratorCore
         for ( $this->rewind(); $this->valid(); $this->next() )
         {
             $model = $this->current();
-
             $foreignIds[] = $model->getForeignId();
         }
 
-        return array_unique( $foreignIds );
+        return array_values( array_unique( $foreignIds ) );
     }
 
     /**

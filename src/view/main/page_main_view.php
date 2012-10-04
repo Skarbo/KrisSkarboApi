@@ -1,9 +1,10 @@
 <?php
 
-abstract class PageMainView extends ClassCore
+abstract class PageMainView extends ClassCore implements InterfaceView
 {
 
     // VARIABLES
+
 
     public static $ID_PAGE_WRAPPER = "page_wrapper";
 
@@ -49,6 +50,28 @@ abstract class PageMainView extends ClassCore
     }
 
     // ... /GETTERS/SETTERS
+
+
+    // ... GET
+
+
+    /**
+     * @see InterfaceView::getMode()
+     */
+    public function getMode( $force = false )
+    {
+        return $this->getView()->getMode( $force );
+    }
+
+    /**
+     * @see InterfaceView::getLocale()
+     */
+    public function getLocale()
+    {
+        return $this->getView()->getLocale();
+    }
+
+    // ... /GET
 
 
     /**

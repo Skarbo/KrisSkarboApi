@@ -219,44 +219,17 @@ Gui.randomString = function(length) {
 				case Gui.DATA_TYPE_RESET:
 					// Button icon
 
-					// Create icon
-					icon = $("<div />", {
-						'class' : Gui.ICON_CLASS,
-						'data-icon' : element.attr('data-icon')
-					});
-
-					// Create span
-					span = $("<div />", {
-						'class' : Gui.TEXT_CLASS,
-						'html' : element.html()
-					});
-
 					// Add class
 					element.addClass(Gui.BUTTON_CLASS);
 					element.addClass(Gui.GUI_COMP_CLASS);
 
-					// Remove content
-					element.empty();
-
-					// Append element
-					if (span.text() != "") {
-						element.append(span);
-					}
-
-					if (element.attr("data-icon")) {
-						if (element.attr("data-icon-placing") == "right") {
-							element.append(icon);
-						} else {
-							element.prepend(icon);
-						}
-					}
-
-					// Remove data icon attribute
-					element.attr('data-icon', null);
+					// Add title
+					if (element.attr("data-icon") && element.text() != "")
+						element.attr("data-text", "true");
 
 					// Handle click
 					if (dataType == Gui.DATA_TYPE_RESET) {
-						element.click({
+						element.bind("click", {
 							'input' : element.attr("data-reset-id")
 						}, function(event) {
 							// Prevent
@@ -297,10 +270,10 @@ Gui.randomString = function(length) {
 
 					// Get name
 					name = element.attr("data-name");
-					
+
 					// Get value
 					value = element.attr("data-value");
-					
+
 					// Is checked
 					checked = element.hasClass(Gui.CHECKED_CLASS) || jQuery.inArray(id, settings["checked"]) > -1;
 
@@ -325,7 +298,10 @@ Gui.randomString = function(length) {
 					element.append(checkbox);
 
 					// Handle click
-					element.on("click", { "checkbox" : checkbox, "id" : id }, function(event) {
+					element.on("click", {
+						"checkbox" : checkbox,
+						"id" : id
+					}, function(event) {
 						// Prevent default
 						event.preventDefault();
 
@@ -453,19 +429,22 @@ Gui.randomString = function(length) {
 						'type' : "file",
 						'name' : name
 					});
-					
+
 					// Handle input click
 					input.click(function(event) {
 						event.stopPropagation();
 					});
-					
+
 					// Handle input change
-					input.change({"name" : name, "element" : element}, function(event){
+					input.change({
+						"name" : name,
+						"element" : element
+					}, function(event) {
 						// Set element as checked
-						if ($(this).val()){
+						if ($(this).val()) {
 							event.data.element.addClass(Gui.CHECKED_CLASS);
 						}
-						
+
 						// Handle
 						if (settings['handler'][event.data.name]) {
 							settings['handler'][event.data.name]($(this));

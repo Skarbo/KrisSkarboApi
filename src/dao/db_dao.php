@@ -8,6 +8,8 @@ abstract class DbDao extends ClassCore
 
     protected static $SQL_DATE_FORMAT_YmdHis = "Y-m-d H:i:s";
     protected static $SQL_DATE_FORMAT_Ymd = "Y-m-d";
+    protected static $SQL_DATE_FORMAT_His = "H:i:s";
+    protected static $REGEX_WILDCARD = '/[^\p{L}\d]/s';
 
     /**
      * @var DbApi

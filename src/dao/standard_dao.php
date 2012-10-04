@@ -67,9 +67,10 @@ interface StandardDao
 
     /**
      * @param string $search
+     * @param int Foreign id
      * @return StandardListModel
      */
-    public function search( $search );
+    public function search( $search, $foreignId = null );
 
     /**
      * @param int $id

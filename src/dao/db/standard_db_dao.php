@@ -110,7 +110,7 @@ abstract class StandardDbDao extends DbDao implements StandardDao
      * @param string $search
      * @return SelectQueryDbCore
      */
-    protected function getSearchSelectQuery( $search )
+    protected function getSearchSelectQuery( $search, $foreignId = null )
     {
         return $this->getSelectQuery();
     }
@@ -343,11 +343,10 @@ abstract class StandardDbDao extends DbDao implements StandardDao
     }
 
     /**
-     * @param string $search
-     * @return StandardListModel
+     * @see StandardDao::search()
      * @throws DbException
      */
-    public function search( $search )
+    public function search( $search, $foreignId = null )
     {
 
         // Select query

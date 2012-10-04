@@ -52,7 +52,7 @@ StandardDao.prototype.getFilteredList = function(filterFunc) {
  */
 StandardDao.prototype.getForeignList = function(foreignId) {
 	var foreignField = this.foreignField;
-	return this.getFilteredList(function(single){
+	return this.getFilteredList(function(single) {
 		return single[foreignField] == foreignId;
 	});
 };
@@ -180,6 +180,47 @@ StandardDao.prototype.getForeign = function(foreignId, callback, forceAjax) {
 };
 
 /**
+ * @param {Array}
+ *            ids
+ * @param {function}
+ *            callback
+ * @param {boolean}
+ *            forceAjax True if force REST
+ * @return {Object}
+ */
+StandardDao.prototype.getList = function(ids, callback, forceAjax) {
+	var context = this;
+
+	var getListFunc = function(ids, listKnown) {
+		context.ajax.getList(ids, function(list) {
+			context.addListToList(list);
+			callback(jQuery.extend(list, listKnown));
+		});
+	};
+
+	if (!forceAjax) {
+		var list = {};
+		var unknown = [];
+
+		var object = null;
+		for (i in ids) {
+			object = this.getFromList(ids[i]);
+			if (object)
+				list[ids[i]] = object;
+			else
+				unknown.push(ids[i]);
+		}
+		
+		if (unknown.length == 0)
+			callback(list);
+		else
+			getListFunc(ids, {});
+	} else {
+		getListFunc(ids, {});
+	}
+};
+
+/**
  * @param {Object}
  *            object
  * @param {integer}
@@ -196,10 +237,14 @@ StandardDao.prototype.add = function(object, foreignId, callback) {
 };
 
 /**
- * @param {Number} id
- * @param {Object} object
- * @param {Number} foreignId
- * @param {function} callback
+ * @param {Number}
+ *            id
+ * @param {Object}
+ *            object
+ * @param {Number}
+ *            foreignId
+ * @param {function}
+ *            callback
  */
 StandardDao.prototype.edit = function(id, object, callback) {
 	var context = this;

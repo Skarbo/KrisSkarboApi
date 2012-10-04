@@ -53,6 +53,10 @@ class Generator
      * @var Array
      */
     public $skipTables = array ();
+    /**
+     * @var array
+     */
+    public $onlyTables = array ();
 
     // /VARIABLES
 
@@ -152,7 +156,9 @@ class Generator
         $tables = array ();
         while ( $row = mysql_fetch_row( $result ) )
         {
-            if ( !in_array($row[ 0 ], $this->skipTables) ) {
+            if ( !empty( $this->onlyTables ) ? in_array( $row[ 0 ], $this->onlyTables ) : !in_array( $row[ 0 ],
+                    $this->skipTables ) )
+            {
                 $tables[] = $row[ 0 ];
             }
         }
@@ -554,13 +560,13 @@ EOF;
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_factory_model.php", $filename ) );
 
-        $arguments = array();
-        $setters = array();
+        $arguments = array ();
+        $setters = array ();
         foreach ( $fields as $field )
         {
             $fieldCamelCase = self::getCamelcaseUnderscore( $field[ "name" ], $fieldPrefix );
             $arguments[] = sprintf( "$%s", $fieldCamelCase );
-            $setters[] = sprintf( $setter, lcfirst($className), ucfirst( $fieldCamelCase ), $fieldCamelCase );
+            $setters[] = sprintf( $setter, lcfirst( $className ), ucfirst( $fieldCamelCase ), $fieldCamelCase );
         }
 
         $factoryFile = $factoryFileContents;
@@ -804,7 +810,8 @@ EOF;
 
             $fieldCamelCase = self::getCamelcaseUnderscore( $field[ "name" ], $fieldPrefix );
             $fieldsBinds[] = str_replace( ":class:", lcfirst( $className ),
-                    str_replace( ":field:", $fieldCamelCase, str_replace( ":function:", ucfirst( $fieldCamelCase ), $fieldBind ) ) );
+                    str_replace( ":field:", $fieldCamelCase,
+                            str_replace( ":function:", ucfirst( $fieldCamelCase ), $fieldBind ) ) );
             $factoryArguments[] = sprintf( $factoryArgument, lcfirst( $className ), ucfirst( $fieldCamelCase ) );
         }
 

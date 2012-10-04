@@ -24,16 +24,13 @@
  *  NOTE:  If the user's system has a routine called get_last_retrieve_url_contents_content_type availalbe, we will assume it's returning the content-type header from the
  *  last transfer or curl_exec, and we will parse that and use it in preference to any other method of charset detection.
  *
- * Found infinite loop in the case of broken html in restore_noise.  Rewrote to protect from that.
- * PaperG (John Schlick) Added get_display_size for "IMG" tags.
- *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
  * @author S.C. Chen <me578022@gmail.com>
  * @author John Schlick
  * @author Rus Carroll
- * @version 1.5 ($Rev: 196 $)
+ * @version 1.11 ($Rev: 184 $)
  * @package PlaceLocalInclude
  * @subpackage simple_html_dom
  */
@@ -61,22 +58,19 @@ define( 'HDOM_INFO_OUTER', 6 );
 define( 'HDOM_INFO_ENDSPACE', 7 );
 define( 'DEFAULT_TARGET_CHARSET', 'UTF-8' );
 define( 'DEFAULT_BR_TEXT', "\r\n" );
-define( 'DEFAULT_SPAN_TEXT', " " );
-define( 'MAX_FILE_SIZE', 600000 );
 // helper functions
 // -----------------------------------------------------------------------------
 // get html dom from file
 // $maxlen is defined in the code as PHP_STREAM_COPY_ALL which is defined as -1.
-function file_get_html( $url, $use_include_path = false, $context = null, $offset = -1, $maxLen = -1, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT )
+function file_get_html( $url, $use_include_path = false, $context = null, $offset = -1, $maxLen = -1, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT )
 {
     // We DO force the tags to be terminated.
-    $dom = new simple_html_dom( null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText,
-            $defaultSpanText );
+    $dom = new simple_html_dom( null, $lowercase, $forceTagsClosed, $target_charset, $defaultBRText );
     // For sourceforge users: uncomment the next line and comment the retreive_url_contents line 2 lines down if it is not already done.
     $contents = file_get_contents( $url, $use_include_path, $context, $offset );
     // Paperg - use our own mechanism for getting the contents as we want to control the timeout.
-    //$contents = retrieve_url_contents($url);
-    if ( empty( $contents ) || strlen( $contents ) > MAX_FILE_SIZE )
+    //    $contents = retrieve_url_contents($url);
+    if ( empty( $contents ) )
     {
         return false;
     }
@@ -86,11 +80,10 @@ function file_get_html( $url, $use_include_path = false, $context = null, $offse
 }
 
 // get html dom from string
-function str_get_html( $str, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT )
+function str_get_html( $str, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT )
 {
-    $dom = new simple_html_dom( null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText,
-            $defaultSpanText );
-    if ( empty( $str ) || strlen( $str ) > MAX_FILE_SIZE )
+    $dom = new simple_html_dom( null, $lowercase, $forceTagsClosed, $target_charset, $defaultBRText );
+    if ( empty( $str ) )
     {
         $dom->clear();
         return false;
@@ -120,7 +113,6 @@ class simple_html_dom_node
     public $children = array ();
     public $nodes = array ();
     public $parent = null;
-    // The "info" array - see HDOM_INFO_... for what each element contains.
     public $_ = array ();
     public $tag_start = 0;
     private $dom = null;
@@ -165,111 +157,68 @@ class simple_html_dom_node
         }
         echo "\n";
 
-        if ( $this->nodes )
-        {
-            foreach ( $this->nodes as $c )
-            {
-                $c->dump( $show_attr, $deep + 1 );
-            }
-        }
+        foreach ( $this->nodes as $c )
+            $c->dump( $show_attr, $deep + 1 );
     }
 
     // Debugging function to dump a single dom node with a bunch of information about it.
-    function dump_node( $echo = true )
+    function dump_node()
     {
-
-        $string = $this->tag;
+        echo $this->tag;
         if ( count( $this->attr ) > 0 )
         {
-            $string .= '(';
+            echo '(';
             foreach ( $this->attr as $k => $v )
             {
-                $string .= "[$k]=>\"" . $this->$k . '", ';
+                echo "[$k]=>\"" . $this->$k . '", ';
             }
-            $string .= ')';
+            echo ')';
         }
-        if ( count( $this->_ ) > 0 )
+        if ( count( $this->attr ) > 0 )
         {
-            $string .= ' $_ (';
+            echo ' $_ (';
             foreach ( $this->_ as $k => $v )
             {
                 if ( is_array( $v ) )
                 {
-                    $string .= "[$k]=>(";
+                    echo "[$k]=>(";
                     foreach ( $v as $k2 => $v2 )
                     {
-                        $string .= "[$k2]=>\"" . $v2 . '", ';
+                        echo "[$k2]=>\"" . $v2 . '", ';
                     }
-                    $string .= ")";
+                    echo ")";
                 }
                 else
                 {
-                    $string .= "[$k]=>\"" . $v . '", ';
+                    echo "[$k]=>\"" . $v . '", ';
                 }
             }
-            $string .= ")";
+            echo ")";
         }
 
         if ( isset( $this->text ) )
         {
-            $string .= " text: (" . $this->text . ")";
+            echo " text: (" . $this->text . ")";
         }
 
-        $string .= " HDOM_INNER_INFO: '";
-        if ( isset( $node->_[ HDOM_INFO_INNER ] ) )
-        {
-            $string .= $node->_[ HDOM_INFO_INNER ] . "'";
-        }
-        else
-        {
-            $string .= ' NULL ';
-        }
+        echo " children: " . count( $this->children );
+        echo " nodes: " . count( $this->nodes );
+        echo " tag_start: " . $this->tag_start;
+        echo "\n";
 
-        $string .= " children: " . count( $this->children );
-        $string .= " nodes: " . count( $this->nodes );
-        $string .= " tag_start: " . $this->tag_start;
-        $string .= "\n";
-
-        if ( $echo )
-        {
-            echo $string;
-            return;
-        }
-        else
-        {
-            return $string;
-        }
     }
 
     // returns the parent of node
-    // If a node is passed in, it will reset the parent of the current node to that one.
-    function parent( $parent = null )
+    function parent()
     {
-        // I am SURE that this doesn't work properly.
-        // It fails to unset the current node from it's current parents nodes or children list first.
-        if ( $parent !== null )
-        {
-            $this->parent = $parent;
-            $this->parent->nodes[] = $this;
-            $this->parent->children[] = $this;
-        }
-
         return $this->parent;
-    }
-
-    // verify that node has children
-    function has_child()
-    {
-        return !empty( $this->children );
     }
 
     // returns children of node
     function children( $idx = -1 )
     {
         if ( $idx === -1 )
-        {
             return $this->children;
-        }
         if ( isset( $this->children[ $idx ] ) )
             return $this->children[ $idx ];
         return null;
@@ -279,9 +228,7 @@ class simple_html_dom_node
     function first_child()
     {
         if ( count( $this->children ) > 0 )
-        {
             return $this->children[ 0 ];
-        }
         return null;
     }
 
@@ -289,9 +236,7 @@ class simple_html_dom_node
     function last_child()
     {
         if ( ( $count = count( $this->children ) ) > 0 )
-        {
             return $this->children[ $count - 1 ];
-        }
         return null;
     }
 
@@ -299,20 +244,13 @@ class simple_html_dom_node
     function next_sibling()
     {
         if ( $this->parent === null )
-        {
             return null;
-        }
-
         $idx = 0;
         $count = count( $this->parent->children );
         while ( $idx < $count && $this !== $this->parent->children[ $idx ] )
-        {
             ++$idx;
-        }
         if ( ++$idx >= $count )
-        {
             return null;
-        }
         return $this->parent->children[ $idx ];
     }
 
@@ -468,13 +406,6 @@ class simple_html_dom_node
             {
                 $ret .= $this->convert_text( $n->text() );
             }
-
-            // If this node is a span... add a space at the end of it so multiple spans don't run into each other.  This is plaintext after all.
-            if ( $this->tag == "span" )
-            {
-                $ret .= $this->dom->default_span_text;
-            }
-
         }
         return $ret;
     }
@@ -915,7 +846,6 @@ class simple_html_dom_node
 
         $sourceCharset = "";
         $targetCharset = "";
-
         if ( $this->dom )
         {
             $sourceCharset = strtoupper( $this->dom->_charset );
@@ -939,164 +869,12 @@ class simple_html_dom_node
             }
         }
 
-        // Lets make sure that we don't have that silly BOM issue with any of the utf-8 text we output.
-        if ( $targetCharset == 'UTF-8' )
-        {
-            if ( substr( $converted_text, 0, 3 ) == "\xef\xbb\xbf" )
-            {
-                $converted_text = substr( $converted_text, 3 );
-            }
-            if ( substr( $converted_text, -3 ) == "\xef\xbb\xbf" )
-            {
-                $converted_text = substr( $converted_text, 0, -3 );
-            }
-        }
-
         return $converted_text;
     }
 
-    /**
-    * Returns true if $string is valid UTF-8 and false otherwise.
-    *
-    * @param mixed $str String to be tested
-    * @return boolean
-    */
-    static function is_utf8( $str )
+    function is_utf8( $string )
     {
-        $c = 0;
-        $b = 0;
-        $bits = 0;
-        $len = strlen( $str );
-        for ( $i = 0; $i < $len; $i++ )
-        {
-            $c = ord( $str[ $i ] );
-            if ( $c > 128 )
-            {
-                if ( ( $c >= 254 ) )
-                    return false;
-                elseif ( $c >= 252 )
-                    $bits = 6;
-                elseif ( $c >= 248 )
-                    $bits = 5;
-                elseif ( $c >= 240 )
-                    $bits = 4;
-                elseif ( $c >= 224 )
-                    $bits = 3;
-                elseif ( $c >= 192 )
-                    $bits = 2;
-                else
-                    return false;
-                if ( ( $i + $bits ) > $len )
-                    return false;
-                while ( $bits > 1 )
-                {
-                    $i++;
-                    $b = ord( $str[ $i ] );
-                    if ( $b < 128 || $b > 191 )
-                        return false;
-                    $bits--;
-                }
-            }
-        }
-        return true;
-    }
-    /*
-    function is_utf8($string)
-    {
-        //this is buggy
-        return (utf8_encode(utf8_decode($string)) == $string);
-    }
-    */
-
-    /**
-     * Function to try a few tricks to determine the displayed size of an img on the page.
-     * NOTE: This will ONLY work on an IMG tag. Returns FALSE on all other tag types.
-     *
-     * @author John Schlick
-     * @version April 19 2012
-     * @return array an array containing the 'height' and 'width' of the image on the page or -1 if we can't figure it out.
-     */
-    function get_display_size()
-    {
-        global $debugObject;
-
-        $width = -1;
-        $height = -1;
-
-        if ( $this->tag !== 'img' )
-        {
-            return false;
-        }
-
-        // See if there is aheight or width attribute in the tag itself.
-        if ( isset( $this->attr[ 'width' ] ) )
-        {
-            $width = $this->attr[ 'width' ];
-        }
-
-        if ( isset( $this->attr[ 'height' ] ) )
-        {
-            $height = $this->attr[ 'height' ];
-        }
-
-        // Now look for an inline style.
-        if ( isset( $this->attr[ 'style' ] ) )
-        {
-            // Thanks to user gnarf from stackoverflow for this regular expression.
-            $attributes = array ();
-            preg_match_all( "/([\w-]+)\s*:\s*([^;]+)\s*;?/", $this->attr[ 'style' ], $matches, PREG_SET_ORDER );
-            foreach ( $matches as $match )
-            {
-                $attributes[ $match[ 1 ] ] = $match[ 2 ];
-            }
-
-            // If there is a width in the style attributes:
-            if ( isset( $attributes[ 'width' ] ) && $width == -1 )
-            {
-                // check that the last two characters are px (pixels)
-                if ( strtolower( substr( $attributes[ 'width' ], -2 ) ) == 'px' )
-                {
-                    $proposed_width = substr( $attributes[ 'width' ], 0, -2 );
-                    // Now make sure that it's an integer and not something stupid.
-                    if ( filter_var( $proposed_width, FILTER_VALIDATE_INT ) )
-                    {
-                        $width = $proposed_width;
-                    }
-                }
-            }
-
-            // If there is a width in the style attributes:
-            if ( isset( $attributes[ 'height' ] ) && $height == -1 )
-            {
-                // check that the last two characters are px (pixels)
-                if ( strtolower( substr( $attributes[ 'height' ], -2 ) ) == 'px' )
-                {
-                    $proposed_height = substr( $attributes[ 'height' ], 0, -2 );
-                    // Now make sure that it's an integer and not something stupid.
-                    if ( filter_var( $proposed_height, FILTER_VALIDATE_INT ) )
-                    {
-                        $height = $proposed_height;
-                    }
-                }
-            }
-
-        }
-
-        // Future enhancement:
-        // Look in the tag to see if there is a class or id specified that has a height or width attribute to it.
-
-
-        // Far future enhancement
-        // Look at all the parent tags of this image to see if they specify a class or id that has an img selector that specifies a height or width
-        // Note that in this case, the class or id will have the img subselector for it to apply to the image.
-
-
-        // ridiculously far future development
-        // If the class or id is specified in a SEPARATE css file thats not on the page, go get it and do what we were just doing for the ones on the page.
-
-
-        $result = array ( 'height' => $height, 'width' => $width );
-        return $result;
+        return ( utf8_encode( utf8_decode( $string ) ) == $string );
     }
 
     // camel naming conventions
@@ -1174,21 +952,26 @@ class simple_html_dom_node
     {
         return $this->prev_sibling();
     }
+}
 
-    function hasChildNodes()
+class SimplehtmldomApi extends simple_html_dom
+{
+
+    /**
+     * @return file_get_html
+     */
+    public static function fileGetHtml( $url, $use_include_path = false, $context = null, $offset = -1, $maxLen = -1, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT )
     {
-        return $this->has_child();
+        return file_get_html( $url, $use_include_path, $context, $offset, $maxLen, $lowercase, $forceTagsClosed,
+                $target_charset, $stripRN, $defaultBRText );
     }
 
-    function nodeName()
+    /**
+     * return str_get_html
+     */
+    public static function strGetHtml( $str, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT )
     {
-        return $this->tag;
-    }
-
-    function appendChild( $node )
-    {
-        $node->parent( $this );
-        return $node;
+        return str_get_html( $str, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText );
     }
 
 }
@@ -1207,8 +990,6 @@ class simple_html_dom
     public $nodes = array ();
     public $callback = null;
     public $lowercase = false;
-    // Used to keep track of how large the text was when we started.
-    public $original_size;
     public $size;
     protected $pos;
     protected $doc;
@@ -1220,11 +1001,9 @@ class simple_html_dom
     protected $token_equal = ' =/>';
     protected $token_slash = " />\r\n\t";
     protected $token_attr = ' >';
-    // Note that this is referenced by a child node, and so it needs to be public for that node to see this information.
-    public $_charset = '';
-    public $_target_charset = '';
+    protected $_charset = '';
+    protected $_target_charset = '';
     protected $default_br_text = "";
-    public $default_span_text = "";
 
     // use isset instead of in_array, performance boost about 30%...
     protected $self_closing_tags = array ( 'img' => 1, 'br' => 1, 'input' => 1, 'meta' => 1, 'link' => 1, 'hr' => 1,
@@ -1236,20 +1015,16 @@ class simple_html_dom
             'th' => array ( 'th' => 1 ), 'td' => array ( 'td' => 1 ), 'li' => array ( 'li' => 1 ),
             'dt' => array ( 'dt' => 1, 'dd' => 1 ), 'dd' => array ( 'dd' => 1, 'dt' => 1 ),
             'dl' => array ( 'dd' => 1, 'dt' => 1 ), 'p' => array ( 'p' => 1 ), 'nobr' => array ( 'nobr' => 1 ),
-            'b' => array ( 'b' => 1 ), 'option' => array ( 'option' => 1 ) );
+            'b' => array ( 'b' => 1 ) );
 
-    function __construct( $str = null, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT )
+    function __construct( $str = null, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT )
     {
         if ( $str )
         {
             if ( preg_match( "/^http:\/\//i", $str ) || is_file( $str ) )
-            {
                 $this->load_file( $str );
-            }
             else
-            {
-                $this->load( $str, $lowercase, $stripRN, $defaultBRText, $defaultSpanText );
-            }
+                $this->load( $str, $lowercase, $stripRN, $defaultBRText );
         }
         // Forcing tags to be closed implies that we don't trust the html, but it can lead to parsing errors if we SHOULD trust the html.
         if ( !$forceTagsClosed )
@@ -1265,12 +1040,12 @@ class simple_html_dom
     }
 
     // load html from string
-    function load( $str, $lowercase = true, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT )
+    function load( $str, $lowercase = true, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT )
     {
         global $debugObject;
 
         // prepare
-        $this->prepare( $str, $lowercase, $stripRN, $defaultBRText, $defaultSpanText );
+        $this->prepare( $str, $lowercase, $stripRN, $defaultBRText );
         // strip out comments
         $this->remove_noise( "'<!--(.*?)-->'is" );
         // strip out cdata
@@ -1295,10 +1070,6 @@ class simple_html_dom
         // end
         $this->root->_[ HDOM_INFO_END ] = $this->cursor;
         $this->parse_charset();
-
-        // make load function chainable
-        return $this;
-
     }
 
     // load html from file
@@ -1306,6 +1077,7 @@ class simple_html_dom
     {
         $args = func_get_args();
         $this->load( call_user_func_array( 'file_get_contents', $args ), true );
+        // Per the simple_html_dom repositiry this is a planned upgrade to the codebase.
         // Throw an error if we can't properly load the dom.
         if ( ( $error = error_get_last() ) !== null )
         {
@@ -1377,23 +1149,18 @@ class simple_html_dom
     }
 
     // prepare HTML data and init everything
-    protected function prepare( $str, $lowercase = true, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT )
+    protected function prepare( $str, $lowercase = true, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT )
     {
         $this->clear();
 
         // set the length of content before we do anything to it.
         $this->size = strlen( $str );
-        // Save the original size of the html that we got in.  It might be useful to someone.
-        $this->original_size = $this->size;
 
         //before we save the string as the doc...  strip out the \r \n's if we are told to.
         if ( $stripRN )
         {
             $str = str_replace( "\r", " ", $str );
             $str = str_replace( "\n", " ", $str );
-
-            // set the length of content since we have changed it.
-            $this->size = strlen( $str );
         }
 
         $this->doc = $str;
@@ -1403,7 +1170,6 @@ class simple_html_dom
         $this->nodes = array ();
         $this->lowercase = $lowercase;
         $this->default_br_text = $defaultBRText;
-        $this->default_span_text = $defaultSpanText;
         $this->root = new simple_html_dom_node( $this );
         $this->root->tag = 'root';
         $this->root->_[ HDOM_INFO_BEGIN ] = -1;
@@ -1417,11 +1183,9 @@ class simple_html_dom
     protected function parse()
     {
         if ( ( $s = $this->copy_until_char( '<' ) ) === '' )
-        {
             return $this->read_tag();
-        }
 
-        // text
+            // text
         $node = new simple_html_dom_node( $this );
         ++$this->cursor;
         $node->_[ HDOM_INFO_TEXT ] = $s;
@@ -1430,8 +1194,8 @@ class simple_html_dom
     }
 
     // PAPERG - dkchou - added this to try to identify the character set of the page we have just parsed so we know better how to spit it out later.
-    // NOTE:  IF you provide a routine called get_last_retrieve_url_contents_content_type which returns the CURLINFO_CONTENT_TYPE from the last curl_exec
-    // (or the content_type header from the last transfer), we will parse THAT, and if a charset is specified, we will use it over any other mechanism.
+    // NOTE:  IF you provide a routine called get_last_retrieve_url_contents_content_type which returns the CURLINFO_CONTENT_TYPE fromt he last curl_exec
+    // (or the content_type header fromt eh last transfer), we will parse THAT, and if a charset is specified, we will use it over any other mechanism.
     protected function parse_charset()
     {
         global $debugObject;
@@ -1461,7 +1225,7 @@ class simple_html_dom
                 $fullvalue = $el->content;
                 if ( is_object( $debugObject ) )
                 {
-                    $debugObject->debugLog( 2, 'meta content-type tag found' . $fullvalue );
+                    $debugObject->debugLog( 2, 'meta content-type tag found' . $fullValue );
                 }
 
                 if ( !empty( $fullvalue ) )
@@ -1542,7 +1306,7 @@ class simple_html_dom
         if ( $this->char === '/' )
         {
             $this->char = ( ++$this->pos < $this->size ) ? $this->doc[ $this->pos ] : null; // next
-            // This represents the change in the simple_html_dom trunk from revision 180 to 181.
+            // This represetns the change in the simple_html_dom trunk from revision 180 to 181.
             // $this->skip($this->token_blank_t);
             $this->skip( $this->token_blank );
             $tag = $this->copy_until_char( '>' );
@@ -1682,9 +1446,7 @@ class simple_html_dom
         do
         {
             if ( $this->char !== null && $space[ 0 ] === '' )
-            {
                 break;
-            }
             $name = $this->copy_until( $this->token_equal );
             if ( $guard === $this->pos )
             {
@@ -1766,7 +1528,6 @@ class simple_html_dom
 
         // If it's a BR tag, we need to set it's text to the default text.
         // This way when we see it in plaintext, we can generate formatting that the user wants.
-        // since a br tag never has sub nodes, this works well.
         if ( $node->tag == "br" )
         {
             $node->_[ HDOM_INFO_INNER ] = $this->default_br_text;
@@ -1822,9 +1583,7 @@ class simple_html_dom
         $node->parent = $this->parent;
         $this->parent->nodes[] = $node;
         if ( $is_child )
-        {
             $this->parent->children[] = $node;
-        }
     }
 
     // as a text node
@@ -1919,24 +1678,13 @@ class simple_html_dom
     }
 
     // remove noise from html content
-    // save the noise in the $this->noise array.
     protected function remove_noise( $pattern, $remove_tag = false )
     {
-        global $debugObject;
-        if ( is_object( $debugObject ) )
-        {
-            $debugObject->debugLogEntry( 1 );
-        }
-
         $count = preg_match_all( $pattern, $this->doc, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE );
 
         for ( $i = $count - 1; $i > -1; --$i )
         {
-            $key = '___noise___' . sprintf( '% 5d', count( $this->noise ) + 1000 );
-            if ( is_object( $debugObject ) )
-            {
-                $debugObject->debugLog( 2, 'key is: ' . $key );
-            }
+            $key = '___noise___' . sprintf( '% 3d', count( $this->noise ) + 100 );
             $idx = ( $remove_tag ) ? 0 : 1;
             $this->noise[ $key ] = $matches[ $i ][ $idx ][ 0 ];
             $this->doc = substr_replace( $this->doc, $key, $matches[ $i ][ $idx ][ 1 ],
@@ -1946,67 +1694,19 @@ class simple_html_dom
         // reset the length of content
         $this->size = strlen( $this->doc );
         if ( $this->size > 0 )
-        {
             $this->char = $this->doc[ 0 ];
-        }
     }
 
     // restore noise to html content
     function restore_noise( $text )
     {
-        global $debugObject;
-        if ( is_object( $debugObject ) )
-        {
-            $debugObject->debugLogEntry( 1 );
-        }
-
         while ( ( $pos = strpos( $text, '___noise___' ) ) !== false )
         {
-            // Sometimes there is a broken piece of markup, and we don't GET the pos+11 etc... token which indicates a problem outside of us...
-            if ( strlen( $text ) > $pos + 15 )
-            {
-                $key = '___noise___' . $text[ $pos + 11 ] . $text[ $pos + 12 ] . $text[ $pos + 13 ] . $text[ $pos + 14 ] . $text[ $pos + 15 ];
-                if ( is_object( $debugObject ) )
-                {
-                    $debugObject->debugLog( 2, 'located key of: ' . $key );
-                }
-
-                if ( isset( $this->noise[ $key ] ) )
-                {
-                    $text = substr( $text, 0, $pos ) . $this->noise[ $key ] . substr( $text, $pos + 16 );
-                }
-                else
-                {
-                    // do this to prevent an infinite loop.
-                    $text = substr( $text, 0, $pos ) . 'UNDEFINED NOISE FOR KEY: ' . $key . substr(
-                            $text, $pos + 16 );
-                }
-            }
-            else
-            {
-                // There is no valid key being given back to us... We must get rid of the ___noise___ or we will have a problem.
-                $text = substr( $text, 0, $pos ) . 'NO NUMERIC NOISE KEY' . substr( $text, $pos + 11 );
-            }
+            $key = '___noise___' . $text[ $pos + 11 ] . $text[ $pos + 12 ] . $text[ $pos + 13 ];
+            if ( isset( $this->noise[ $key ] ) )
+                $text = substr( $text, 0, $pos ) . $this->noise[ $key ] . substr( $text, $pos + 14 );
         }
         return $text;
-    }
-
-    // Sometimes we NEED one of the noise elements.
-    function search_noise( $text )
-    {
-        global $debugObject;
-        if ( is_object( $debugObject ) )
-        {
-            $debugObject->debugLogEntry( 1 );
-        }
-
-        foreach ( $this->noise as $noiseElement )
-        {
-            if ( strpos( $noiseElement, $text ) !== false )
-            {
-                return $noiseElement;
-            }
-        }
     }
 
     function __toString()
@@ -2047,16 +1747,6 @@ class simple_html_dom
         return $this->root->last_child();
     }
 
-    function createElement( $name, $value = null )
-    {
-        return @str_get_html( "<$name>$value</$name>" )->first_child();
-    }
-
-    function createTextNode( $value )
-    {
-        return @end( str_get_html( $value )->nodes );
-    }
-
     function getElementById( $id )
     {
         return $this->find( "#$id", 0 );
@@ -2082,29 +1772,6 @@ class simple_html_dom
         $args = func_get_args();
         $this->load_file( $args );
     }
-}
-
-class SimplehtmldomApi extends simple_html_dom
-{
-
-    /**
-     * @return file_get_html
-     */
-    public static function fileGetHtml( $url, $use_include_path = false, $context = null, $offset = -1, $maxLen = -1, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT )
-    {
-        return file_get_html( $url, $use_include_path, $context, $offset, $maxLen, $lowercase, $forceTagsClosed,
-                $target_charset, $stripRN, $defaultBRText, $defaultSpanText );
-    }
-
-    /**
-     * return str_get_html
-     */
-    public static function strGetHtml( $str, $lowercase = true, $forceTagsClosed = true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN = true, $defaultBRText = DEFAULT_BR_TEXT, $defaultSpanText = DEFAULT_SPAN_TEXT )
-    {
-        return str_get_html( $str, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText,
-                $defaultSpanText );
-    }
-
 }
 
 ?>

@@ -156,11 +156,11 @@ abstract class SqlbuilderDbCore extends ClassCore
     /**
      * @param string $left
      * @param string $right
-     * @return string "(left AND right)"
+     * @return string "(left AND right [AND right, ...])"
      */
-    public static function and_( $left, $right )
+    public static function and_( $left, $right, $_ = null )
     {
-        return self::par( Core::cc( " ", $left, self::$AND, $right ) );
+        return self::par( implode( self::$AND, func_get_args() ) );
     }
 
     /**
