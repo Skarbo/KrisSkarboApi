@@ -100,7 +100,7 @@ class FileUtil
             @header( sprintf( "Last-Modified: %s GMT", gmdate( "D, d M Y H:i:s", $last_modified_time ) ) );
 
             // Get if modified since
-            $if_modified_since = Controller::getIfModifiedSinceHeader();
+            $if_modified_since = AbstractController::getIfModifiedSinceHeader();
 
             // Set status if not modified since
             if ( $last_modified_time <= $if_modified_since )

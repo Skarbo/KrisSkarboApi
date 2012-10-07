@@ -1,6 +1,6 @@
 <?php
 
-abstract class PageMainView extends ClassCore implements InterfaceView
+abstract class AbstractPageMainView extends ClassCore implements InterfaceView
 {
 
     // VARIABLES
@@ -19,7 +19,7 @@ abstract class PageMainView extends ClassCore implements InterfaceView
     // CONSTRUCTOR
 
 
-    public function __construct( MainView $view )
+    public function __construct( AbstractMainView $view )
     {
         $this->view = $view;
     }
@@ -44,7 +44,7 @@ abstract class PageMainView extends ClassCore implements InterfaceView
     /**
      * @param MainView $view
      */
-    public function setView( MainView $view )
+    public function setView( AbstractMainView $view )
     {
         $this->view = $view;
     }

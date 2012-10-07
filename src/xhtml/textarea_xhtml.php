@@ -15,6 +15,8 @@ class TextareaXhtml extends AbstractContentXhtml
     protected $disabled;
     protected $name;
     protected $readonly;
+    protected $spellcheck;
+    protected $wrap;
 
     // CONSTRUCT
 
@@ -95,6 +97,34 @@ class TextareaXhtml extends AbstractContentXhtml
     function readonly( $readonly )
     {
         $this->readonly = $readonly;
+        return $this;
+    }
+
+    function getSpellcheck()
+    {
+        return $this->spellcheck;
+    }
+
+    /**
+     * @return TextareaXhtml
+     */
+    function spellcheck( $spellcheck )
+    {
+        $this->spellcheck = is_bool( $spellcheck ) && !$spellcheck ? "false" : $spellcheck;
+        return $this;
+    }
+
+    function getWrap()
+    {
+        return $this->wrap;
+    }
+
+    /**
+     * @return TextareaXhtml
+     */
+    function wrap( $wrap )
+    {
+        $this->wrap = is_bool( $wrap ) && !$wrap ? "off" : $wrap;
         return $this;
     }
 

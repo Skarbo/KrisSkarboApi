@@ -169,18 +169,18 @@ class ErrorModel extends Model
     // ... /GETTERS/SETTERS
 
 
-// /FUNCTIONS
+    // /FUNCTIONS
 
-	public function getUpdated()
+
+    public function getUpdated()
     {
         return $this->updated;
     }
 
-	public function setUpdated( $updated )
+    public function setUpdated( $updated )
     {
         $this->updated = $updated;
     }
-
 
 }
 

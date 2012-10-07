@@ -1,6 +1,6 @@
 <?php
 
-abstract class Controller extends ClassCore
+abstract class AbstractController extends ClassCore
 {
 
     // VARIABLES
@@ -53,7 +53,7 @@ abstract class Controller extends ClassCore
     /**
      * @param Api $api
      */
-    public function __construct( Api $api, View $view )
+    public function __construct( AbstractApi $api, AbstractView $view )
     {
         $this->api = $api;
         $this->setView( $view );
@@ -79,7 +79,7 @@ abstract class Controller extends ClassCore
     /**
      * @param View $view
      */
-    public function setView( View $view )
+    public function setView( AbstractView $view )
     {
         $this->view = $view;
     }

@@ -1,6 +1,6 @@
 <?php
 
-class StandardRestView extends RestView
+class AbstractStandardRestView extends AbstractRestView
 {
 
     // VARIABLES
@@ -27,7 +27,7 @@ class StandardRestView extends RestView
 
 
     /**
-     * @see View::getController()
+     * @see AbstractView::getController()
      * @return StandardRestController
      */
     public function getController()
@@ -36,7 +36,7 @@ class StandardRestView extends RestView
     }
 
     /**
-     * @see View::getLastModified()
+     * @see AbstractView::getLastModified()
      */
     protected function getLastModified()
     {
@@ -47,7 +47,7 @@ class StandardRestView extends RestView
 
 
     /**
-     * @see RestView::getData()
+     * @see AbstractRestView::getData()
      */
     public function getData()
     {

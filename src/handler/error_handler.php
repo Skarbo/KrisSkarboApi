@@ -60,6 +60,7 @@ class ErrorHandler extends Handler
 
     public function handle( Exception $exception )
     {
+        $documentRoot = str_replace( "/", "\\", dirname( $_SERVER[ "DOCUMENT_ROOT" ] ) );
 
         // Initiate Error Model
         $error_model = new ErrorModel();
@@ -72,14 +73,13 @@ class ErrorHandler extends Handler
 
         // Set file (remove path)
         $error_model->setFile(
-                str_replace(
-                        str_replace( "/", "\\", dirname( $_SERVER[ "DOCUMENT_ROOT" ] ) ), "", $exception->getFile() ) );
+                str_replace( $documentRoot, "", $exception->getFile() ) );
 
         // Set line
         $error_model->setLine( $exception->getLine() );
 
         // Set trace
-        $error_model->setTrace( print_r( $exception->getTraceAsString(), true ) );
+        $error_model->setTrace( str_replace( $documentRoot, "", print_r( $exception->getTraceAsString(), true ) ) );
 
         // Set URL
         $error_model->setUrl( basename( $_SERVER[ "PHP_SELF" ] ) . "?" . $_SERVER[ "QUERY_STRING" ] );
@@ -90,7 +90,7 @@ class ErrorHandler extends Handler
         // Set backtrack
         if ( is_a( $exception, AbstractException::class_() ) )
         {
-            $error_model->setBacktrack( AbstractException::get_( $exception )->getBacktrack() );
+            $error_model->setBacktrack( str_replace( $documentRoot, "", AbstractException::get_( $exception )->getBacktrack() ) );
         }
 
         // Switch exception type

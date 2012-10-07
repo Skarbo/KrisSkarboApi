@@ -1,6 +1,6 @@
 <?php
 
-abstract class MainController extends Controller
+abstract class AbstractMainController extends AbstractController
 {
 
     // VARIABLES
@@ -82,14 +82,14 @@ abstract class MainController extends Controller
 
 
     /**
-     * @see Controller::after()
+     * @see AbstractController::after()
      */
     public function after()
     {
     }
 
     /**
-     * @see Controller::render()
+     * @see AbstractController::render()
      */
     public function render( AbstractXhtml &$root )
     {
@@ -135,7 +135,7 @@ abstract class MainController extends Controller
         $html->addContent( $head );
 
         // Create wrapper div
-        $wrapper = Xhtml::div( $root->get_content() )->id( MainView::$ID_WRAPPER );
+        $wrapper = Xhtml::div( $root->get_content() )->id( AbstractMainView::$ID_WRAPPER );
 
         // Create Body element
         $body = Xhtml::body();

@@ -1,26 +1,18 @@
-/**
- * Abstract class
- * 
- * @param {string}
- *            uriControllerName
- * @param {integer}
- *            mode
- */
-function StandardAjaxDao(uriControllerName, mode) {
+function AbstractStandardAjaxDao(uriControllerName, mode) {
 	this.uriControllerName = uriControllerName;
 	this.mode = mode;
 }
 
 // VARIABLES
 
-StandardAjaxDao.URI_API = "api_rest.php?/%s/%s&mode=%s";
-StandardAjaxDao.URI_SPLITTER_ID = "_";
-StandardAjaxDao.URI_GET_LIST_GET = "get";
-StandardAjaxDao.URI_GET_SINGLE_GET = "get/%s";
-StandardAjaxDao.URI_GET_LIST_FOREIGN_GET = "foreign/%s";
-StandardAjaxDao.URI_POST_SINGLE_ADD = "add/%s";
-StandardAjaxDao.URI_POST_SINGLE_EDIT = "edit/%s";
-StandardAjaxDao.URI_GET_SINGLE_REMOVE = "remove/%s";
+AbstractStandardAjaxDao.URI_API = "api_rest.php?/%s/%s&mode=%s";
+AbstractStandardAjaxDao.URI_SPLITTER_ID = "_";
+AbstractStandardAjaxDao.URI_GET_LIST_GET = "get";
+AbstractStandardAjaxDao.URI_GET_SINGLE_GET = "get/%s";
+AbstractStandardAjaxDao.URI_GET_LIST_FOREIGN_GET = "foreign/%s";
+AbstractStandardAjaxDao.URI_POST_SINGLE_ADD = "add/%s";
+AbstractStandardAjaxDao.URI_POST_SINGLE_EDIT = "edit/%s";
+AbstractStandardAjaxDao.URI_GET_SINGLE_REMOVE = "remove/%s";
 
 // /VARIABLES
 
@@ -28,20 +20,20 @@ StandardAjaxDao.URI_GET_SINGLE_REMOVE = "remove/%s";
 
 // ... GET
 
-StandardAjaxDao.prototype.getUriControllerName = function() {
+AbstractStandardAjaxDao.prototype.getUriControllerName = function() {
 	return this.uriControllerName;
 };
 
-StandardAjaxDao.prototype.getUriIds = function(id) {
-	return jQuery.isArray(id) ? id.join(StandardAjaxDao.URI_SPLITTER_ID) : id;
+AbstractStandardAjaxDao.prototype.getUriIds = function(id) {
+	return jQuery.isArray(id) ? id.join(AbstractStandardAjaxDao.URI_SPLITTER_ID) : id;
 };
 
-StandardAjaxDao.prototype.getMode = function() {
+AbstractStandardAjaxDao.prototype.getMode = function() {
 	return this.mode;
 };
 
-StandardAjaxDao.prototype.getUri = function(uri) {
-	return Core.sprintf(StandardAjaxDao.URI_API, this.getUriControllerName(), uri, this.getMode());
+AbstractStandardAjaxDao.prototype.getUri = function(uri) {
+	return Core.sprintf(AbstractStandardAjaxDao.URI_API, this.getUriControllerName(), uri, this.getMode());
 };
 
 // ... /GET
@@ -53,9 +45,9 @@ StandardAjaxDao.prototype.getUri = function(uri) {
  *            callback
  * @return {Object}
  */
-StandardAjaxDao.prototype.get = function(id, callback) {
+AbstractStandardAjaxDao.prototype.get = function(id, callback) {
 	// Generate url
-	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_GET_SINGLE_GET), id);
+	var url = Core.sprintf(this.getUri(AbstractStandardAjaxDao.URI_GET_SINGLE_GET), id);
 
 	// Do ajax
 	$.ajax({
@@ -75,9 +67,9 @@ StandardAjaxDao.prototype.get = function(id, callback) {
  *            callback
  * @return {Object}
  */
-StandardAjaxDao.prototype.getAll = function(callback) {
+AbstractStandardAjaxDao.prototype.getAll = function(callback) {
 	// Generate url
-	var url = this.getUri(StandardAjaxDao.URI_GET_LIST_GET);
+	var url = this.getUri(AbstractStandardAjaxDao.URI_GET_LIST_GET);
 
 	// Do ajax
 	$.ajax({
@@ -99,9 +91,9 @@ StandardAjaxDao.prototype.getAll = function(callback) {
  *            callback
  * @return {Object}
  */
-StandardAjaxDao.prototype.getForeign = function(id, callback) {
+AbstractStandardAjaxDao.prototype.getForeign = function(id, callback) {
 	// Generate url
-	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_GET_LIST_FOREIGN_GET), this.getUriIds(id));
+	var url = Core.sprintf(this.getUri(AbstractStandardAjaxDao.URI_GET_LIST_FOREIGN_GET), this.getUriIds(id));
 
 	// Do ajax
 	$.ajax({
@@ -123,9 +115,9 @@ StandardAjaxDao.prototype.getForeign = function(id, callback) {
  *            callback
  * @return {Object}
  */
-StandardAjaxDao.prototype.getList = function(ids, callback) {
+AbstractStandardAjaxDao.prototype.getList = function(ids, callback) {
 	// Generate url
-	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_GET_SINGLE_GET), this.getUriIds(ids));
+	var url = Core.sprintf(this.getUri(AbstractStandardAjaxDao.URI_GET_SINGLE_GET), this.getUriIds(ids));
 
 	// Do ajax
 	$.ajax({
@@ -149,9 +141,9 @@ StandardAjaxDao.prototype.getList = function(ids, callback) {
  *            callback
  * @return {Object}
  */
-StandardAjaxDao.prototype.add = function(object, foreignId, callback) {
+AbstractStandardAjaxDao.prototype.add = function(object, foreignId, callback) {
 	// Generate url
-	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_POST_SINGLE_ADD), foreignId ? foreignId : "");
+	var url = Core.sprintf(this.getUri(AbstractStandardAjaxDao.URI_POST_SINGLE_ADD), foreignId ? foreignId : "");
 
 	// Do ajax
 	$.ajax({
@@ -177,9 +169,9 @@ StandardAjaxDao.prototype.add = function(object, foreignId, callback) {
  *            callback
  * @return {Object}
  */
-StandardAjaxDao.prototype.edit = function(id, object, callback) {
+AbstractStandardAjaxDao.prototype.edit = function(id, object, callback) {
 	// Generate url
-	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_POST_SINGLE_EDIT), id);
+	var url = Core.sprintf(this.getUri(AbstractStandardAjaxDao.URI_POST_SINGLE_EDIT), id);
 
 	// Do ajax
 	$.ajax({
@@ -203,9 +195,9 @@ StandardAjaxDao.prototype.edit = function(id, object, callback) {
  *            id
  * @return {Object}
  */
-StandardAjaxDao.prototype.remove = function(id, callback) {
+AbstractStandardAjaxDao.prototype.remove = function(id, callback) {
 	// Generate url
-	var url = Core.sprintf(this.getUri(StandardAjaxDao.URI_GET_SINGLE_REMOVE), id);
+	var url = Core.sprintf(this.getUri(AbstractStandardAjaxDao.URI_GET_SINGLE_REMOVE), id);
 
 	// Do ajax
 	$.ajax({
@@ -220,7 +212,7 @@ StandardAjaxDao.prototype.remove = function(id, callback) {
 	});
 };
 
-StandardAjaxDao.prototype.query = function(uri, callback) {
+AbstractStandardAjaxDao.prototype.query = function(uri, callback) {
 	// Generate url
 	var url = this.getUri(uri);
 

@@ -2,7 +2,7 @@
 
 define( "DB_PREFIX", "" );
 
-abstract class Api
+abstract class AbstractApi
 {
 
     // VARIABLES
@@ -78,8 +78,8 @@ abstract class Api
     public function __construct( $modeDefault = self::MODE_PROD )
     {
         $this->modeDefault = $modeDefault;
-        $this->mode = in_array( Core::arrayAt( Controller::getQuery(), "mode", array () ), self::$MODES ) ? intval(
-                Core::arrayAt( Controller::getQuery(), "mode" ) ) : $modeDefault;
+        $this->mode = in_array( Core::arrayAt( AbstractController::getQuery(), "mode", array () ), self::$MODES ) ? intval(
+                Core::arrayAt( AbstractController::getQuery(), "mode" ) ) : $modeDefault;
         $this->doTimeSetup();
         $this->doErrorhandlingSetup();
         $this->doDatabaseAndLocaleSetup( $this->getMode() );
@@ -411,7 +411,7 @@ abstract class Api
             {
                 if ( $this->getErrorHandler() )
                 {
-                    $this->getErrorHandler()->handle( $exception );
+                    $this->getErrorHandler()->handle( $exception  );
                 }
                 else
                 {
@@ -496,7 +496,7 @@ abstract class Api
         {
 
             // Get Controller name
-            $controller_name = Controller::getController();
+            $controller_name = AbstractController::getController();
 
             // Controller exists in mapping
             if ( !Core::arrayAt( $mapping, $controller_name ) )
@@ -522,10 +522,10 @@ abstract class Api
             }
 
             // Initiate View
-            $view = View::get_( new $view_class() );
+            $view = AbstractView::get_( new $view_class() );
 
             // Initiate Controller
-            $controller = Controller::get_( new $controller_class( $this, $view ) );
+            $controller = AbstractController::get_( new $controller_class( $this, $view ) );
 
             // Set view controller
             $view->setController( $controller );
@@ -541,7 +541,7 @@ abstract class Api
 
     }
 
-    public function doErrorExecute( Controller $controller )
+    public function doErrorExecute( AbstractController $controller )
     {
 
         try
@@ -557,7 +557,7 @@ abstract class Api
 
     }
 
-    private function doControllerViewRender( Controller $controller )
+    private function doControllerViewRender( AbstractController $controller )
     {
 
         // Do request

@@ -1,6 +1,6 @@
 <?php
 
-abstract class StandardRestController extends RestController
+abstract class AbstractStandardRestController extends AbstractRestController
 {
 
     // VARIABLES
@@ -175,7 +175,7 @@ abstract class StandardRestController extends RestController
     protected abstract function getModelPost();
 
     /**
-     * @see Controller::getLastModified()
+     * @see AbstractController::getLastModified()
      */
     public function getLastModified()
     {
@@ -520,7 +520,7 @@ abstract class StandardRestController extends RestController
 
 
     /**
-     * @see Controller::request()
+     * @see AbstractController::request()
      */
     public function request()
     {

@@ -208,9 +208,9 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $as
      * @param string $default ["NULL"]
      */
-    public static function ifnull( $ifnull, $as, $default = "NULL" )
+    public static function ifnull( $ifnull, $as = null, $default = "NULL" )
     {
-        return "IFNULL( ( $ifnull ), $default ) AS $as";
+        return sprintf( "IFNULL( ( %s ), %s )%s", $ifnull, $default, $as ? sprintf( " AS %s", $as ) : "" );
     }
 
     /**

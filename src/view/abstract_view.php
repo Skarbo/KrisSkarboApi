@@ -1,6 +1,6 @@
 <?php
 
-abstract class View extends ClassCore implements InterfaceView
+abstract class AbstractView extends ClassCore implements InterfaceView
 {
 
     // VARIABLES
@@ -39,7 +39,7 @@ abstract class View extends ClassCore implements InterfaceView
     /**
      * @param Controller $controller
      */
-    public function setController( Controller $controller )
+    public function setController( AbstractController $controller )
     {
         $this->controller = $controller;
     }
@@ -78,7 +78,7 @@ abstract class View extends ClassCore implements InterfaceView
 
     protected function isNoCache()
     {
-        return array_key_exists( self::QUERY_NOCACHE, Controller::getQuery() );
+        return array_key_exists( self::QUERY_NOCACHE, AbstractController::getQuery() );
     }
 
     // ... /IS
@@ -108,7 +108,7 @@ abstract class View extends ClassCore implements InterfaceView
             @header( sprintf( "Last-Modified: %s GMT", gmdate( "D, d M Y H:i:s", $last_modified_time ) ) );
 
             // Get if modified since
-            $if_modified_since = Controller::getIfModifiedSinceHeader();
+            $if_modified_since = AbstractController::getIfModifiedSinceHeader();
 
             // Set status if not modified since
             if ( $last_modified_time <= $if_modified_since )

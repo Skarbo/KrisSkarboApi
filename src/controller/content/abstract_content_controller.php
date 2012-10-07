@@ -1,6 +1,6 @@
 <?php
 
-abstract class ContentController extends Controller
+abstract class AbstractContentController extends AbstractController
 {
 
     // VARIABLES

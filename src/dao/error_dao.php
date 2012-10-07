@@ -12,6 +12,11 @@ abstract class ErrorDao extends Dao
      */
     public abstract function addError( ErrorModel $error );
 
+    /**
+     * @return ErrorListModel
+     */
+    public abstract function getAll();
+
 }
 
 ?>

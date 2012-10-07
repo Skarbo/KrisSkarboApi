@@ -1,5 +1,5 @@
 // CONSTRUCTOR
-function Controller() {
+function AbstractController() {
 	this.view = null;
 	this.local = {};
 }
@@ -14,14 +14,14 @@ function Controller() {
  * @param {View}
  *            view
  */
-Controller.prototype.setView = function(view) {
+AbstractController.prototype.setView = function(view) {
 	this.view = view;
 };
 
 /**
  * @returns {View}
  */
-Controller.prototype.getView = function() {
+AbstractController.prototype.getView = function() {
 	return this.view;
 };
 
@@ -32,7 +32,7 @@ Controller.prototype.getView = function() {
 /**
  * @returns {Object}
  */
-Controller.prototype.getHash = function() {
+AbstractController.prototype.getHash = function() {
 	var hash = window.location.hash.substring(1);
 
 	var hashesArray = hash.split("/");
@@ -50,7 +50,7 @@ Controller.prototype.getHash = function() {
 /**
  * @return {String} Local storage value
  */
-Controller.prototype.getLocalStorageVariable = function(variable) {
+AbstractController.prototype.getLocalStorageVariable = function(variable) {
 	if (this.isSupportLocalStorage()) {
 		return localStorage.getItem(variable);
 	} else {
@@ -69,7 +69,7 @@ Controller.prototype.getLocalStorageVariable = function(variable) {
  * @param {String}
  *            value
  */
-Controller.prototype.setLocalStorageVariable = function(variable, value) {
+AbstractController.prototype.setLocalStorageVariable = function(variable, value) {
 	if (this.isSupportLocalStorage()) {
 		localStorage.setItem(variable, value);
 	} else {
@@ -86,7 +86,7 @@ Controller.prototype.setLocalStorageVariable = function(variable, value) {
  * @param {String}
  *            variable
  */
-Controller.prototype.removeLocalStorageVariable = function(variable) {
+AbstractController.prototype.removeLocalStorageVariable = function(variable) {
 	if (this.isSupportLocalStorage()) {
 		localStorage.removeItem(variable);
 	} else {
@@ -102,7 +102,7 @@ Controller.prototype.removeLocalStorageVariable = function(variable) {
 /**
  * @return {boolean} True if support local storage
  */
-Controller.prototype.isSupportLocalStorage = function() {
+AbstractController.prototype.isSupportLocalStorage = function() {
 	try {
 		return 'localStorage' in window && window['localStorage'] !== null;
 	} catch (e) {
@@ -118,7 +118,7 @@ Controller.prototype.isSupportLocalStorage = function() {
  * @param {Object}
  *            hashObject
  */
-Controller.prototype.updateHash = function(hashObject) {
+AbstractController.prototype.updateHash = function(hashObject) {
 	var hash = this.getHash();
 
 	// Create new hash object
@@ -138,17 +138,17 @@ Controller.prototype.updateHash = function(hashObject) {
 
 // ... /UPDATE
 
-Controller.prototype.before = function() {
+AbstractController.prototype.before = function() {
 };
 
-Controller.prototype.after = function() {
+AbstractController.prototype.after = function() {
 };
 
 /**
  * @param {View}
  *            view
  */
-Controller.prototype.render = function(view) {
+AbstractController.prototype.render = function(view) {
 	this.setView(view);
 	this.before();
 	this.getView().before();

@@ -1,6 +1,6 @@
 <?php
 
-abstract class RestView extends View
+abstract class AbstractRestView extends AbstractView
 {
 
     // VARIABLES
@@ -21,7 +21,7 @@ abstract class RestView extends View
     // ... GET
 
     /**
-     * @see View::getLastModified()
+     * @see AbstractView::getLastModified()
      */
     protected function getLastModified()
     {
@@ -56,7 +56,7 @@ abstract class RestView extends View
     public abstract function getData();
 
     /**
-     * @see View::draw()
+     * @see AbstractView::draw()
      */
     public function draw( AbstractXhtml $root )
     {
