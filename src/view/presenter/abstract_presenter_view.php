@@ -32,7 +32,7 @@ abstract class AbstractPresenterView extends ClassCore implements InterfaceView
 
 
     /**
-     * @return MainView
+     * @return AbstractView
      */
     public function getView()
     {
@@ -45,6 +45,14 @@ abstract class AbstractPresenterView extends ClassCore implements InterfaceView
     public function setView( AbstractMainView $view )
     {
         $this->view = $view;
+    }
+
+    /**
+     * @see AbstractController
+     */
+    public function getController()
+    {
+        return $this->getView()->getController();
     }
 
     /**

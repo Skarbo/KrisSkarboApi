@@ -18,6 +18,7 @@ class AbstractJavascriptResource extends ClassCore
     private $transitionsApiFile = "fasw.transitions.min.js";
     private $hammerApiFile = "hammer.js";
     private $hammerJqueryApiFile = "jquery.hammer.js";
+    private $knockoutApiFile = "knockout-2.1.0.js";
 
     // /VARIABLES
 
@@ -47,6 +48,8 @@ class AbstractJavascriptResource extends ClassCore
                 $this->hammerApiFile );
         $this->hammerJqueryApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->hammerJqueryApiFile );
+        $this->knockoutApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+                $this->knockoutApiFile );
 
     }
 
@@ -102,6 +105,11 @@ class AbstractJavascriptResource extends ClassCore
     public function getHammerJqueryApiFile()
     {
         return $this->hammerJqueryApiFile;
+    }
+
+    public function getKnockoutApiFile()
+    {
+        return $this->knockoutApiFile;
     }
 
 }

@@ -592,11 +592,15 @@ class Core
 
     /**
      * @param string $url Url to check
+     * @param array $headers
      * @return bool True if url exists
      */
-    static function isUrlExist( $url )
+    static function isUrlExist( $url, &$headers )
     {
-        $headers = @get_headers( $url );
+        if (!$url)
+            return false;
+
+        $headers = @get_headers( $url, 1 );
 
         if ( strpos( $headers[ 0 ], "200" ) !== false || strpos( $headers[ 0 ], "302" ) !== false || strpos(
                 $headers[ 0 ], "301" ) !== false )

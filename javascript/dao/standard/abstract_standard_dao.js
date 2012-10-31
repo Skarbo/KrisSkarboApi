@@ -1,7 +1,7 @@
 function AbstractStandardDao(mode, controllerName) {
 	this.mode = mode;
 	this.foreignField = "id";
-	this.list = false;
+	this.list = {};
 	this.ajax = new AbstractStandardAjaxDao(controllerName, mode);
 	this.listAll = false;
 	this.listForeign = [];
@@ -16,10 +16,7 @@ function AbstractStandardDao(mode, controllerName) {
 // ... GET
 
 AbstractStandardDao.prototype.getFromList = function(id) {
-	if (this.isList()) {
-		return this.list[id];
-	}
-	return null;
+	return this.list[id] || null;
 };
 
 /**
@@ -28,16 +25,13 @@ AbstractStandardDao.prototype.getFromList = function(id) {
  * @returns {Object}
  */
 AbstractStandardDao.prototype.getFilteredList = function(filterFunc) {
-	if (this.isList()) {
-		var filteredList = {};
-		for (id in this.list) {
-			if (filterFunc(this.list[id])) {
-				filteredList[id] = this.list[id];
-			}
+	var filteredList = {};
+	for (id in this.list) {
+		if (filterFunc(this.list[id])) {
+			filteredList[id] = this.list[id];
 		}
-		return filteredList;
 	}
-	return {};
+	return filteredList;
 };
 
 /**
@@ -56,20 +50,14 @@ AbstractStandardDao.prototype.getForeignList = function(foreignId) {
 // ... ADD
 
 AbstractStandardDao.prototype.addSingleToList = function(single) {
-	if (single != null) {
-		if (this.isList()) {
-			this.list = {};
-		}
+	if (jQuery.isPlainObject(single)) {		
 		this.list[single.id] = single;
 	}
 };
 
 AbstractStandardDao.prototype.addListToList = function(list) {
-	if (list != null) {
-		if (this.isList()) {
-			this.list = {};
-		}
-		this.list = $.extend(list, this.list);
+	if (jQuery.isPlainObject(list)) {
+		this.list = jQuery.extend({}, list, this.list);
 	}
 };
 
@@ -77,10 +65,9 @@ AbstractStandardDao.prototype.addListToList = function(list) {
 
 // ... IS
 
-AbstractStandardDao.prototype.isList = function() {
-	return jQuery.isPlainObject(this.list);
-};
-
+/**
+ * @return {Boolean} True if id is in list
+ */
 AbstractStandardDao.prototype.isInList = function(id) {
 	return this.getFromList(id) != null;
 };
@@ -89,6 +76,9 @@ AbstractStandardDao.prototype.isInList = function(id) {
 
 // ... REMOVE
 
+/**
+ * @return {Object} Removed item, null if not exist
+ */
 AbstractStandardDao.prototype.removeFromList = function(id) {
 	if (this.isInList(id)) {
 		var single = this.list[id];
@@ -139,7 +129,7 @@ AbstractStandardDao.prototype.get = function(id, callback, forceAjax) {
  * @return {Object}
  */
 AbstractStandardDao.prototype.getAll = function(callback, forceAjax) {
-	if (!forceAjax && this.isList() && this.listAll) {
+	if (!forceAjax && this.listAll) {
 		callback(this.list);
 	} else {
 		var context = this;
@@ -162,7 +152,7 @@ AbstractStandardDao.prototype.getAll = function(callback, forceAjax) {
  */
 AbstractStandardDao.prototype.getForeign = function(foreignId, callback, forceAjax) {
 	var context = this;
-	if (!forceAjax && this.isList() && jQuery.inArray(foreignId, this.listForeign) > -1) {
+	if (!forceAjax && jQuery.inArray(foreignId, this.listForeign) > -1) {
 		callback(this.getForeignList(foreignId));
 	} else {
 		this.ajax.getForeign(foreignId, function(list) {
@@ -204,7 +194,7 @@ AbstractStandardDao.prototype.getList = function(ids, callback, forceAjax) {
 			else
 				unknown.push(ids[i]);
 		}
-		
+
 		if (unknown.length == 0)
 			callback(list);
 		else

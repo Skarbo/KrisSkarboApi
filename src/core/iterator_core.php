@@ -93,7 +93,7 @@ abstract class IteratorCore extends ClassCore implements Iterator
     public function slice( $offset )
     {
         $iterator = clone $this;
-        $iterator ->array = array_merge( array (), array_slice( $this->array, $offset ) );
+        $iterator->array = array_merge( array (), array_slice( $this->array, $offset ) );
         return $iterator;
     }
 

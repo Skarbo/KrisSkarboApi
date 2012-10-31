@@ -27,9 +27,8 @@ abstract class AbstractView extends ClassCore implements InterfaceView
 
     // ... GETTERS/SETTERS
 
-
     /**
-     * @return Controller
+     * @see InterfaceView::getController()
      */
     public function getController()
     {

@@ -205,9 +205,9 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return OptionXhtml
      */
-    static function option( $content = "" )
+    static function option( $content = "", $value = "" )
     {
-        return new OptionXhtml( $content );
+        return new OptionXhtml( $content, $value );
     }
 
     /**

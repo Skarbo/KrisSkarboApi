@@ -26,6 +26,9 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 
 			var content = $(this);
 
+			// Re-iniate
+			var reIniate = content.hasClass(Slider.SLIDER_CONTENT_CLASS);
+
 			// Get content display
 			var contentDisplay = content.css("display");
 
@@ -50,10 +53,10 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 			// DOM-ELEMENTS
 
 			// Create wrapper
-			var wrapper = $("<div />", {
+			var wrapper = !reIniate ? $("<div />", {
 				"class" : Slider.SLIDER_WRAPPER_CLASS,
 				"id" : settings["id"]
-			});
+			}) : content.parent();
 
 			wrapper.addClass(settings["class"]);
 
@@ -71,25 +74,27 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 			}
 
 			// Create scroller handle
-			var scrollerHandle = $("<div />", {
+			var scrollerHandle = !reIniate ? $("<div />", {
 				"class" : Slider.SLIDER_SCROLLER_HANDLE_CLASS,
 				"html" : "&nbsp;"
-			});
+			}) : content.parent().find("." + Slider.SLIDER_SCROLLER_HANDLE_CLASS);
 
 			// Create scroller wrapper
-			var scrollerWrapper = $("<div />", {
+			var scrollerWrapper = !reIniate ? $("<div />", {
 				"class" : Slider.SLIDER_SCROLLER_WRAPPER_CLASS,
 				"html" : scrollerHandle
-			});
+			}) : content.parent().find("." + Slider.SLIDER_SCROLLER_WRAPPER_CLASS);
 
-			// Add content class
-			content.addClass(Slider.SLIDER_CONTENT_CLASS);
+			if (!reIniate) {
+				// Add content class
+				content.addClass(Slider.SLIDER_CONTENT_CLASS);
 
-			// Wrap content
-			content.wrap(wrapper);
+				// Wrap content
+				content.wrap(wrapper);
 
-			// Add scroller after content
-			content.after(scrollerWrapper);
+				// Add scroller after content
+				content.after(scrollerWrapper);
+			}
 
 			// Show content
 			content.css("display", contentDisplay);
@@ -115,6 +120,9 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 			scrollerHandle.css("width", Math.round(handleWidth * wrapper.innerWidth()) + "px");
 
 			// /SLIDER
+
+			if (reIniate)
+				return;
 
 			// DRAG
 
@@ -185,9 +193,7 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 					var contentSlideMax = parseInt(handle.attr("data-content-slide-max"));
 
 					// Calculate handle margin
-					var handleMargin = Math.min(handleSlideMax, Math.max(0, Math.round((event.pageX - wrapper
-							.position().left)
-							- (handle.width() / 2))));
+					var handleMargin = Math.min(handleSlideMax, Math.max(0, Math.round((event.pageX - wrapper.position().left) - (handle.width() / 2))));
 
 					// Calculate slide procent
 					var slideProcent = handleMargin / handleSlideMax;
@@ -224,8 +230,7 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 			content.bind("touchmove", function(event) {
 
 				// Ensure swiping, not pinching
-				if (event.originalEvent.touches.length > 1 || event.originalEvent.scale
-						&& event.originalEvent.scale !== 1) {
+				if (event.originalEvent.touches.length > 1 || event.originalEvent.scale && event.originalEvent.scale !== 1) {
 					return;
 				}
 
@@ -250,8 +255,7 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 					var content = wrapper.find("." + Slider.SLIDER_CONTENT_CLASS);
 
 					// Get handle
-					var handle = wrapper.find("." + Slider.SLIDER_SCROLLER_WRAPPER_CLASS + " ."
-							+ Slider.SLIDER_SCROLLER_HANDLE_CLASS);
+					var handle = wrapper.find("." + Slider.SLIDER_SCROLLER_WRAPPER_CLASS + " ." + Slider.SLIDER_SCROLLER_HANDLE_CLASS);
 
 					// Get content slide max
 					var contentSlideMax = parseInt(handle.attr("data-content-slide-max"));
@@ -260,7 +264,8 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 					var handleSlideMax = parseInt(handle.attr("data-handle-slide-max"));
 
 					// Get delta
-					var delta = (swipe.swipe - swipe.start)*-1; // != null &&
+					var delta = (swipe.swipe - swipe.start) * -1; // != null
+					// &&
 					// parseInt(event.originalEvent.touches[0].pageX
 					// - swipe);
 
@@ -269,8 +274,7 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 
 					// Get content margin
 					var contentMargin = parseInt(content.css("margin-left").replace("px", "")) * -1;
-					var contentMarginNew = Math.max(0, Math.min(contentSlideMax, Math.round(contentMargin
-							+ (contentSlideMax * procentile))));
+					var contentMarginNew = Math.max(0, Math.min(contentSlideMax, Math.round(contentMargin + (contentSlideMax * procentile))));
 
 					// Cancel if no change
 					if (delta == 0 || contentMargin == contentMarginNew) {
@@ -279,8 +283,7 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 
 					// Get handle margin
 					var handleMargin = parseInt(handle.css("margin-left").replace("px", ""));
-					var handleMarginNew = Math.max(0, Math.min(handleSlideMax, Math.round(handleMargin
-							+ (handleSlideMax * procentile))));
+					var handleMarginNew = Math.max(0, Math.min(handleSlideMax, Math.round(handleMargin + (handleSlideMax * procentile))));
 
 					// Set new handle/content margin
 					handle.css("margin-left", handleMarginNew);
@@ -302,74 +305,71 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 // RESIZE
 
 // Wrapper width from parent
-$(window).resize(
-		function() {
-				$("#log").text("Resize: " + new Date().getTime());
-			var content = $("." + Slider.SLIDER_CONTENT_CLASS + "[data-resize][data-width-parent]");
+$(window).resize(function() {
+	$("#log").text("Resize: " + new Date().getTime());
+	var content = $("." + Slider.SLIDER_CONTENT_CLASS + "[data-resize][data-width-parent]");
 
-			if (content.length == 0) {
+	if (content.length == 0) {
+		return;
+	}
+
+	content.each(function(i, element) {
+		var element = $(element);
+		var wrapper = element.parent();
+		var handle = wrapper.find("." + Slider.SLIDER_SCROLLER_WRAPPER_CLASS + " ." + Slider.SLIDER_SCROLLER_HANDLE_CLASS);
+		var widthParentElement = $(element.attr("data-width-parent"));
+
+		if (widthParentElement.length > 0) {
+
+			// Don't resize if parent width not changed
+			if (wrapper.innerWidth() == widthParentElement.innerWidth()) {
 				return;
 			}
 
-			content.each(function(i, element) {
-				var element = $(element);
-				var wrapper = element.parent();
-				var handle = wrapper.find("." + Slider.SLIDER_SCROLLER_WRAPPER_CLASS + " ."
-						+ Slider.SLIDER_SCROLLER_HANDLE_CLASS);
-				var widthParentElement = $(element.attr("data-width-parent"));
-				
-				if (widthParentElement.length > 0) {
-					
-					// Don't resize if parent width not changed
-					if (wrapper.innerWidth() == widthParentElement.innerWidth())
-					{
-						return;
-					}
-					
-					// Hide wrapper
-					var wrapperDisplay = wrapper.css("display");
-					wrapper.css("display", "none");
-					
-					// Set wrapper width
-					wrapper.css("width", widthParentElement.innerWidth());
-					
-					// Show wrapper
-					wrapper.css("display", wrapperDisplay);
-					
-					// Get handle width
-					var handleWidth = wrapper.innerWidth() / element.innerWidth();
+			// Hide wrapper
+			var wrapperDisplay = wrapper.css("display");
+			wrapper.css("display", "none");
 
-					// Get content slide
-					var contentSlide = parseInt(element.css("margin-left").replace("px", "")) * -1;
-										
-					// Get content slide max
-					var contentSlideMax = handle.attr("data-content-slide-max");
-					
-					// Slide procentile
-					var slideProcentile = Math.max(0.0, Math.min(1.0, contentSlide / contentSlideMax));
-					
-					// Get new handle slide max
-					var handleSlideMaxNew = Math.round(wrapper.innerWidth() - (handleWidth * wrapper.innerWidth()));
+			// Set wrapper width
+			wrapper.css("width", widthParentElement.innerWidth());
 
-					// Get new content slide max
-					var contentSlideMaxNew = Math.round(element.innerWidth() - wrapper.innerWidth()); 
-					
-					// Set handle width
-					handle.css("width", Math.round(handleWidth * wrapper.innerWidth()) + "px");
-					
-					// Set handle properties
-					handle.attr("data-handle-slide-max", handleSlideMaxNew);
-					handle.attr("data-content-slide-max", contentSlideMaxNew);
+			// Show wrapper
+			wrapper.css("display", wrapperDisplay);
 
-					// Set handle margin
-					handle.css("margin-left", Math.round(handleSlideMaxNew * slideProcentile));
-					
-					// Set content margin
-					element.css("margin-left", Math.round(contentSlideMaxNew * slideProcentile) * -1);
-					
-				}
-			});
+			// Get handle width
+			var handleWidth = wrapper.innerWidth() / element.innerWidth();
 
-		});
+			// Get content slide
+			var contentSlide = parseInt(element.css("margin-left").replace("px", "")) * -1;
+
+			// Get content slide max
+			var contentSlideMax = handle.attr("data-content-slide-max");
+
+			// Slide procentile
+			var slideProcentile = Math.max(0.0, Math.min(1.0, contentSlide / contentSlideMax));
+
+			// Get new handle slide max
+			var handleSlideMaxNew = Math.round(wrapper.innerWidth() - (handleWidth * wrapper.innerWidth()));
+
+			// Get new content slide max
+			var contentSlideMaxNew = Math.round(element.innerWidth() - wrapper.innerWidth());
+
+			// Set handle width
+			handle.css("width", Math.round(handleWidth * wrapper.innerWidth()) + "px");
+
+			// Set handle properties
+			handle.attr("data-handle-slide-max", handleSlideMaxNew);
+			handle.attr("data-content-slide-max", contentSlideMaxNew);
+
+			// Set handle margin
+			handle.css("margin-left", Math.round(handleSlideMaxNew * slideProcentile));
+
+			// Set content margin
+			element.css("margin-left", Math.round(contentSlideMaxNew * slideProcentile) * -1);
+
+		}
+	});
+
+});
 
 // /RESIZE

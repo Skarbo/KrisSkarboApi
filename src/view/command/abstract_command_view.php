@@ -18,6 +18,11 @@ class AbstractCommandView extends AbstractView
     // FUNCTIONS
 
 
+    protected function isNoCache()
+    {
+        return true;
+    }
+
     /**
      * @see AbstractView::draw()
      */

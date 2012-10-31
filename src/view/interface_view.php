@@ -17,7 +17,6 @@ interface InterfaceView
 
     // FUNCTIONS
 
-
     /**
      * @param boolean $force True if not return null
      * @return int Mode, null if mode is default mode

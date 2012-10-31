@@ -38,10 +38,17 @@ class WebsiteParser extends ClassCore
             return self::$PARSED[ self::generateKey( $url ) ];
 
             // Check if webpage exists
-        if ( !Core::isUrlExist( $url ) )
+        $headers = array ();
+        if ( !Core::isUrlExist( $url, $headers ) )
         {
             throw new ParserException( sprintf( "Webpage (\"%s\") does not exist", $url ),
                     ParserException::WEBPAGE_NOT_EXIST_ERROR );
+        }
+
+        $charset = "UTF-8";
+        if ( preg_match( '/Charset=([\w\d-]+)/s', Core::arrayAt( $headers, "Content-Type" ), $matches ) )
+        {
+            $charset = $matches[ 0 ];
         }
 
         return SimplehtmldomApi::fileGetHtml( $url );
@@ -55,6 +62,7 @@ class WebsiteParser extends ClassCore
      */
     public function parse( $url, WebsiteAlgorithmParser $parseAlgorithm )
     {
+        DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Parse", $url, get_class($parseAlgorithm) ) );
         // Parse URL
         $html_dom = $this->parseUrl( $url );
 

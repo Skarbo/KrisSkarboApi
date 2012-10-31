@@ -34,7 +34,7 @@ abstract class AbstractPageMainView extends ClassCore implements InterfaceView
 
 
     /**
-     * @return MainView
+     * @return AbstractMainView
      */
     public function getView()
     {
@@ -42,7 +42,7 @@ abstract class AbstractPageMainView extends ClassCore implements InterfaceView
     }
 
     /**
-     * @param MainView $view
+     * @param AbstractMainView $view
      */
     public function setView( AbstractMainView $view )
     {
@@ -54,6 +54,13 @@ abstract class AbstractPageMainView extends ClassCore implements InterfaceView
 
     // ... GET
 
+    /**
+     * @return AbstractMainController
+     */
+    public function getController()
+    {
+        return $this->getView()->getController();
+    }
 
     /**
      * @see InterfaceView::getMode()
