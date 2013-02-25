@@ -6,7 +6,7 @@
  * @author Kris Skarbo
  *
  */
-abstract class IteratorCore extends ClassCore implements Iterator
+class IteratorCore extends ClassCore implements Iterator
 {
 
     // VARIABLES

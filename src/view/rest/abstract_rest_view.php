@@ -25,7 +25,7 @@ abstract class AbstractRestView extends AbstractView
      */
     protected function getLastModified()
     {
-        return max( parent::getLastModified(), filemtime( __FILE__ ) );
+        return max( array( parent::getLastModified(), filemtime( __FILE__ ) ) );
     }
 
     /**

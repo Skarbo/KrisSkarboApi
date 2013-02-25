@@ -19,8 +19,8 @@ class MetaXhtml extends AbstractXhtml
     static $CONTENT_TEXT_HTML = "text/html";
     static $CONTENT_APPLICATION_EXCEL = "application/vnd.ms-excel";
     static $CONTENT_VIEWPORT_WIDTH_DEVICEWIDTH = "width=device-width";
-    static $CONTENT_VIEWPORT_MINCALE_1 = "minimum-scale=1.0";
-    static $CONTENT_VIEWPORT_MAXSCALE_1 = "maximum-scale=1.0";
+    static $CONTENT_VIEWPORT_MINCALE_1 = "minimum-scale=1";
+    static $CONTENT_VIEWPORT_MAXSCALE_1 = "maximum-scale=1";
     static $CONTENT_VIEWPORT_USERSCALABLE_NO = "user-scalable=no";
     static $CONTENT_VIEWPORT_INITIALSCALE_1 = "initial-scale=1";
     static $NAME_VIEWPORT = "viewport";

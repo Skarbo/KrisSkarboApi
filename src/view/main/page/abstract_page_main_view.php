@@ -54,6 +54,7 @@ abstract class AbstractPageMainView extends ClassCore implements InterfaceView
 
     // ... GET
 
+
     /**
      * @return AbstractMainController
      */
@@ -76,6 +77,11 @@ abstract class AbstractPageMainView extends ClassCore implements InterfaceView
     public function getLocale()
     {
         return $this->getView()->getLocale();
+    }
+
+    public function getLastModified()
+    {
+        return filemtime( __FILE__ );
     }
 
     // ... /GET

@@ -34,6 +34,7 @@ AbstractController.prototype.getView = function() {
  */
 AbstractController.prototype.getHash = function() {
 	var hash = window.location.hash.substring(1);
+	var hashRegex = /(\w+)\[(\w+)\]/;
 
 	var hashesArray = hash.split("/");
 	var hashesObject = {};
@@ -41,7 +42,15 @@ AbstractController.prototype.getHash = function() {
 
 	for (i in hashesArray) {
 		hashArray = hashesArray[i].split(":");
-		hashesObject[hashArray[0]] = hashArray[1];
+
+		var match = hashRegex.exec(hashArray[0]);
+		if (match != null) {
+			if (!hashesObject[match[1]])
+				hashesObject[match[1]] = {};
+			hashesObject[match[1]][match[2]] = hashArray[1];
+		} else {
+			hashesObject[hashArray[0]] = hashArray[1];
+		}
 	}
 
 	return hashesObject;
@@ -128,7 +137,13 @@ AbstractController.prototype.updateHash = function(hashObject) {
 	var hashArray = [];
 	for (key in hashNew) {
 		if (key && hashNew[key]) {
-			hashArray.push(key + ":" + hashNew[key]);
+			if (typeof hashNew[key] == "object") {
+				for ( var i in hashNew[key]) {
+					if (i && hashNew[key][i])
+						hashArray.push(key + "[" + i + "]:" + hashNew[key][i]);
+				}
+			} else
+				hashArray.push(key + ":" + hashNew[key]);
 		}
 	}
 

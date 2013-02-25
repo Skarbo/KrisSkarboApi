@@ -17,11 +17,12 @@ class Xhtml extends ClassCore
 
     /**
      * @param string $content
+     * @param string $href
      * @return AnchorXhtml
      */
-    static function a( $content = "" )
+    static function a( $content = "", $href = "" )
     {
-        return new AnchorXhtml( $content );
+        return new AnchorXhtml( $content, $href );
     }
 
     /**

@@ -6,7 +6,7 @@ abstract class Validator extends ClassCore
     // VARIABLES
 
 
-    static $REGEX_TITLE = "/[^a-zA-Z0-9'\\s,.-]/i";
+    public static $REGEX_TITLE = '/[^\w\p{L}\s,.-]+/';
 
     //    static $REGEX_EMAIL = "/^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/";
     //    static $REGEX_DATE = "/^(([1-9])|(0[1-9])|(1[0-9])|(2[0-9])|(3[0-1]))\\.(([1-9])|(0[1-9])|(1[0-2]))\\.(\\d{4})$/i"; // dd.mm.yyyy

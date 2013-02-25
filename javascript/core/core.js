@@ -108,6 +108,29 @@ Core.objectClass = function(obj) {
 	return undefined;
 };
 
+/**
+ * @return {Object}
+ */
+Core.objectEmpty = function(obj) {
+	var objEmpty = $.extend({}, obj);
+	for (i in objEmpty) {
+		objEmpty[i] = null;
+	}
+	return objEmpty;
+};
+
+/**
+ * @return {Object}
+ */
+Core.objectDiff = function(objLeft, objRight) {
+	var objNew = $.extend({}, objRight);
+	for (i in objLeft) {
+		if (objNew[i] == objLeft[i])
+			objNew[i] = null;
+	}
+	return objNew;
+};
+
 Core.prettyDate = function(time) {
 	var time_formats = [ [ 60, 'just now', 1 ], // 60
 	[ 120, '1 minute ago', '1 minute from now' ], // 60*2

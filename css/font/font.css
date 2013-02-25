@@ -1,0 +1,51 @@
+/* Fonts */
+@font-face {
+	font-family: 'Icon';
+	src: url('../../krisskarboapi/font/icon2.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+*[data-icon]:AFTER {
+	font-family: Icon;
+}
+
+*[data-icon][data-icon-text]:AFTER {
+	margin-left: 0.5em;
+}
+
+*[data-icon=cross]:AFTER {
+	content: "X";
+}
+
+*[data-icon=check]:AFTER {
+	content: "c";
+}
+
+*[data-icon=left]:AFTER {
+	content: "<";
+}
+
+*[data-icon=arrow-left]:AFTER {
+	content: "{";
+}
+
+*[data-icon=arrow-right]:AFTER {
+	content: "}";
+}
+
+*[data-icon=search]:AFTER {
+	content: "S";
+}
+
+*[data-icon=plus]:AFTER {
+	content: "+";
+}
+
+*[data-icon=trash]:AFTER {
+	content: "T";
+}
+
+*[data-icon=more]:AFTER {
+	content: ".";
+}

@@ -25,6 +25,7 @@ abstract class AbstractMainController extends AbstractController
      */
     private $cssFiles = array ();
     private $metaTags = array ();
+    private $head = array ();
 
     // /VARIABLES
 
@@ -67,6 +68,11 @@ abstract class AbstractMainController extends AbstractController
         $this->metaTags[] = $meta;
     }
 
+    protected function addHead( AbstractXhtml $head )
+    {
+        $this->head[] = $head;
+    }
+
     // ... /ADD
 
 
@@ -99,6 +105,7 @@ abstract class AbstractMainController extends AbstractController
         $html = Xhtml::html();
         //$html->xmlns( "http://www.w3.org/1999/xhtml" );
 
+
         // Create Head element
         $head = Xhtml::head();
 
@@ -130,6 +137,12 @@ abstract class AbstractMainController extends AbstractController
 
         // Add Title element to Head
         $head->addContent( Xhtml::title( $this->getTitle() ) );
+
+        // Add additional head
+        foreach ( $this->head as $headTemp )
+        {
+            $head->addContent( $headTemp );
+        }
 
         // Add Head to HTML
         $html->addContent( $head );

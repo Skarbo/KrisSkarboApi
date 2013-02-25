@@ -203,6 +203,11 @@ abstract class SqlbuilderDbCore extends ClassCore
         return "REPLACE({$field}, {$from}, {$to})";
     }
 
+    public static function round( $field, $decimal )
+    {
+        return "ROUND({$field}, {$decimal})";
+    }
+
     /**
      * @param string $ifnull
      * @param string $as
@@ -308,6 +313,11 @@ abstract class SqlbuilderDbCore extends ClassCore
         return "DATE( $field )";
     }
 
+    public static function day( $field )
+    {
+        return "DAY( $field )";
+    }
+
     /**
      * @param string $field
      * @return string "DAYNAME( $field )"
@@ -325,6 +335,11 @@ abstract class SqlbuilderDbCore extends ClassCore
     public static function datediff( $date_start, $date_end )
     {
         return "DATEDIFF( $date_start, $date_end )";
+    }
+
+    public static function divide( $left, $right )
+    {
+        return SB::par( "$left / $right" );
     }
 
     /**
@@ -414,7 +429,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $date YYYY-MM-DD HH:II
      * @return string UNIX_TIMESTAMP( $date )
      */
-    public static function unix_timestamp( $date = "" )
+    public static function unixTimestamp( $date = "" )
     {
         return "UNIX_TIMESTAMP( $date )";
     }
@@ -446,6 +461,11 @@ abstract class SqlbuilderDbCore extends ClassCore
         return "'$value'";
     }
 
+    public static function max( $field )
+    {
+        return "MAX( $field )";
+    }
+
     /**
      * @param string $field
      * @return string "MONTH( field )"
@@ -463,6 +483,16 @@ abstract class SqlbuilderDbCore extends ClassCore
     public static function minus( $left, $right )
     {
         return self::par( "${left} - ${right}" );
+    }
+
+    /**
+     * @param string $left
+     * @param string $right
+     * @return string "( LEFT * RIGHT )"
+     */
+    public static function multiply( $left, $right )
+    {
+        return self::par( "$left * $right" );
     }
 
     /**

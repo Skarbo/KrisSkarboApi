@@ -17,6 +17,7 @@ class TextareaXhtml extends AbstractContentXhtml
     protected $readonly;
     protected $spellcheck;
     protected $wrap;
+    protected $placeholder;
 
     // CONSTRUCT
 
@@ -125,6 +126,20 @@ class TextareaXhtml extends AbstractContentXhtml
     function wrap( $wrap )
     {
         $this->wrap = is_bool( $wrap ) && !$wrap ? "off" : $wrap;
+        return $this;
+    }
+
+    function getPlaceholder()
+    {
+        return $this->placeholder;
+    }
+
+    /**
+     * @return TextareaXhtml
+     */
+    function placeholder( $placeholder )
+    {
+        $this->placeholder = $placeholder;
         return $this;
     }
 

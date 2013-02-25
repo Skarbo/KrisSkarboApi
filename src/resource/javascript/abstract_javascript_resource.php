@@ -9,16 +9,17 @@ class AbstractJavascriptResource extends ClassCore
     protected static $ROOT_FOLDER = "javascript";
     protected static $ROOT_API = "api";
 
-    private $jqueryApiFile = "jquery-1.8.0.min.js";
-    private $jqueryMobileApiFile = "jquery.mobile-1.1.0.min.js";
+    private $jqueryApiFile = "jquery-1.9.1.min.js";
+    private $jqueryMobileApiFile = "jquery.mobile-1.2.0.js";
     private $jqueryUiApiFile = "jquery-ui-1.8.18.custom.min.js";
     private $jqueryHistoryApiFile = "jquery.history.js";
-    private $kineticApiFile = "kinetic-v4.0.0.js";
+    private $kineticApiFile = "kinetic-v4.3.3.js";
     private $jqueryDragApiFile = "jquery.event.drag-2.0.min.js";
     private $transitionsApiFile = "fasw.transitions.min.js";
     private $hammerApiFile = "hammer.js";
     private $hammerJqueryApiFile = "jquery.hammer.js";
     private $knockoutApiFile = "knockout-2.1.0.js";
+    private $googleChart = "https://www.google.com/jsapi";
 
     // /VARIABLES
 
@@ -30,25 +31,25 @@ class AbstractJavascriptResource extends ClassCore
     {
 
         // TODO: To absolute
-        $this->jqueryApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->jqueryApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->jqueryApiFile );
-        $this->jqueryMobileApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->jqueryMobileApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->jqueryMobileApiFile );
-        $this->jqueryUiApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->jqueryUiApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->jqueryUiApiFile );
-        $this->jqueryHistoryApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->jqueryHistoryApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->jqueryHistoryApiFile );
-        $this->kineticApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->kineticApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->kineticApiFile );
-        $this->jqueryDragApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->jqueryDragApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->jqueryDragApiFile );
-        $this->transitionsApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->transitionsApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->transitionsApiFile );
-        $this->hammerApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->hammerApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->hammerApiFile );
-        $this->hammerJqueryApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->hammerJqueryApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->hammerJqueryApiFile );
-        $this->knockoutApiFile = sprintf( "%s/%s/%s/%s", "../KrisSkarboApi", self::$ROOT_FOLDER, self::$ROOT_API,
+        $this->knockoutApiFile = sprintf( "%s/%s/%s/%s", "../krisskarboapi", self::$ROOT_FOLDER, self::$ROOT_API,
                 $this->knockoutApiFile );
 
     }
@@ -110,6 +111,11 @@ class AbstractJavascriptResource extends ClassCore
     public function getKnockoutApiFile()
     {
         return $this->knockoutApiFile;
+    }
+
+    public function getGoogleChart()
+    {
+        return $this->googleChart;
     }
 
 }

@@ -32,6 +32,9 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 			// Get content display
 			var contentDisplay = content.css("display");
 
+			// Content width
+			var contentWidth = content.innerWidth();
+
 			// Hide content
 			content.hide();
 
@@ -40,7 +43,8 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 				'id' : null,
 				'class' : null,
 				'width' : null,
-				'width-parent' : null
+				'width-parent' : null,
+				'nohandle' : false
 			}, options);
 			var swipe = {};
 
@@ -58,7 +62,9 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 				"id" : settings["id"]
 			}) : content.parent();
 
-			wrapper.addClass(settings["class"]);
+			wrapper.addClass(settings["class"]);			
+			var wrapperDisplay = wrapper.css("display");
+			wrapper.hide();
 
 			// Wrapper width
 			if (settings["width"]) {
@@ -67,7 +73,7 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 
 			// Wrapper width from parent
 			if (settings["width-parent"]) {
-				var widthParentElement = $(settings["width-parent"]);
+				var widthParentElement = content.closest(settings["width-parent"]);
 				if (widthParentElement.length > 0) {
 					wrapper.css("width", widthParentElement.innerWidth());
 				}
@@ -95,22 +101,24 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 				// Add scroller after content
 				content.after(scrollerWrapper);
 			}
+			var wrapper = content.closest(".slider_wrapper");
 
-			// Show content
+			// Show content/wrapper
 			content.css("display", contentDisplay);
+			wrapper.css("display", wrapperDisplay);
 
 			// /DOM-ELEMENTS
 
 			// SLIDER
 
 			// Get handle width
-			var handleWidth = wrapper.innerWidth() / content.innerWidth();
+			var handleWidth = wrapper.innerWidth() / contentWidth;
 
 			// Get handle slide max
 			var handleSlideMax = Math.round(wrapper.innerWidth() - (handleWidth * wrapper.innerWidth()));
 
 			// Get content slide max
-			var contentSlideMax = Math.round(content.innerWidth() - wrapper.innerWidth());
+			var contentSlideMax = Math.round(contentWidth - wrapper.innerWidth());
 
 			// Set handle properties
 			scrollerHandle.attr("data-handle-slide-max", handleSlideMax);
@@ -119,10 +127,30 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 			// Set handle width
 			scrollerHandle.css("width", Math.round(handleWidth * wrapper.innerWidth()) + "px");
 
+			// Hide handle
+			if (settings["nohandle"])
+				scrollerHandle.addClass("hide");
+			else
+				scrollerHandle.removeClass("hide");
+
 			// /SLIDER
 
-			if (reIniate)
-				return;
+			// WRAPPER
+
+			var slideProcent = parseFloat(scrollerHandle.css("margin-left")) / handleSlideMax;
+			if (contentSlideMax > 0 && slideProcent > 0.98)
+				wrapper.attr("data-slide-rest", "left");
+			else if (contentSlideMax > 0 && slideProcent < 0.02)
+				wrapper.attr("data-slide-rest", "right");
+			else if (contentSlideMax > 0)
+				wrapper.attr("data-slide-rest", "both");
+			else
+				wrapper.attr("data-slide-rest", null);
+
+			// /WRAPPER
+
+//			if (reIniate)
+//				return;
 
 			// DRAG
 
@@ -176,7 +204,7 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 			});
 
 			// Handle scroller wrapper click
-			scrollerWrapper.click(function(event) {
+			scrollerWrapper.unbind(".slider").bind("click.slider", function(event) {
 				if (event.target == this) {
 
 					// Get wrapper
@@ -218,16 +246,34 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 
 			// SWIPE
 
+			content.unbind(".slider");
+
 			// Touch start
-			content.bind("touchstart", function(event) {
+			var match = null;
+			var translateRegex = /translate3d\(([0-9\-]+)px,0,0\)/;
+			content.bind("touchstart.slider", function(event) {
+				$this = $(this);
 				if (event.originalEvent.touches != null && event.originalEvent.touches.length > 0) {
-					swipe.start = event.originalEvent.touches[0].pageX;
-					swipe.swipe = null;
+					swipe.start = event.originalEvent.touches[0].clientX;
+
+					// Regex transform
+					match = translateRegex.exec($this[0].style.MozTransform);
+					if (!match)
+						match = translateRegex.exec($this[0].style.webkitTransform);
+					swipe.margin = match != null ? parseFloat(parseInt(match[1])) : 0;
+
+					$this[0].style.MozTransitionDuration = $this[0].style.webkitTransitionDuration = 0;
 				}
 			});
 
 			// Touch move
-			content.bind("touchmove", function(event) {
+			content.bind("touchmove.slider", {
+				handle : scrollerHandle,
+				wrapper : wrapper,
+				handleSlideMax : handleSlideMax,
+				contentSlideMax : contentSlideMax
+			}, function(event) {
+				$this = $(this);
 
 				// Ensure swiping, not pinching
 				if (event.originalEvent.touches.length > 1 || event.originalEvent.scale && event.originalEvent.scale !== 1) {
@@ -235,64 +281,73 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 				}
 
 				if (swipe.start != null) {
-					swipe.swipe = event.originalEvent.touches[0].pageX;
+					// prevent native scrolling
+					event.preventDefault();
+
+					var pageX = event.originalEvent.touches[0].clientX;
+					var diff = Math.round(swipe.start - pageX);
+
+					// Calculate content margin
+					var contentMargin = Math.min(0, Math.max(event.data.contentSlideMax * -1, swipe.margin - diff));
+
+					// Set content margin
+					// $this.css({
+					// "margin-left" : contentMargin
+					// });
+					$this[0].style.MozTransform = $this[0].style.webkitTransform = 'translate3d(' + contentMargin + 'px,0,0)';
+
+					// Wrapper
+					if (contentSlideMax > 0 && contentMargin == event.data.contentSlideMax * -1)
+						event.data.wrapper.attr("data-slide-rest", "left");
+					else if (contentSlideMax > 0 && contentMargin == 0)
+						event.data.wrapper.attr("data-slide-rest", "right");
+					else if (contentSlideMax > 0)
+						event.data.wrapper.attr("data-slide-rest", "both");
+					else
+						event.data.wrapper.attr("data-slide-rest", null);
+
+					event.stopPropagation();
 				}
 
 			});
 
 			// Touch end
-			content.bind("touchend", function(event) {
+			content.bind("touchend", {
+				handle : scrollerHandle,
+				wrapper : wrapper,
+				handleSlideMax : handleSlideMax,
+				contentSlideMax : contentSlideMax
+			}, function(event) {
+				// Regex transform
+				match = translateRegex.exec($this[0].style.MozTransform);
+				if (!match)
+					match = translateRegex.exec($this[0].style.webkitTransform);
+				if (match != null) {
+					// Calculate content margin
+					var contentMargin = margin = parseInt(match[1]);
 
-				if (swipe.start != null && swipe.swipe != null) {
+					// Calculate slide procent
+					var slideProcent = (contentMargin / event.data.contentSlideMax) * -1;
 
-					// Target
-					var target = $(event.target);
+					// Calculate handle margin
+					var handleMargin = Math.round(event.data.handleSlideMax * slideProcent);
 
-					// Get wrapper
-					var wrapper = target.parentsUntil("." + Slider.SLIDER_WRAPPER_CLASS).parent();
+					// Reset transform
+					// $this[0].style.MozTransform =
+					// $this[0].style.webkitTransform = 'translate3d(0,0,0)';
 
-					// Get content
-					var content = wrapper.find("." + Slider.SLIDER_CONTENT_CLASS);
+					// // Set content margin
+					// $this.css({
+					// "margin-left" : contentMargin
+					// });
 
-					// Get handle
-					var handle = wrapper.find("." + Slider.SLIDER_SCROLLER_WRAPPER_CLASS + " ." + Slider.SLIDER_SCROLLER_HANDLE_CLASS);
-
-					// Get content slide max
-					var contentSlideMax = parseInt(handle.attr("data-content-slide-max"));
-
-					// Get handle slide max
-					var handleSlideMax = parseInt(handle.attr("data-handle-slide-max"));
-
-					// Get delta
-					var delta = (swipe.swipe - swipe.start) * -1; // != null
-					// &&
-					// parseInt(event.originalEvent.touches[0].pageX
-					// - swipe);
-
-					// Get procentile
-					var procentile = delta / wrapper.width();
-
-					// Get content margin
-					var contentMargin = parseInt(content.css("margin-left").replace("px", "")) * -1;
-					var contentMarginNew = Math.max(0, Math.min(contentSlideMax, Math.round(contentMargin + (contentSlideMax * procentile))));
-
-					// Cancel if no change
-					if (delta == 0 || contentMargin == contentMarginNew) {
-						return;
-					}
-
-					// Get handle margin
-					var handleMargin = parseInt(handle.css("margin-left").replace("px", ""));
-					var handleMarginNew = Math.max(0, Math.min(handleSlideMax, Math.round(handleMargin + (handleSlideMax * procentile))));
-
-					// Set new handle/content margin
-					handle.css("margin-left", handleMarginNew);
-					content.css("margin-left", (contentMarginNew * -1));
-
-					swipe.start = null;
-					swipe.swipe = null;
-
+					// Set handle margin
+					event.data.handle.css({
+						"margin-left" : handleMargin
+					});
 				}
+
+				event.stopPropagation();
 			});
 
 			// /SWIPE
@@ -306,7 +361,6 @@ Slider.SLIDER_SCROLLER_HANDLE_DRAG_CLASS = "drag";
 
 // Wrapper width from parent
 $(window).resize(function() {
-	$("#log").text("Resize: " + new Date().getTime());
 	var content = $("." + Slider.SLIDER_CONTENT_CLASS + "[data-resize][data-width-parent]");
 
 	if (content.length == 0) {

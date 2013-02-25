@@ -1,6 +1,7 @@
 <?php
 
-define( "DB_PREFIX", "" );
+if ( !defined( "DB_PREFIX" ) )
+    define( "DB_PREFIX", "" );
 
 abstract class AbstractApi
 {
@@ -411,7 +412,7 @@ abstract class AbstractApi
             {
                 if ( $this->getErrorHandler() )
                 {
-                    $this->getErrorHandler()->handle( $exception  );
+                    $this->getErrorHandler()->handle( $exception );
                 }
                 else
                 {

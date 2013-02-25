@@ -86,7 +86,6 @@ EventHandler.prototype.callEvent = function(event) {
 	if (this.listeners[event.getType()] == null) {
 		return;
 	}
-
 	// For each event listeneres
 	for ( var i = 0; i < this.listeners[event.getType()].length; i++) {
 

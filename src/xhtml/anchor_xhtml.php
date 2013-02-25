@@ -19,9 +19,11 @@ class AnchorXhtml extends AbstractContentXhtml
     // CONSTRUCT
 
 
-    public function __construct( $content = "" )
+    public function __construct( $content = "", $href = "" )
     {
         $this->set_code( "a" );
+        if ( $href )
+            $this->href( $href );
         parent::__construct( $content );
     }
 

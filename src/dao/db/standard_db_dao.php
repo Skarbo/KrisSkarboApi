@@ -151,7 +151,7 @@ abstract class StandardDbDao extends DbDao implements StandardDao
 
 
     /**
-     * @param int $id
+     * @param mixed $id
      * @return StandardModel
      * @throws DbException
      */

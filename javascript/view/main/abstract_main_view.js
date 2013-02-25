@@ -1,10 +1,25 @@
 AbstractMainView.prototype = new AbstractView();
 
-function AbstractMainView() {
+function AbstractMainView(wrapperId) {
 	AbstractView.apply(this, arguments);
+	this.wrapperId = wrapperId;
 }
 
 // FUNCTIONS
+
+/**
+ * @return {string} wrapper id
+ */
+AbstractMainView.prototype.getWrapperId = function() {
+	return this.wrapperId;
+};
+
+/**
+ * @return {Object}
+ */
+AbstractMainView.prototype.getWrapperElement = function() {
+	return $(Core.sprintf("#%s", this.getWrapperId()));
+};
 
 /**
  * @return {AbstractMainController}

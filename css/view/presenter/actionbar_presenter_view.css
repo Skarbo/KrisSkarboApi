@@ -1,0 +1,156 @@
+/* Actionbar */
+.actionbar_wrapper {
+	width: 100%;
+}
+
+.actionbar_wrapper .actionbar {
+	background-color: #666666;
+	line-height: 4em;
+	display: table;
+	width: 100%;
+	height: 100%;
+	border: 2px solid #D9D9D9;
+	border-width: 0 0 2px 0;
+}
+
+.actionbar_wrapper .actionbar>* {
+	display: table-cell;
+	vertical-align: middle;
+	white-space: nowrap;
+	color: #d9d9d9;
+	white-space: nowrap;
+}
+
+/* ... Icon */
+.actionbar_wrapper .actionbar .actionbar_icon {
+	width: 1px;
+	font-size: 2.5em;
+}
+
+.actionbar_wrapper .actionbar .actionbar_icon>* {
+	display: inline-block;
+	padding: 0 0.1em;
+}
+
+.actionbar_wrapper .actionbar .actionbar_icon .actionbar_icon_referral {
+	
+}
+
+.actionbar_wrapper .actionbar .actionbar_icon .actionbar_icon_icon {
+	
+}
+
+/* ... /Icon */
+
+/* ... View control */
+.actionbar_wrapper .actionbar .actionbar_viewcontrol {
+	line-height: 1em;
+	width: 1px;
+	padding: 0 0.2em;
+}
+
+.actionbar_wrapper .actionbar .actionbar_viewcontrol[data-menu="true"] {
+	background: transparent url('../svg.php?svg=more&color=%23D9D9D9')
+		no-repeat 100% 90%;
+	background-size: 0.6em 0.6em;
+	cursor: pointer;
+}
+
+.actionbar_wrapper .actionbar .actionbar_viewcontrol * {
+	white-space: nowrap;
+}
+
+.actionbar_wrapper .actionbar .actionbar_viewcontrol>.single {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.actionbar_wrapper .actionbar .actionbar_viewcontrol>.double {
+	display: inline-block;
+}
+
+.actionbar_wrapper .actionbar .actionbar_viewcontrol>.double>*:FIRST-CHILD
+	{
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.actionbar_wrapper .actionbar .actionbar_viewcontrol>.double>*:LAST-CHILD
+	{
+	font-size: 0.8em;
+}
+
+/* ... /View control */
+
+/* ... Buttons */
+.actionbar_wrapper .actionbar .actionbar_buttons {
+	float: right;
+}
+
+.actionbar_wrapper .actionbar .actionbar_buttons .actionbar_buttons_container
+	{
+	display: table;
+	font-size: 2.5em;
+	width: 100%;
+}
+
+.actionbar_wrapper .actionbar .actionbar_buttons .actionbar_buttons_container>*
+	{
+	display: table-cell;
+	padding: 0 0.2em;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.actionbar_wrapper .actionbar .actionbar_buttons .actionbar_buttons_container>*[data-disabled]
+	{
+	cursor: inherit;
+	opacity: 0.3;
+}
+
+/* ... /Buttons */
+
+/* ... View control menu */
+.actionbar_wrapper .actionbar_viewcontrol_menu {
+	position: absolute;
+	background-color: #efefef;
+	color: #777777;
+	z-index: 1000;
+	font-size: 1.2em;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px #888;
+	box-shadow: 0 0 5px #888;
+	display: none;
+}
+
+.actionbar_wrapper .actionbar_viewcontrol_menu>* {
+	cursor: pointer;
+	display: table-row;
+	/* no_select */
+}
+
+.actionbar_wrapper .actionbar_viewcontrol_menu>*.touching {
+	background-color: white;
+}
+
+.actionbar_wrapper .actionbar_viewcontrol_menu>*>* {
+	padding: 0.5em 0.8em;
+	border-top: 1px solid #D9D9D9;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.actionbar_wrapper .actionbar_viewcontrol_menu>*:FIRST-CHILD>* {
+	border-top: 0;
+}
+
+.actionbar_wrapper .actionbar_viewcontrol_menu>*>*+* {
+	font-size: 0.6em;
+	color: #9f9f9f;
+	padding-left: 0;
+	text-align: right;
+}
+
+/* ... /View control menu */
+
+/* /Actionbar */

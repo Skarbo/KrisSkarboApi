@@ -19,7 +19,7 @@ interface StandardDao
 
 
     /**
-     * @param int $id
+     * @param mixed $id
      * @return StandardModel
      */
     public function get( $id );

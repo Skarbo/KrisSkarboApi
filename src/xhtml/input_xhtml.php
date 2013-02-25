@@ -21,6 +21,7 @@ class InputXhtml extends AbstractXhtml
     static $TYPE_TEXT = "text";
     static $TYPE_SEARCH = "search";
     static $TYPE_EMAIL = "email";
+    static $TYPE_NUMBER = "number";
 
     static $CHECKED_CHECKED = "checked";
 
@@ -118,7 +119,7 @@ class InputXhtml extends AbstractXhtml
      */
     function autocomplete( $autocomplete )
     {
-        $this->autocomplete = is_bool($autocomplete) && !$autocomplete ? self::$AUTOCOMPLETE_OFF: $autocomplete;
+        $this->autocomplete = is_bool( $autocomplete ) && !$autocomplete ? self::$AUTOCOMPLETE_OFF : $autocomplete;
         return $this;
     }
 
@@ -270,7 +271,7 @@ class InputXhtml extends AbstractXhtml
      */
     function required( $required )
     {
-        $this->required = is_bool($required) ? ( $required ? "required" : null ) : $required;
+        $this->required = is_bool( $required ) ? ( $required ? "required" : null ) : $required;
         return $this;
     }
 

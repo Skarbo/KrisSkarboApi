@@ -5,6 +5,8 @@ class :class:Model extends Model implements StandardModel
 
     // VARIABLES
 
+:constants:
+
 :variables:
 
     // /VARIABLES

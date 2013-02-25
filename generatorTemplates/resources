@@ -21,6 +21,10 @@ class :class:DbResource
 
     // FUNCTIONS
 
+	public function getTable()
+    {
+        return Core::constant( "DB_PREFIX" ) . $this->table;
+    }
 
 :functions:
 

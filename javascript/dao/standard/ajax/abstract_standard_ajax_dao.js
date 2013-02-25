@@ -54,7 +54,8 @@ AbstractStandardAjaxDao.prototype.get = function(id, callback) {
 		url : url,
 		dataType : "json",
 		success : function(data) {
-			callback(data["single"]);
+			if (callback)
+				callback(data["single"]);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
@@ -76,7 +77,8 @@ AbstractStandardAjaxDao.prototype.getAll = function(callback) {
 		url : url,
 		dataType : "json",
 		success : function(data) {
-			callback(data["list"]);
+			if (callback)
+				callback(data["list"]);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
@@ -100,7 +102,8 @@ AbstractStandardAjaxDao.prototype.getForeign = function(id, callback) {
 		url : url,
 		dataType : "json",
 		success : function(data) {
-			callback(data["list"]);
+			if (callback)
+				callback(data["list"]);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
@@ -124,7 +127,8 @@ AbstractStandardAjaxDao.prototype.getList = function(ids, callback) {
 		url : url,
 		dataType : "json",
 		success : function(data) {
-			callback(data["list"]);
+			if (callback)
+				callback(data["list"]);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
@@ -154,7 +158,8 @@ AbstractStandardAjaxDao.prototype.add = function(object, foreignId, callback) {
 			'object' : object
 		},
 		success : function(data) {
-			callback(data["single"], data["list"]);
+			if (callback)
+				callback(data["single"], data["list"]);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
@@ -182,7 +187,8 @@ AbstractStandardAjaxDao.prototype.edit = function(id, object, callback) {
 			'object' : object
 		},
 		success : function(data) {
-			callback(data["single"], data["list"]);
+			if (callback)
+				callback(data["single"], data["list"]);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
@@ -204,7 +210,8 @@ AbstractStandardAjaxDao.prototype.remove = function(id, callback) {
 		url : url,
 		dataType : "json",
 		success : function(data) {
-			callback(data["single"], data["list"]);
+			if (callback)
+				callback(data["single"], data["list"]);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
@@ -221,7 +228,28 @@ AbstractStandardAjaxDao.prototype.query = function(uri, callback) {
 		url : url,
 		dataType : "json",
 		success : function(data) {
-			callback(data["single"], data["list"]);
+			if (callback)
+				callback(data["single"], data["list"]);
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			console.log(textStatus, errorThrown);
+		}
+	});
+};
+
+AbstractStandardAjaxDao.prototype.post = function(uri, data, callback) {
+	// Generate url
+	var url = this.getUri(uri);
+	
+	// Do ajax
+	$.ajax({
+		url : url,
+		dataType : "json",
+		type : "POST",
+		data : data,
+		success : function(data) {
+			if (callback)
+				callback(data["single"], data["list"]);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);

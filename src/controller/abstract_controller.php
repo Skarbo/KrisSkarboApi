@@ -33,7 +33,7 @@ abstract class AbstractController extends ClassCore
 
 
     /**
-     * @var Api
+     * @var AbstractApi
      */
     private $api;
     /**
@@ -51,7 +51,7 @@ abstract class AbstractController extends ClassCore
 
 
     /**
-     * @param Api $api
+     * @param AbstractApi $api
      */
     public function __construct( AbstractApi $api, AbstractView $view )
     {
@@ -107,7 +107,7 @@ abstract class AbstractController extends ClassCore
 
 
     /**
-     * @return Api
+     * @return AbstractApi
      */
     private function getApi()
     {
@@ -341,7 +341,7 @@ abstract class AbstractController extends ClassCore
      *
      * @param AbstractXhtml $root
      */
-    public function render( AbstractXhtml $root )
+    public function render( AbstractXhtml &$root )
     {
 
         // Before draw

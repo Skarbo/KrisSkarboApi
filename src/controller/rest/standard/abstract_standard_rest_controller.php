@@ -135,8 +135,13 @@ abstract class AbstractStandardRestController extends AbstractRestController
                 array_map(
                         function ( $val )
                         {
-                            return intval( $val );
+                            return trim( $val );
                         }, explode( self::$ID_SPLITTER, self::getURI( self::URI_ID ) ) ) );
+    }
+
+    protected static function getUriCommand()
+    {
+        return self::getURI( self::URI_COMMAND );
     }
 
     /**
@@ -189,7 +194,10 @@ abstract class AbstractStandardRestController extends AbstractRestController
     /**
      * @return StandardListModel
      */
-    protected abstract function getModelListInit();
+    protected function getModelListInit()
+    {
+        return new StandardListModel();
+    }
 
     /**
      * @return array
@@ -293,7 +301,7 @@ abstract class AbstractStandardRestController extends AbstractRestController
     {
 
         // Set Model
-        $this->setModel( $this->getStandardDao()->get( self::getId() ) );
+        $this->setModel( $this->doGetModel( self::getId() ) );
 
         // Add to list
         $this->getModelList()->add( $this->getModel() );
@@ -310,10 +318,10 @@ abstract class AbstractStandardRestController extends AbstractRestController
     {
 
         // Set Model
-        $this->setModel( $this->getStandardDao()->get( self::getId() ) );
+        $this->setModel( $this->doGetModel( self::getId() ) );
 
         // Set Model list
-        $this->setModelList( $this->getStandardDao()->getList( self::getIds() ) );
+        $this->setModelList( $this->doGetList( self::getIds() ) );
 
         // Set status code
         $this->setStatusCode( self::STATUS_OK );
@@ -327,7 +335,7 @@ abstract class AbstractStandardRestController extends AbstractRestController
     {
 
         // Set Model list
-        $this->setModelList( $this->getStandardDao()->getAll() );
+        $this->setModelList( $this->doGetAll() );
 
         // Set status scode
         $this->setStatusCode( self::STATUS_OK );
@@ -341,7 +349,7 @@ abstract class AbstractStandardRestController extends AbstractRestController
     {
 
         // Set Model list
-        $this->setModelList( $this->getStandardDao()->getForeign( self::getIds() ) );
+        $this->setModelList( $this->doGetForeign( self::getIds() ) );
 
         // Add to list
         if ( !$this->getModelList()->isEmpty() )
@@ -362,13 +370,15 @@ abstract class AbstractStandardRestController extends AbstractRestController
         $model = $this->getModelPost();
 
         // Add Model
-        $modelId = $this->getStandardDao()->add( $model, $this->getForeignModel()->getId() );
+        $modelAdded = $this->doAddModel( $model,
+                $this->getForeignModel() ? $this->getForeignModel()->getId() : null );
 
         // Set added Model
-        $this->setModel( $this->getStandardDao()->get( $modelId ) );
+        $this->setModel( $modelAdded );
 
         // Set Model list
-        $this->setModelList( $this->getStandardDao()->getForeign( $this->getForeignModel()->getId() ) );
+        $this->setModelList(
+                $this->doGetForeign( array ( $this->getForeignModel() ? $this->getForeignModel()->getId() : null ) ) );
 
         // Touch foreign object
         $this->doTouchForeign();
@@ -388,13 +398,15 @@ abstract class AbstractStandardRestController extends AbstractRestController
         $model = $this->getModelPost();
 
         // Edit Model
-        $this->getStandardDao()->edit( $this->getModel()->getId(), $model, $model->getForeignId() );
+        $modelEdited = $this->doEditModel( $this->getModel()->getId(), $model,
+                $this->getForeignModel() ? $this->getForeignModel()->getId() : null );
 
         // Set edited Model
-        $this->setModel( $this->getStandardDao()->get( $this->getModel()->getId() ) );
+        $this->setModel( $modelEdited );
 
         // Set Model list
-        $this->setModelList( $this->getForeignStandardDao()->getForeign( $this->getModel()->getForeignId() ) );
+        $this->setModelList(
+                $this->doGetForeign( array ( $this->getForeignModel() ? $this->getForeignModel()->getId() : null ) ) );
 
         // Touch foreign object
         $this->doTouchForeign();
@@ -411,11 +423,11 @@ abstract class AbstractStandardRestController extends AbstractRestController
     {
 
         // Delete Model
-        $this->getStandardDao()->remove( $this->getModel()->getId() );
+        $this->doRemoveModel( $this->getModel()->getId() );
 
         // Set Model list
         $this->setModelList(
-                $this->getStandardDao()->getForeign( array ( $this->getModel()->getForeignId() ) ) );
+                $this->doGetForeign( array ( $this->getForeignModel() ? $this->getForeignModel()->getId() : null ) ) );
 
         // Touch foreign object
         $this->doTouchForeign();
@@ -435,7 +447,7 @@ abstract class AbstractStandardRestController extends AbstractRestController
         $searchString = self::getSearchString();
 
         // Set search result as Model list
-        $this->setModelList( $this->getStandardDao()->search( $searchString ) );
+        $this->setModelList( $this->doSearch( $searchString ) );
 
         // Set status code
         $this->setStatusCode( self::STATUS_OK );
@@ -444,6 +456,75 @@ abstract class AbstractStandardRestController extends AbstractRestController
 
     // ... ... /COMMANDS
 
+
+    /**
+     * @return StandardModel
+     */
+    protected function doGetModel( $id )
+    {
+        return $this->getStandardDao()->get( $id );
+    }
+
+    /**
+     * @return StandardListModel
+     */
+    protected function doGetList( array $ids )
+    {
+        return $this->getStandardDao()->getList( $ids );
+    }
+
+    /**
+     * @return StandardListModel
+     */
+    protected function doGetForeign( array $ids )
+    {
+        return $this->getStandardDao()->getForeign( $ids );
+    }
+
+    /**
+     * @return StandardListModel
+     */
+    protected function doGetAll()
+    {
+        return $this->getStandardDao()->getAll();
+    }
+
+    /**
+     * @param string $searchString
+     * @return StandardListModel
+     */
+    protected function doGetSearch( $searchString )
+    {
+        return $this->getStandardDao()->search( $searchString );
+    }
+
+    /**
+     * @param StandardModel $model
+     * @return StandardModel Added model
+     */
+    protected function doAddModel( StandardModel $model, $foreignId )
+    {
+        $modelId = $this->getStandardDao()->add( $model, $foreignId );
+        return $this->getStandardDao()->get( $modelId );
+    }
+
+    /**
+     * @param StandardModel $model
+     * @return StandardModel Edited model
+     */
+    protected function doEditModel( $id, StandardModel $model, $foreignId )
+    {
+        $this->getStandardDao()->edit( $id, $model, $foreignId );
+        return $this->getStandardDao()->get( $id );
+    }
+
+    /**
+     * @param int $id
+     */
+    protected function doRemoveModel( $id )
+    {
+        $this->getStandardDao()->remove( $id );
+    }
 
     /**
      * Touches foreign object, sets updated foreign object
@@ -488,20 +569,23 @@ abstract class AbstractStandardRestController extends AbstractRestController
 
     protected function beforeIsAdd()
     {
-        // Set foreign Model
-        $this->setForeignModel( $this->getForeignStandardDao()->get( self::getId() ) );
-
-        // Foreign model must exist
-        if ( !$this->getForeignModel() )
+        if ( $this->getForeignStandardDao() )
         {
-            throw new BadrequestException( sprintf( "Id \"%d\" does not exist", self::getId() ) );
+            // Set foreign Model
+            $this->setForeignModel( $this->getForeignStandardDao()->get( self::getId() ) );
+
+            // Foreign model must exist
+            if ( !$this->getForeignModel() )
+            {
+                throw new BadrequestException( sprintf( "Id \"%d\" does not exist", self::getId() ) );
+            }
         }
     }
 
     protected function beforeIsEditDelete()
     {
         // Set Model
-        $this->setModel( $this->getStandardDao()->get( self::getId() ) );
+        $this->setModel( $this->doGetModel( self::getId() ) );
 
         // Model must exist
         if ( !$this->getModel() )
@@ -510,7 +594,8 @@ abstract class AbstractStandardRestController extends AbstractRestController
         }
 
         // Set foreign Model
-        $this->setForeignModel( $this->getForeignStandardDao()->get( $this->getModel()->getForeignId() ) );
+        if ( $this->getForeignStandardDao() )
+            $this->setForeignModel( $this->getForeignStandardDao()->get( $this->getModel()->getForeignId() ) );
     }
 
     // ... /BEFORE

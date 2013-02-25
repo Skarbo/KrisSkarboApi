@@ -24,22 +24,22 @@
 	/* Storage keys */
 	_duration_ = 'duration' + namespace, _timer_ = 'timer' + namespace, _fired_ = 'fired' + namespace;
 
-	/*
-	 * `.click( duration, handler )`
-	 * 
-	 * Simply supply `duration` to the well-known `.click` method and you have a
-	 * *long click*. This method is a shortcut for `.bind("longclick",
-	 * handler)`. Returns *jQuery*.
-	 */
-	var $_fn_click = $.fn.click;
-
-	$.fn.click = function click(duration, handler) {
-		/* Shortcircuit ordinary click calls */
-		if (!handler)
-			return $_fn_click.apply(this, arguments);
-		/* Bind long click */
-		return $(this).data(_duration_, duration || null).bind(type, handler);
-	};
+//	/*
+//	 * `.click( duration, handler )`
+//	 * 
+//	 * Simply supply `duration` to the well-known `.click` method and you have a
+//	 * *long click*. This method is a shortcut for `.bind("longclick",
+//	 * handler)`. Returns *jQuery*.
+//	 */
+//	var $_fn_click = $.fn.click;
+//
+//	$.fn.click = function click(duration, handler) {
+//		/* Shortcircuit ordinary click calls */
+//		if (!handler)
+//			return $_fn_click.apply(this, arguments);
+//		/* Bind long click */
+//		return $(this).data(_duration_, duration || null).bind(type, handler);
+//	};
 
 	/*
 	 * `.longclick( [ duration ], [ handler ] )`

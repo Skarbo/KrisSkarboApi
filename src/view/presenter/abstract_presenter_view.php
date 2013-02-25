@@ -71,6 +71,11 @@ abstract class AbstractPresenterView extends ClassCore implements InterfaceView
         return $this->getView()->getMode( $force );
     }
 
+    public function getLastModified()
+    {
+        return filemtime( __FILE__ );
+    }
+
     // ... /GETTERS/SETTERS
 
 

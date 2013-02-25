@@ -27,6 +27,7 @@ abstract class AbstractView extends ClassCore implements InterfaceView
 
     // ... GETTERS/SETTERS
 
+
     /**
      * @see InterfaceView::getController()
      */
@@ -104,7 +105,11 @@ abstract class AbstractView extends ClassCore implements InterfaceView
         if ( $last_modified_time && !$this->isNoCache() )
         {
             // Set last modified
+//             $expires = 60 * 60 * 24;
             @header( sprintf( "Last-Modified: %s GMT", gmdate( "D, d M Y H:i:s", $last_modified_time ) ) );
+//             @header( "Cache-Control: maxage=" . $expires );
+//             @header( "Pragma: public" );
+//             @header( sprintf( "Expires: %s GMT", gmdate( 'D, d M Y H:i:s', time() + $expires ) ) );
 
             // Get if modified since
             $if_modified_since = AbstractController::getIfModifiedSinceHeader();

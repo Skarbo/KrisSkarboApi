@@ -57,6 +57,10 @@ class Generator
      * @var array
      */
     public $onlyTables = array ();
+    /**
+     * @var string Table prefix to ignore
+     */
+    public $prefixIgnore = "";
 
     // /VARIABLES
 
@@ -97,8 +101,11 @@ class Generator
      * @param string filenamele
      * @return array Array( filename, Array( folders ), class name, variable prefix )
      */
-    private static function getTableInfo( $table )
+    private function getTableInfo( $table )
     {
+
+        if ( $this->prefixIgnore )
+            $table = strstr( $table, $this->prefixIgnore ) == 0 ? substr( $table, strlen( $this->prefixIgnore ) ) : $table;
 
         $tableExploded = array_reverse( explode( "_", $table ) );
 
@@ -470,6 +477,10 @@ class Generator
     private function doGenerateModel( $path, $table, $fields )
     {
 
+        $constant = <<<EOF
+    const %s = "%s";
+EOF;
+
         $variable = <<<EOF
     private $%s;
 EOF;
@@ -491,12 +502,13 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_MODEL ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_model.php", $filename ) );
 
         // Create file contents
+        $constants = array();
         $variables = array ();
         $functions = array ();
         foreach ( $fields as $field )
@@ -505,6 +517,7 @@ EOF;
             //var_dump($table, $field["name"], strpos( $field[ "name" ], $fieldPrefix ) === 0, $fieldCamelCase, "<br />");
 
 
+            $constants[] = sprintf( $constant, strtoupper( $fieldCamelCase ), $fieldCamelCase );
             $variables[] = sprintf( $variable, $fieldCamelCase );
             $functions[] = str_replace( ":dollar:", '$',
                     str_replace( ":function:", ucfirst( $fieldCamelCase ),
@@ -514,6 +527,7 @@ EOF;
 
         $modelFile = $modelFileContents;
         $modelFile = str_replace( ":class:", $className, $modelFile );
+        $modelFile = str_replace( ":constants:", implode( "\n", $constants ), $modelFile );
         $modelFile = str_replace( ":variables:", implode( "\n", $variables ), $modelFile );
         $modelFile = str_replace( ":functions:", implode( "\n", $functions ), $modelFile );
 
@@ -530,7 +544,7 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_MODEL_LIST ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_list_model.php", $filename ) );
@@ -555,7 +569,7 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_MODEL_FACTORY ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_factory_model.php", $filename ) );
@@ -609,7 +623,7 @@ EOF;
         {
 
             // Get table info
-            list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+            list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
             $variables[] = sprintf( "$%s", strtoupper( $className ) );
             $functions[] = str_replace( ":variable:", sprintf( "$%s", strtoupper( $className ) ),
@@ -651,14 +665,14 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_DB_RESOURCES ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_db_resource.php", $filename ) );
 
         // Create file contents
         $variables = array ();
-        $functions = array ( str_replace( ":variable:", "table", str_replace( ":function:", "Table", $function ) ) );
+        $functions = array (); // array ( str_replace( ":variable:", "table", str_replace( ":function:", "Table", $function ) ) );
         foreach ( $fields as $field )
         {
             $fieldCamelCase = ucfirst(
@@ -692,7 +706,7 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_DAO ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_dao.php", $filename ) );
@@ -727,7 +741,7 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_DAO_STANDARD ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_dao.php", $filename ) );
@@ -748,7 +762,7 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_DAO_DB ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_db_dao.php", $filename ) );
@@ -792,7 +806,7 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_DAO_DB_STANDARD ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_db_dao.php", $filename ) );
@@ -841,7 +855,7 @@ EOF;
         {
 
             // Get table info
-            list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+            list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
             $testClasses[] = sprintf( "\t\$this->add( new %sDaoTest() );", $className );
 
@@ -886,7 +900,7 @@ EOF;
                 sprintf( "%s/%s/%s", dirname( __FILE__ ), self::$TEMPLATE_PATH, self::$TEMPLATE_TEST_DAO ) );
 
         // Get table info
-        list ( $filename, $folders, $className, $fieldPrefix ) = self::getTableInfo( $table );
+        list ( $filename, $folders, $className, $fieldPrefix ) = $this->getTableInfo( $table );
 
         // Create folders and file
         $filePath = $this->doCreateFoldersFile( $path, $folders, sprintf( "%s_dao_test.php", $filename ) );

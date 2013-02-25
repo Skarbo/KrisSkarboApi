@@ -22,5 +22,6 @@ $CSS_FILES = array ();
 $CSS_FILES = array_merge( $CSS_FILES, Core::getDirectory( dirname( __FILE__ ) . "/view" ) );
 $CSS_FILES = array_merge( $CSS_FILES, Core::getDirectory( dirname( __FILE__ ) . "/gui" ) );
 $CSS_FILES = array_merge( $CSS_FILES, Core::getDirectory( dirname( __FILE__ ) . "/core" ) );
+$CSS_FILES = array_merge( $CSS_FILES, Core::getDirectory( dirname( __FILE__ ) . "/font" ) );
 
 ?>

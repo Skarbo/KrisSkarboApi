@@ -12,6 +12,7 @@ class FileUtil
     const CSS_REPLACE_NO_SELECT = '%/\* no_select \*/%';
     const CSS_REPLACE_SHADOW = '%/\* box_shadow:(.+): \*/%';
     const CSS_REPLACE_GRADIENT = '%/\* gradient:(.+):(.+):(.+):(.+): \*/%';
+    const CSS_REPLACE_TRANSITION = '%/\* transition:(.+): \*/%';
 
 
     public static $CSS_REPLACE = array ();
@@ -167,6 +168,15 @@ FileUtil::$CSS_REPLACE[ FileUtil::CSS_REPLACE_GRADIENT ] = <<<EOF
 	background-image: -webkit-linear-gradient(bottom, $1 $2%, $3 $4% );
 	background-image: -ms-linear-gradient(bottom, $1 $2%, $3 $4% );
 	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.$2, $1 ), color-stop(0.$4, $3 ) );
+EOF;
+
+FileUtil::$CSS_REPLACE[ FileUtil::CSS_REPLACE_TRANSITION ] = <<<EOF
+/* Transition */
+	-webkit-transition : $1;
+	-moz-transition: $1;
+	-o-transition: $1;
+	transition: $1;
+	-webkit-transition: $1;
 EOF;
 
 ?>

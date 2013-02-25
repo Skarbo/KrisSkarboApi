@@ -71,6 +71,9 @@ class PdoDbApi extends DbApi
     public function query( QueryDbCore $query )
     {
 
+        if ( !$this->pdo )
+            throw new Exception( "DAtabase is disconnected" );
+
         switch ( get_class( $query ) )
         {
             case SelectQueryDbCore::class_() :

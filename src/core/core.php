@@ -789,10 +789,10 @@ class Core
 
         $result = strtolower( $string );
 
-        $result = preg_replace( "/[^a-z0-9 ]/", "", $result );
+        $result = preg_replace( "/[^\w\s]/", "", $result );
         //$result = trim( preg_replace( "/[-]+/", " ", $result ) );
         $result = trim( substr( $result, 0, $maxLength ) );
-        $result = preg_replace( "/ /", "-", $result );
+        $result = preg_replace( "/[\s_]/", "-", $result );
 
         return $result;
 
@@ -837,7 +837,7 @@ class Core
         }
         else if ( is_string( $var ) )
         {
-            return !mb_check_encoding( $var, 'UTF-8' ) ? utf8_encode( $var ) : $var;
+            return !mb_check_encoding( $var, 'UTF-8' ) ? utf8_encode( $var ) : $var; // mb_detect_encoding( $var ) != 'UTF-8' ? utf8_encode( $var ) : $var;
         }
         else
         {
@@ -862,6 +862,7 @@ class Core
         }
         else if ( is_string( $var ) )
         {
+            //return mb_detect_encoding( $var ) == 'UTF-8' ? utf8_decode( $var ) : $var; //!mb_check_encoding( $var, 'UTF-8' ) ? utf8_encode( $var ) : $var;
             return mb_check_encoding( $var, 'UTF-8' ) ? utf8_decode( $var ) : $var;
         }
         else
