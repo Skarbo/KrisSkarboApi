@@ -1,68 +1,77 @@
-//https://github.com/tuxracer/jquery-touchclick/blob/master/jquery.touchclick.min.js
-(function($) {
-	$.event.special.touchclick = {
-		setup : function() {
-			var $el = $(this);
+// https://github.com/tuxracer/jquery-touchclick
+(function ($) {
+    var activeClass = "touching",
+        touchstart,
+        touchmove,
+        touchend,
+        timestamp;
 
-			if (typeof window.ontouchstart !== "undefined") {
-				$el.on("touchstart", $.event.special.touchclick.touchstart);
-				$el.on("touchmove", $.event.special.touchclick.touchmove);
-				$el.on("touchend", $.event.special.touchclick.touchend);
-			}
-			else {
-				$el.on("mousedown", $.event.special.touchclick.touchstart);
-				$el.on("mouseup", $.event.special.touchclick.touchend);
+    timestamp = function () {
+        return Math.round((new Date()).getTime() / 1000);
+    };
 
-				if (!window.navigator.msPointerEnabled) {
-					$el.on("mousemove", $.event.special.touchclick.touchmove);
-				}
-			}
-		},
+    touchstart = function (e) {
+        var $targetEl = $(e.target),
+            currentTimestamp = timestamp(),
+            lastTimestamp = $targetEl.data("touchclick-last-touch"),
+            difference = currentTimestamp - lastTimestamp;
 
-		click : function(event) {
-			event.type = "touchclick";
-			$(this).trigger(event.type, arguments);
-		},
+        if (lastTimestamp && difference < 3 && e.type === "mousedown") {
+            $targetEl.data("touchclick-disabled", true);
+        } else {
+            $targetEl.data("touchclick-disabled", false);
+            $targetEl.addClass(activeClass);
+        }
 
-		teardown : function() {
-			var $el = $(this);
+        if (e.type === "touchstart" || e.type === "MSPointerDown") {
+            $targetEl.data("touchclick-last-touch", currentTimestamp);
+        }
+    };
 
-			if (typeof window.ontouchstart !== "undefined") {
-				$el.off("touchstart", $.event.special.touchclick.touchstart);
-				$el.off("touchmove", $.event.special.touchclick.touchmove);
-				$el.off("touchend", $.event.special.touchclick.touchend);
-			}
-			else {
-				$el.off("mousedown", $.event.special.touchclick.touchstart);
-				$el.off("mouseup", $.event.special.touchclick.touchend);
+    touchmove = function (e) {
+        var $targetEl = $(e.target);
 
-				if (!window.navigator.msPointerEnabled) {
-					$el.off("mousemove", $.event.special.touchclick.touchmove);
-				}
-			}
-		},
+        $targetEl.data("touchclick-disabled", true);
+        $targetEl.removeClass(activeClass);
+    };
 
-		touchstart : function() {
-			var $el = $(this);
+    touchend = function (e) {
+        var $targetEl = $(e.target);
 
-			$el.data("touchclick-moved", false);
-			$el.addClass("touching");
-		},
+        if (!$targetEl.data("touchclick-disabled")) {
+            e.type = "touchclick";
+            $.event.dispatch.call(this, e);
+        }
 
-		touchmove : function() {
-			var $el = $(this);
+        $targetEl.data("touchclick-disabled", false);
+        $targetEl.removeClass(activeClass);
+    };
 
-			$el.data("touchclick-moved", true);
-			$el.removeClass("touching");
-		},
+    $.event.special.touchclick = {
+        setup: function () {
+            var $el = $(this);
 
-		touchend : function() {
-			var $el = $(this);
+            if (window.navigator.msPointerEnabled) {
+                $el.on("MSPointerDown", touchstart);
+                $el.on("MSPointerUp", touchend);
+            } else {
+                $el.on("touchstart mousedown", touchstart);
+                $el.on("touchmove mousemove", touchmove);
+                $el.on("touchend mouseup", touchend);
+            }
+        },
 
-			if (!$el.data("touchclick-moved")) {
-				$.event.special.touchclick.click.apply(this, arguments);
-			}
-			$el.removeClass("touching");
-		}
-	};
+        teardown: function () {
+            var $el = $(this);
+
+            if (window.navigator.msPointerEnabled) {
+                $el.off("MSPointerDown", touchstart);
+                $el.off("MSPointerUp", touchend);
+            } else {
+                $el.off("touchstart mousedown", touchstart);
+                $el.off("touchmove mousemove", touchmove);
+                $el.off("touchend mouseup", touchend);
+            }
+        }
+    };
 })(jQuery);
