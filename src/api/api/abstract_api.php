@@ -482,7 +482,7 @@ abstract class AbstractApi
                         print_r( DbException::get_( $exception )->getQuery()->getBinds(), true ) );
             }
         }
-var_dump($errorstr);
+
         $errorstr .= "\n";
 
         // Do log error
