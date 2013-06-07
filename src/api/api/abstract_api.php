@@ -110,7 +110,6 @@ abstract class AbstractApi
             {
                 // Do backup
                 $dbbackupHandler->handle();
-
             }
 
         }
@@ -118,7 +117,7 @@ abstract class AbstractApi
         {
             //                 ErrorHandler::doError($e);
             //                 $this->error_handler->handle( $e );
-            $this->doErrorLog( $e );
+            //$this->doErrorLog( $e );
         }
     }
 
