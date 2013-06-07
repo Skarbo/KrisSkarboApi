@@ -117,7 +117,7 @@ abstract class AbstractApi
         {
             //                 ErrorHandler::doError($e);
             //                 $this->error_handler->handle( $e );
-            //$this->doErrorLog( $e );
+            $this->doErrorLog( $e );
         }
     }
 
@@ -486,7 +486,7 @@ abstract class AbstractApi
         $errorstr .= "\n";
 
         // Do log error
-        @error_log( $errorstr, 3, self::$LOG_FILE );
+        //@error_log( $errorstr, 3, self::$LOG_FILE );
 
     }
 
