@@ -97,30 +97,29 @@ abstract class AbstractApi
 
     public function destruct()
     {
-
-        // Disconnect database
-        $this->getDbApi()->disconnect();
-
-        // Backup database
-        $dbbackupHandler = $this->getDbbackupHandler();
-
-        if ( $dbbackupHandler )
+        try
         {
-            try
+
+            // Disconnect database
+            $this->getDbApi()->disconnect();
+
+            // Backup database
+            $dbbackupHandler = $this->getDbbackupHandler();
+
+            if ( $dbbackupHandler )
             {
                 // Do backup
                 $dbbackupHandler->handle();
 
             }
-            catch ( Exception $e )
-            {
-                //                 ErrorHandler::doError($e);
-                //                 $this->error_handler->handle( $e );
-                $this->doErrorLog( $e );
-            }
 
         }
-
+        catch ( Exception $e )
+        {
+            //                 ErrorHandler::doError($e);
+            //                 $this->error_handler->handle( $e );
+            $this->doErrorLog( $e );
+        }
     }
 
     // /DECONSTRUCTOR
