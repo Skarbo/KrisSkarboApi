@@ -106,8 +106,19 @@ abstract class AbstractApi
 
         if ( $dbbackupHandler )
         {
-            // Do backup
-            $dbbackupHandler->handle();
+            try
+            {
+                // Do backup
+                $dbbackupHandler->handle();
+
+            }
+            catch ( Exception $e )
+            {
+                //                 ErrorHandler::doError($e);
+                //                 $this->error_handler->handle( $e );
+                $this->doErrorLog( $e );
+            }
+
         }
 
     }
@@ -493,8 +504,9 @@ abstract class AbstractApi
     {
 
         // Initiate Error handler
-//         $error_dao = new ErrorDbDao( $this->getDbApi() );
-//         $this->setErrorHandler( new ErrorHandler( $error_dao ) );
+        //         $error_dao = new ErrorDbDao( $this->getDbApi() );
+        //         $this->setErrorHandler( new ErrorHandler( $error_dao ) );
+
 
         // Initiate Controller and View
         $controller = null;

@@ -21,6 +21,7 @@ class DbbackupHandler extends ClassCore
     private $source;
     private $occurence;
     private $time;
+    private $tableRowsSkip = array( '/^error$|.?\_error$/i' );
 
     // /VARIABLES
 
@@ -509,6 +510,13 @@ class DbbackupHandler extends ClassCore
             throw new Exception(
                     sprintf( "Invalid query for database \"%s\" and table \"%s\": %s", $database, $table,
                             mysql_error( $link ) ) );
+        }
+
+        // Skip rows
+        foreach($this->tableRowsSkip as $rowSkipRegex)
+        {
+            if (preg_match($rowSkipRegex, $table))
+                return;
         }
 
         $data = array ();
