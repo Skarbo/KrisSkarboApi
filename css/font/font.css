@@ -49,3 +49,7 @@
 *[data-icon=more]:AFTER {
 	content: ".";
 }
+
+*[data-icon=clock]:AFTER {
+	content: "C";
+}

@@ -52,9 +52,8 @@ class AbstractDefaultLocale extends Locale
     function timeSince( $date_time )
     {
         // array of time period chunks
-        $chunks = array ( array ( 60 * 60 * 24 * 365, "year" ),
-                array ( 60 * 60 * 24 * 30, "month" ), array ( 60 * 60 * 24 * 7, "week" ),
-                array ( 60 * 60 * 24, "day" ), array ( 60 * 60, "hour" ),
+        $chunks = array ( array ( 60 * 60 * 24 * 365, "year" ), array ( 60 * 60 * 24 * 30, "month" ),
+                array ( 60 * 60 * 24 * 7, "week" ), array ( 60 * 60 * 24, "day" ), array ( 60 * 60, "hour" ),
                 array ( 60, "min" ) );
 
         $today = time(); /* Current unix time  */
@@ -312,16 +311,24 @@ class AbstractDefaultLocale extends Locale
     {
         return $this->none;
     }
-	public function getDelete()
+
+    public function getDelete()
     {
         return $this->delete;
     }
 
-	public function getDeleting()
+    public function getDeleting()
     {
         return $this->deleting;
     }
 
+    public function getActivity( $registered, $updated = null )
+    {
+        $activityTime = $updated ? $updated : $registered;
+        return sprintf( "%s %s",
+                ucfirst( $updated ? $this->getUpdated() : $this->getRegistered() ),
+                $this->timeSince( $activityTime ) );
+    }
 
 }
 

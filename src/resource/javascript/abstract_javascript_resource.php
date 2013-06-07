@@ -13,11 +13,11 @@ class AbstractJavascriptResource extends ClassCore
     private $jqueryMobileApiFile = "jquery.mobile-1.2.0.js";
     private $jqueryUiApiFile = "jquery-ui-1.8.18.custom.min.js";
     private $jqueryHistoryApiFile = "jquery.history.js";
-    private $kineticApiFile = "kinetic-v4.3.3.js";
+    private $kineticApiFile = "kinetic-v4.4.3.js";
     private $jqueryDragApiFile = "jquery.event.drag-2.0.min.js";
     private $transitionsApiFile = "fasw.transitions.min.js";
-    private $hammerApiFile = "hammer.js";
-    private $hammerJqueryApiFile = "jquery.hammer.js";
+    private $hammerApiFile = "hammer.min.js";
+    private $hammerJqueryApiFile = "jquery.hammer.min.js";
     private $knockoutApiFile = "knockout-2.1.0.js";
     private $googleChart = "https://www.google.com/jsapi";
 

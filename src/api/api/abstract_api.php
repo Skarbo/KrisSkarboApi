@@ -340,6 +340,12 @@ abstract class AbstractApi
             // Set locale
             $this->setLocale( Locale::instance() );
 
+            if ( class_exists( "ErrorDbDao" ) && class_exists( "ErrorHandler" ) )
+            {
+                $error_dao = new ErrorDbDao( $this->getDbApi() );
+                $this->setErrorHandler( new ErrorHandler( $error_dao ) );
+            }
+
         }
         catch ( Exception $e )
         {
@@ -487,8 +493,8 @@ abstract class AbstractApi
     {
 
         // Initiate Error handler
-        $error_dao = new ErrorDbDao( $this->getDbApi() );
-        $this->setErrorHandler( new ErrorHandler( $error_dao ) );
+//         $error_dao = new ErrorDbDao( $this->getDbApi() );
+//         $this->setErrorHandler( new ErrorHandler( $error_dao ) );
 
         // Initiate Controller and View
         $controller = null;

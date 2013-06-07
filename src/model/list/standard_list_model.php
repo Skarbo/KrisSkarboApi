@@ -19,6 +19,25 @@ class StandardListModel extends IteratorCore
 
 
     /**
+     * @see IteratorCore::get()
+     * @return StandardModel
+     */
+    public function get( $i )
+    {
+        return parent::get( $i );
+    }
+
+    public function getIndex( $modelId )
+    {
+        for ( $i = 0; $i < count( $this->array ); $i++ )
+        {
+            if ( $this->get( $i )->getId() == $modelId )
+                return $i;
+        }
+        return -1;
+    }
+
+    /**
      * @return integer Last modified, null if not exist
      */
     public function getLastModified()
@@ -52,6 +71,19 @@ class StandardListModel extends IteratorCore
         }
 
         return array_values( array_unique( $foreignIds ) );
+
+    }
+
+    /**
+     * @return StandardListModel
+     */
+    public function getForeignList( $foreignId )
+    {
+        return $this->filter(
+                function ( StandardModel $model ) use($foreignId )
+                {
+                    return $model->getForeignId() == $foreignId;
+                } );
     }
 
     /**

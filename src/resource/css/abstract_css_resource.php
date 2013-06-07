@@ -14,6 +14,8 @@ class AbstractCssResource extends ClassCore
     private $jqueryMobileApiFile = "jquery.mobile-1.1.0.min.css";
     private $transitionsApiFile = "transition.min.css";
 
+    private $fontRoboto = "http://fonts.googleapis.com/css?family=Roboto";
+
     private $table = "table";
     private $tableCell = "cell";
     private $tableRow = "row";
@@ -154,6 +156,11 @@ class AbstractCssResource extends ClassCore
     public function getHover()
     {
         return $this->hover;
+    }
+
+    public function getFontRoboto()
+    {
+        return $this->fontRoboto;
     }
 
 }

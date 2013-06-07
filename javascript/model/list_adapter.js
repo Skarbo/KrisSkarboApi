@@ -133,7 +133,7 @@ ListAdapter.prototype.setList = function(list) {
 
 /**
  * @param {Function}
- *            notifyCallback Function(type [add|added|remove|clear], object)
+ *            notifyCallback Function(type [add|addall|remove|clear], object)
  */
 ListAdapter.prototype.addNotifyOnChange = function(notifyCallback) {
 	this.notifyOnChange.push(notifyCallback);

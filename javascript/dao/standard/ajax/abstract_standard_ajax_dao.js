@@ -240,7 +240,7 @@ AbstractStandardAjaxDao.prototype.query = function(uri, callback) {
 AbstractStandardAjaxDao.prototype.post = function(uri, data, callback) {
 	// Generate url
 	var url = this.getUri(uri);
-	
+	console.log("Post", url, data);
 	// Do ajax
 	$.ajax({
 		url : url,

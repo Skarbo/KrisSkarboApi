@@ -77,6 +77,7 @@ class IteratorCore extends ClassCore implements Iterator
     {
         $element = $this->get( $i );
         unset( $this->array[ $i ] );
+        $this->array = array_merge($this->array);
         return $element;
     }
 

@@ -18,8 +18,9 @@ abstract class AbstractDbTest extends UnitTestCase
     {
         parent::__construct( $label );
 
-        list ( $host, $db, $user, $pass ) = $this->getDatabaseConfig();
-        $this->db_api = new PdoDbApi( $host, $db, $user, $pass );
+        $databaseConfig = $this->getDatabaseConfig();
+        $this->db_api = new PdoDbApi( $databaseConfig[ "host" ], $databaseConfig[ "db" ], $databaseConfig[ "user" ],
+                $databaseConfig[ "pass" ] );
     }
 
     // /CONSTRUCTOR

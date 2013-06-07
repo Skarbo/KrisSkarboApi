@@ -17,6 +17,19 @@ Core.roundNumber = function(num, dec) {
 };
 
 /**
+ * @param {Number}
+ *            num Number
+ * @param {Number}
+ *            closest Closest to number
+ * @returns {Number} Result
+ */
+Core.closestNumber = function(num, closest) {
+	closest = closest || 0.5;
+	var factor = 1 / closest;
+	return Math.round(num * factor) / factor;
+};
+
+/**
  * Copyright (c) Alexandru Marasteanu <alexaholic [at) gmail (dot] com> All
  * rights reserved.
  * 

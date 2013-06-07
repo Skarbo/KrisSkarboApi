@@ -540,11 +540,10 @@ class DbbackupHandler extends ClassCore
                     }, array_keys( Core::arrayAt( $rows, 0, array () ) ) );
 
             // Insert into table
-            $data[] = sprintf( "INSERT INTO `%s` (%s) VALUES ", $table, implode( ", ", $tableFields ) );
 
             // Table values
-            $data[] = implode( ",\n",
-                    array_map(
+//             $data[] = implode( ",\n",
+                    $arr = array_map(
                             function ( $row )
                             {
                                 return sprintf( "\t(%s)",
@@ -556,9 +555,14 @@ class DbbackupHandler extends ClassCore
                                                                     $rowValue ) ? $rowValue : sprintf( "'%s'",
                                                                     mysql_real_escape_string( utf8_encode( $rowValue ) ) ) );
                                                         }, $row ) ) );
-                            }, $rows ) );
+                            }, $rows );
 
-            $data[] = ";";
+                            foreach($arr as $v)
+                            {
+            $data[] = sprintf( "INSERT INTO `%s` (%s) VALUES\n%s;", $table, implode( ", ", $tableFields ), $v );
+                            }
+
+//             $data[] = ";";
 
             // Enable keys
             $data[] = sprintf( "/*!40000 ALTER TABLE `%s` ENABLE KEYS */;", $table );

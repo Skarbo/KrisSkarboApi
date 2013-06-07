@@ -505,7 +505,25 @@ class Core
      */
     public static function createJson( $mixed )
     {
+        return self::createJsonString( $mixed );
+    }
+
+    /**
+     * @param mixed $mixed
+     * @return string JSON data
+     */
+    public static function createJsonString( $mixed )
+    {
         return json_encode( $mixed, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP );
+    }
+
+    /**
+     * @param mixed $mixed
+     * @return array JSON data
+     */
+    public static function createJsonArray( $mixed, $def = null )
+    {
+        return is_array( $mixed ) ? $mixed : ( ( $decode = json_decode( $mixed, true ) ) != NULL ? $decode : $def );
     }
 
     /**
@@ -595,9 +613,9 @@ class Core
      * @param array $headers
      * @return bool True if url exists
      */
-    static function isUrlExist( $url, &$headers )
+    static function isUrlExist( $url, &$headers = array() )
     {
-        if (!$url)
+        if ( !$url )
             return false;
 
         $headers = @get_headers( $url, 1 );
@@ -776,6 +794,19 @@ class Core
     static function parseTimestamp( $date )
     {
         return is_numeric( $date ) ? intval( $date ) : ( !empty( $date ) ? strtotime( $date ) : null );
+    }
+
+    /**
+     * @param String $st
+     * @return String
+     */
+    static function parseUnicode( $str )
+    {
+        return preg_replace_callback( '/\\\\u([0-9a-f]{4})/i',
+                function ( $match )
+                {
+                    return mb_convert_encoding( pack( 'H*', $match[ 1 ] ), 'UTF-8', 'UCS-2BE' );
+                }, $str );
     }
 
     /**
@@ -979,14 +1010,14 @@ class Core
             {
                 // File
                 if ( !is_dir( "{$path}{$DS}{$file}" ) && ( !empty( $restrict[ "ignore" ][ "files" ] ) ? !self::search(
-                        $file, $restrict[ "ignore" ][ "files" ] ) : true ) && ( !empty( $restrict[ "include" ][ "files" ] ) ? self::search(
-                        $file, $restrict[ "include" ][ "files" ] ) : true ) )
+                        $file, $restrict[ "ignore" ][ "files" ] ) : true ) && ( !empty(
+                        $restrict[ "include" ][ "files" ] ) ? self::search( $file, $restrict[ "include" ][ "files" ] ) : true ) )
                 {
                     array_unshift( $files, "{$path}{$DS}{$file}" );
                 }
                 // Folder
-                else if ( is_dir( "{$path}{$DS}{$file}" ) && ( !empty( $restrict[ "ignore" ][ "folders" ] ) ? !self::search(
-                        $file, $restrict[ "ignore" ][ "folders" ] ) : true ) && ( !empty(
+                else if ( is_dir( "{$path}{$DS}{$file}" ) && ( !empty(
+                        $restrict[ "ignore" ][ "folders" ] ) ? !self::search( $file, $restrict[ "ignore" ][ "folders" ] ) : true ) && ( !empty(
                         $restrict[ "include" ][ "folders" ] ) ? self::search( $file, $restrict[ "include" ][ "folders" ] ) : true ) )
                 {
                     $files = array_merge( $files,
@@ -997,6 +1028,31 @@ class Core
         closedir( $dh );
 
         return $files;
+    }
+
+    /**
+     * @param number $jsonErrorCode
+     * @return String JSON error string
+     */
+    public static function jsonError( $jsonErrorCode )
+    {
+        switch ( $jsonErrorCode )
+        {
+            case JSON_ERROR_NONE :
+                return 'No errors';
+            case JSON_ERROR_DEPTH :
+                return 'Maximum stack depth exceeded';
+            case JSON_ERROR_STATE_MISMATCH :
+                return 'Underflow or the modes mismatch';
+            case JSON_ERROR_CTRL_CHAR :
+                return 'Unexpected control character found';
+            case JSON_ERROR_SYNTAX :
+                return 'Syntax error, malformed JSON';
+            case JSON_ERROR_UTF8 :
+                return 'Malformed UTF-8 characters, possibly incorrectly encoded';
+            default :
+                return 'Unknown error';
+        }
     }
 
     /**

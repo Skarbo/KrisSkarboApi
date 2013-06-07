@@ -35,7 +35,6 @@ AbstractStandardDao.prototype.getForeignList = function(foreignId) {
 
 // ... /GET
 
-
 /**
  * @param {integer}
  *            id
@@ -170,7 +169,8 @@ AbstractStandardDao.prototype.edit = function(id, object, callback) {
 	var context = this;
 	this.ajax.edit(id, object, function(single, list) {
 		context.getListAdapter().add(single.id, single);
-		callback(single, list);
+		if (callback)
+			callback(single, list);
 	});
 };
 

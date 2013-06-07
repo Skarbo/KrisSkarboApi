@@ -31,6 +31,8 @@ class WebsiteParser extends ClassCore
     /**
      * @param string $url
      * @throws ParserException
+     * @return String result
+     * @deprecated
      */
     private function parseUrl( $url )
     {
@@ -57,27 +59,58 @@ class WebsiteParser extends ClassCore
     /**
      * @param string $url
      * @param WebsiteAlgorithmParser $parseAlgorithm
+     * @param array $post Given if post
      * @throws ParserException
      * @return mixed
      */
-    public function parse( $url, WebsiteAlgorithmParser $parseAlgorithm )
+    public function parse( $url, WebsiteAlgorithmParser $parseAlgorithm, $post = null )
     {
-        DebugHandler::doDebug( DebugHandler::LEVEL_LOW, new DebugException( "Parse", $url, get_class($parseAlgorithm) ) );
-        // Parse URL
-        $html_dom = $this->parseUrl( $url );
-
-        // Could not get DOM from url
-        if ( $html_dom == null )
+        // Check if webpage exists
+        if ( !Core::isUrlExist( $url ) )
         {
-            throw new ParserException( sprintf( "Could not get DOM from webpage (\"%s\")", $url ),
-                    ParserException::DOM_ERROR );
+            throw new ParserException( sprintf( "Webpage (\"%s\") does not exist", $url ),
+                    ParserException::WEBPAGE_NOT_EXIST_ERROR );
         }
 
-        // Parse html with given algorithm
-        $parsed_list = $parseAlgorithm->parseHtml( $html_dom );
+        $result = null;
+        $html = null;
 
-        // Return parsed list
-        return $parsed_list;
+        // Post
+        if ( is_array( $post ) )
+        {
+            $data = json_encode($post);
+            $opts = array (
+                    "http" => array ( "method" => "POST", "header" => "Content-Type: application/json\r\nContent-Length: " . strlen($data_string),
+                            "content" => $data ) );
+            $context = stream_context_create( $opts );
+            $html = file_get_contents( $url, false, $context );
+        }
+        else
+            $html = file_get_contents( $url );
+
+            // HTML DOM parse
+        if ( $parseAlgorithm->getParseType() == WebsiteAlgorithmParser::PARSER_TYPE_HTMLDOM )
+        {
+
+            if ( !$html )
+                throw new ParserException( sprintf( "Could not get HTML DOM from webpage (\"%s\")", $url ),
+                        ParserException::DOM_ERROR );
+
+            $result = $parseAlgorithm->parseHtmlDom( $html );
+        }
+        // HTML raw parse
+        else
+        {
+            //$html = SimplehtmldomApi::fileGetHtml( $url );
+
+            if ( !$html )
+                throw new ParserException( sprintf( "Could not get HTML from webpage (\"%s\")", $url ),
+                        ParserException::HTML_ERROR );
+
+            $result = $parseAlgorithm->parseHtmlRaw( $html );
+        }
+
+        return $result;
     }
 
     // /FUNCTIONS

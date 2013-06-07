@@ -13,7 +13,7 @@ class FileUtil
     const CSS_REPLACE_SHADOW = '%/\* box_shadow:(.+): \*/%';
     const CSS_REPLACE_GRADIENT = '%/\* gradient:(.+):(.+):(.+):(.+): \*/%';
     const CSS_REPLACE_TRANSITION = '%/\* transition:(.+): \*/%';
-
+    const CSS_REPLACE_TRANSFORM = '%/\* transform:(.+): \*/%';
 
     public static $CSS_REPLACE = array ();
 
@@ -162,13 +162,21 @@ EOF;
 
 FileUtil::$CSS_REPLACE[ FileUtil::CSS_REPLACE_GRADIENT ] = <<<EOF
 /* Gradient */
-	background-image: linear-gradient(bottom, $1 $2%, $3 $4% );
-	background-image: -o-linear-gradient(bottom, $1 $2%, $3 $4% );
-	background-image: -moz-linear-gradient(bottom, $1 $2%, $3 $4% );
-	background-image: -webkit-linear-gradient(bottom, $1 $2%, $3 $4% );
-	background-image: -ms-linear-gradient(bottom, $1 $2%, $3 $4% );
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.$2, $1 ), color-stop(0.$4, $3 ) );
+	background: -webkit-gradient(linear, center top, center bottom, from($1), to($3));
+    background: -webkit-linear-gradient($1, $3);
+    background: -moz-linear-gradient($1, $3);
+    background: -o-linear-gradient($1, $3);
+    background: -ms-linear-gradient($1, $3);
+    background: linear-gradient($1, $3);
 EOF;
+
+// background-image: linear-gradient(bottom, $1 $2%, $3 $4% );
+// background-image: -o-linear-gradient(bottom, $1 $2%, $3 $4% );
+// background-image: -moz-linear-gradient(bottom, $1 $2%, $3 $4% );
+// background-image: -webkit-linear-gradient(bottom, $1 $2%, $3 $4% );
+// background-image: -ms-linear-gradient(bottom, $1 $2%, $3 $4% );
+// background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.$2, $1 ), color-stop(0.$4, $3 ) );
+
 
 FileUtil::$CSS_REPLACE[ FileUtil::CSS_REPLACE_TRANSITION ] = <<<EOF
 /* Transition */
@@ -177,6 +185,13 @@ FileUtil::$CSS_REPLACE[ FileUtil::CSS_REPLACE_TRANSITION ] = <<<EOF
 	-o-transition: $1;
 	transition: $1;
 	-webkit-transition: $1;
+EOF;
+
+FileUtil::$CSS_REPLACE[ FileUtil::CSS_REPLACE_TRANSFORM ] = <<<EOF
+/* Transform */
+    transform: $1;
+    -ms-transform: $1;
+    -webkit-transform: $1;
 EOF;
 
 ?>

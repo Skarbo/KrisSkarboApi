@@ -207,9 +207,12 @@ abstract class AbstractController extends ClassCore
     /**
      * @return array Query array
      */
-    public static function getQuery()
+    public static function getQuery( $index = null )
     {
-        return $_GET;
+        if ( $index )
+            return Core::arrayAt( $_GET, $index );
+        else
+            return $_GET;
     }
 
     /**
