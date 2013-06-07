@@ -393,7 +393,7 @@ abstract class AbstractApi
 
             case E_WARNING :
             case E_USER_WARNING :
-                if ( $this->getErrorHandler() )
+                if ( $this->getErrorHandler() && $this->getDbApi()->isConnected() )
                 {
                     $this->getErrorHandler()->handle( $error_exception );
                 }
@@ -486,7 +486,7 @@ var_dump($errorstr);
         $errorstr .= "\n";
 
         // Do log error
-        //@error_log( $errorstr, 3, self::$LOG_FILE );
+        @error_log( $errorstr, 3, self::$LOG_FILE );
 
     }
 
