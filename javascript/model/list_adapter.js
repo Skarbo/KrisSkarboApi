@@ -79,7 +79,7 @@ ListAdapter.prototype.add = function(id, object) {
 ListAdapter.prototype.addAll = function(list) {
 	if (jQuery.isPlainObject(list)) {
 		this.list = jQuery.extend({}, this.list, list);
-		this.notifyDataSetChanged("addall", this.list);
+		this.notifyDataSetChanged("addall", list);
 	}
 };
 
