@@ -1,13 +1,12 @@
 <?php
 
-abstract class Validator extends ClassCore
-{
-
+abstract class Validator extends ClassCore {
+    
     // VARIABLES
-
+    
 
     public static $REGEX_TITLE = '/[^\w\p{L}\s,.-]+/';
-
+    
     //    static $REGEX_EMAIL = "/^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/";
     //    static $REGEX_DATE = "/^(([1-9])|(0[1-9])|(1[0-9])|(2[0-9])|(3[0-1]))\\.(([1-9])|(0[1-9])|(1[0-2]))\\.(\\d{4})$/i"; // dd.mm.yyyy
     //    //static $REGEX_DATE = "/^(([1-9])|(0[1-9])|(1[0-2]))\\/(([1-9])|(0[1-9])|(1[0-9])|(2[0-9])|(3[0-1]))\\/((\\d{2})|(\\d{4}))|(([1-9])|(0[1-9])|(1[0-9])|(2[0-9])|(3[0-1])).(([1-9])|(0[1-9])|(1[0-2])).(\\d{4})|((\\d{2})|(\\d{4}))\\-(([1-9])|(0[1-9])|(1[0-2]))\\-(([1-9])|(0[1-9])|(1[0-9])|(2[0-9])|(3[0-1]))$/i";
@@ -18,46 +17,43 @@ abstract class Validator extends ClassCore
     //    static $REGEX_ZIP = "/[^0-9\\s-]/i";
     //
     //    static $REGEX_NUMBER = "/[^0-9]/i";
-
+    
 
     protected $model;
     protected $locale;
-
+    
     // CONSTRUCT
+    
 
-
-    public function __construct( Locale $locale )
-    {
+    public function __construct( Locale $locale ) {
         $this->locale = $locale;
     }
-
+    
     // FUNCTIONS
-
+    
 
     //	VALIDATE
-
+    
 
     // ... GET
-
+    
 
     /**
      * @return Model
      */
-    protected function getModel()
-    {
+    protected function getModel() {
         return $this->model;
     }
 
     /**
      * @return DefaultLocale
      */
-    protected function getLocale()
-    {
+    protected function getLocale() {
         return $this->locale;
     }
-
+    
     // ... /GET
-
+    
 
     /**
      * @param string $name Name of value
@@ -67,24 +63,21 @@ abstract class Validator extends ClassCore
      * @throws Exception
      * @return string
      */
-    protected static function validateLength( $name, $value, $min, $max = NULL )
-    {
+    protected static function validateLength( $name, $value, $min, $max = NULL ) {
         $betweenString = $max ? "Must bust be between $min and $max characters." : "Must be minimum $min characters.";
-
+        
         // Too long
-        if ( $max && strlen( strval( $value ) ) > intval( $max ) )
-        {
+        if ( $max && strlen( strval( $value ) ) > intval( $max ) ) {
             throw new Exception( "$name is too long. $betweenString" );
         }
-
+        
         // Too short
-        if ( $min && strlen( strval( $value ) ) < intval( $min ) )
-        {
+        if ( $min && strlen( strval( $value ) ) < intval( $min ) ) {
             throw new Exception( "$name is too short. $betweenString" );
         }
-
+        
         return $value;
-
+    
     }
 
     /**
@@ -93,17 +86,15 @@ abstract class Validator extends ClassCore
      * @throws Exception
      * @return string
      */
-    protected static function validateCharacters( $title, $string )
-    {
-
+    protected static function validateCharacters( $title, $string ) {
+        
         // Sanatize string, if length is different it is invalid
-        if ( strlen( $string ) != strlen( self::sanitizeCharacthers( $string ) ) )
-        {
+        if ( strlen( $string ) != strlen( self::sanitizeCharacthers( $string ) ) ) {
             throw new Exception( sprintf( "%s contains illegal characters", $title ) );
         }
-
+        
         return $string;
-
+    
     }
 
     /**
@@ -113,17 +104,15 @@ abstract class Validator extends ClassCore
      * @throws Exception
      * @return string
      */
-    protected static function validateRegex( $name, $regex_pattern, $string )
-    {
-
+    protected static function validateRegex( $name, $regex_pattern, $string ) {
+        
         // Validate regex
-        if ( preg_match( $regex_pattern, $string ) )
-        {
+        if ( preg_match( $regex_pattern, $string ) ) {
             throw new Exception( sprintf( "\"%s\" contains an illegal characters", $name ) );
         }
-
+        
         return $string;
-
+    
     }
 
     /**
@@ -135,40 +124,37 @@ abstract class Validator extends ClassCore
      * @return string
      * @throws Exception
      */
-    protected function validateValueEquals( $name, array $equals, $value )
-    {
-
+    protected function validateValueEquals( $name, array $equals, $value ) {
+        
         // Value must be in a equals array
-        if ( array_search( $value, $equals ) === false )
-        {
+        if ( array_search( $value, $equals ) === false ) {
             throw new Exception( sprintf( "%s contains a wrong value", $name ) );
         }
-
+        
         return $value;
-
+    
     }
-
+    
     //	/VALIDATE
-
+    
 
     //	SANITIZE
-
+    
 
     /**
      * Sanitizes illegal characters (&lt;,&gt;,&,',")
      *
      * @param string $validate
      */
-    protected static function sanitizeCharacthers( $validate )
-    {
+    protected static function sanitizeCharacthers( $validate ) {
         return filter_var( $validate, FILTER_SANITIZE_SPECIAL_CHARS );
     }
-
+    
     //	/SANITIZE
-
+    
 
     //	DO
-
+    
 
     /**
      * Goes through every validate function
@@ -177,44 +163,38 @@ abstract class Validator extends ClassCore
      * @param string $exceptionMessage
      * @throws ValidatorException
      */
-    public final function doValidate( Model $model, $exceptionMessage = "" )
-    {
-
+    public final function doValidate( Model $model, $exceptionMessage = "" ) {
+        
         // Set model
         $this->model = $model;
-
+        
         // Catch array
         $catch = array ();
-
+        
         // Foreach methods
-        foreach ( get_class_methods( $this ) as $method )
-        {
-
+        foreach ( get_class_methods( $this ) as $method ) {
+            
             // Method is is a 'do' method and not this method
-            if ( strcmp( substr( $method, 0, 2 ), "do" ) == 0 && strcmp( $method, __FUNCTION__ ) != 0 )
-            {
-
-                try
-                {
+            if ( strcmp( substr( $method, 0, 2 ), "do" ) == 0 && strcmp( $method, __FUNCTION__ ) != 0 ) {
+                
+                try {
                     $this->$method();
                 }
-                catch ( Exception $e )
-                {
+                catch ( Exception $e ) {
                     $catch[] = $e->getMessage();
                 }
-
+            
             }
-
+        
         }
-
+        
         // Trow Validator errors
-        if ( !empty( $catch ) )
-        {
+        if ( !empty( $catch ) ) {
             throw new ValidatorException( $exceptionMessage, $catch );
         }
-
+    
     }
-
+    
     //	/DO
 
 

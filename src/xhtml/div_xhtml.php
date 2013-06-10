@@ -1,13 +1,14 @@
 <?php
 
 class DivXhtml extends AbstractContentXhtml {
+    
+    // VARIABLES
+    
 
-// VARIABLES
+    // CONSTRUCT
+    
 
-
-// CONSTRUCT
-
-// FUNCTIONS
+    // FUNCTIONS
 
 
 }

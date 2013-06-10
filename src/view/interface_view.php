@@ -1,21 +1,21 @@
 <?php
 
-interface InterfaceView
-{
-
+interface InterfaceView {
+    
     // VARIABLES
-
+    
 
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
+    
 
     /**
      * @param boolean $force True if not return null
@@ -27,7 +27,7 @@ interface InterfaceView
      * @return AbstractDefaultLocale
      */
     public function getLocale();
-
+    
     // /FUNCTIONS
 
 

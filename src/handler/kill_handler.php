@@ -1,7 +1,6 @@
 <?php
 
-interface KillHandler
-{
+interface KillHandler {
 
     /**
      * @param Exception $exception

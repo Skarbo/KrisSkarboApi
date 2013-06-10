@@ -6,9 +6,8 @@
  * @author Kris
  *
  */
-class Xhtml extends ClassCore
-{
-
+class Xhtml extends ClassCore {
+    
     static $NBSP = "&nbsp;";
     static $BULL = "&bull;";
     static $RAQUO = "&raquo;";
@@ -20,8 +19,7 @@ class Xhtml extends ClassCore
      * @param string $href
      * @return AnchorXhtml
      */
-    static function a( $content = "", $href = "" )
-    {
+    static function a( $content = "", $href = "" ) {
         return new AnchorXhtml( $content, $href );
     }
 
@@ -29,8 +27,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return AcronymXhtml
      */
-    static function acronym( $content = "" )
-    {
+    static function acronym( $content = "" ) {
         return new AcronymXhtml( $content );
     }
 
@@ -38,16 +35,14 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return BodyXhtml
      */
-    static function body( $content = "" )
-    {
+    static function body( $content = "" ) {
         return new BodyXhtml();
     }
 
     /**
      * @return BrXhtml
      */
-    static function br()
-    {
+    static function br() {
         return new BrXhtml();
     }
 
@@ -55,8 +50,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return ButtonXhtml
      */
-    static function button( $content = "" )
-    {
+    static function button( $content = "" ) {
         return new ButtonXhtml( $content );
     }
 
@@ -64,8 +58,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return DivXhtml
      */
-    static function div( $content = "" )
-    {
+    static function div( $content = "" ) {
         return new DivXhtml( $content );
     }
 
@@ -73,8 +66,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return FieldsetXhtml
      */
-    static function fieldset( $content = "" )
-    {
+    static function fieldset( $content = "" ) {
         return new FieldsetXhtml( $content );
     }
 
@@ -82,8 +74,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return FormXhtml
      */
-    static function form( $content = "" )
-    {
+    static function form( $content = "" ) {
         return new FormXhtml( $content );
     }
 
@@ -92,8 +83,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return HeaderXhtml
      */
-    static function h( $size, $content = "" )
-    {
+    static function h( $size, $content = "" ) {
         return new HeaderXhtml( $size, $content );
     }
 
@@ -101,8 +91,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return HeadXhtml
      */
-    static function head( $content = "" )
-    {
+    static function head( $content = "" ) {
         return new HeadXhtml( $content );
     }
 
@@ -110,16 +99,14 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return HtmlXhtml
      */
-    static function html( $content = "" )
-    {
+    static function html( $content = "" ) {
         return new HtmlXhtml( $content );
     }
 
     /**
      * @return HrXhtml
      */
-    static function hr()
-    {
+    static function hr() {
         return new HrXhtml();
     }
 
@@ -127,16 +114,14 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return ItalicXhtml
      */
-    static function italic( $content = "" )
-    {
+    static function italic( $content = "" ) {
         return new ItalicXhtml( $content );
     }
 
     /**
      * @return ImgXhtml
      */
-    static function img( $src = "", $alt = "" )
-    {
+    static function img( $src = "", $alt = "" ) {
         return new ImgXhtml( $src, $alt );
     }
 
@@ -145,8 +130,7 @@ class Xhtml extends ClassCore
      * @param string $name
      * @return InputXhtml
      */
-    static function input( $value = "", $name = "" )
-    {
+    static function input( $value = "", $name = "" ) {
         return new InputXhtml( $value, $name );
     }
 
@@ -154,8 +138,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return LabelXhtml
      */
-    static function label( $content = "" )
-    {
+    static function label( $content = "" ) {
         return new LabelXhtml( $content );
     }
 
@@ -163,16 +146,14 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return LiXhtml
      */
-    static function li( $content = "" )
-    {
+    static function li( $content = "" ) {
         return new LiXhtml( $content );
     }
 
     /**
      * @return LinkXhtml
      */
-    static function link()
-    {
+    static function link() {
         return new LinkXhtml();
     }
 
@@ -180,16 +161,14 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return LegendXhtml
      */
-    static function legend( $content = "" )
-    {
+    static function legend( $content = "" ) {
         return new LegendXhtml( $content );
     }
 
     /**
      * @return MetaXhtml
      */
-    static function meta()
-    {
+    static function meta() {
         return new MetaXhtml();
     }
 
@@ -197,8 +176,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return OlXhtml
      */
-    static function ol( $content = "" )
-    {
+    static function ol( $content = "" ) {
         return new OlXhtml( $content );
     }
 
@@ -206,8 +184,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return OptionXhtml
      */
-    static function option( $content = "", $value = "" )
-    {
+    static function option( $content = "", $value = "" ) {
         return new OptionXhtml( $content, $value );
     }
 
@@ -215,8 +192,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return OptgroupXhtml
      */
-    static function optgroup( $content = "" )
-    {
+    static function optgroup( $content = "" ) {
         return new OptgroupXhtml( $content );
     }
 
@@ -224,8 +200,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return ParagraphXhtml
      */
-    static function p( $content = "" )
-    {
+    static function p( $content = "" ) {
         return new ParagraphXhtml( $content );
     }
 
@@ -233,8 +208,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return PreXhtml
      */
-    static function pre( $content = "" )
-    {
+    static function pre( $content = "" ) {
         return new PreXhtml( $content );
     }
 
@@ -242,8 +216,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return ScriptXhtml
      */
-    static function script( $content = "" )
-    {
+    static function script( $content = "" ) {
         return new ScriptXhtml( $content );
     }
 
@@ -251,8 +224,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return SelectXhtml
      */
-    static function select( $content = "" )
-    {
+    static function select( $content = "" ) {
         return new SelectXhtml( $content );
     }
 
@@ -260,8 +232,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return StrongXhtml
      */
-    static function strong( $content = "" )
-    {
+    static function strong( $content = "" ) {
         return new StrongXhtml( $content );
     }
 
@@ -269,8 +240,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return StyleXhtml
      */
-    static function style( $content = "" )
-    {
+    static function style( $content = "" ) {
         return new StyleXhtml( $content );
     }
 
@@ -278,8 +248,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return SpanXhtml
      */
-    static function span( $content = "" )
-    {
+    static function span( $content = "" ) {
         return new SpanXhtml( $content );
     }
 
@@ -287,8 +256,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return TableXhtml
      */
-    static function table( $content = "" )
-    {
+    static function table( $content = "" ) {
         return new TableXhtml( $content );
     }
 
@@ -296,8 +264,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return TbodyXhtml
      */
-    static function tbody( $content = "" )
-    {
+    static function tbody( $content = "" ) {
         return new TbodyXhtml( $content );
     }
 
@@ -305,8 +272,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return TdXhtml
      */
-    static function td( $content = "" )
-    {
+    static function td( $content = "" ) {
         return new TdXhtml( $content );
     }
 
@@ -314,8 +280,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return TextareaXhtml
      */
-    static function textarea( $content = "" )
-    {
+    static function textarea( $content = "" ) {
         return new TextareaXhtml( $content );
     }
 
@@ -323,8 +288,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return TfootXhtml
      */
-    static function tfoot( $content = "" )
-    {
+    static function tfoot( $content = "" ) {
         return new TfootXhtml( $content );
     }
 
@@ -332,8 +296,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return ThXhtml
      */
-    static function th( $content = "" )
-    {
+    static function th( $content = "" ) {
         return new ThXhtml( $content );
     }
 
@@ -341,8 +304,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return TheadXhtml
      */
-    static function thead( $content = "" )
-    {
+    static function thead( $content = "" ) {
         return new TheadXhtml( $content );
     }
 
@@ -350,8 +312,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return TitleXhtml
      */
-    static function title( $content = "" )
-    {
+    static function title( $content = "" ) {
         return new TitleXhtml( $content );
     }
 
@@ -359,8 +320,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return TrXhtml
      */
-    static function tr( $content = "" )
-    {
+    static function tr( $content = "" ) {
         return new TrXhtml( $content );
     }
 
@@ -368,8 +328,7 @@ class Xhtml extends ClassCore
      * @param string $content
      * @return UlXhtml
      */
-    static function ul( $content = "" )
-    {
+    static function ul( $content = "" ) {
         return new UlXhtml( $content );
     }
 

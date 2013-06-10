@@ -1,27 +1,25 @@
 <?php
 
-abstract class AbstractDaoTest extends AbstractDbTest
-{
-
+abstract class AbstractDaoTest extends AbstractDbTest {
+    
     // VARIABLES
-
+    
 
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
+    
 
-
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
-
+        
         $this->getDaoContainer()->removeAll();
     }
 
@@ -29,7 +27,7 @@ abstract class AbstractDaoTest extends AbstractDbTest
      * @return InterfaceDaoContainerTest
      */
     public abstract function getDaoContainer();
-
+    
     // /FUNCTIONS
 
 

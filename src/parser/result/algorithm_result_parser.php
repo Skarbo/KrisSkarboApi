@@ -1,7 +1,6 @@
 <?php
 
-abstract class AlgorithmResultParser extends ClassCore
-{
+abstract class AlgorithmResultParser extends ClassCore {
 
 }
 

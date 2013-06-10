@@ -1,15 +1,14 @@
 <?php
 
-class AcronymXhtml extends AbstractContentXhtml
-{
-
+class AcronymXhtml extends AbstractContentXhtml {
+    
     // VARIABLES
+    
 
+    // CONSTRUCT
+    
 
-// CONSTRUCT
-
-
-// FUNCTIONS
+    // FUNCTIONS
 
 
 }

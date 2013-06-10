@@ -1,22 +1,21 @@
 <?php
 
-interface StandardDao
-{
-
+interface StandardDao {
+    
     // VARIABLES
-
+    
 
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     /**
      * @param mixed $id
@@ -77,7 +76,7 @@ interface StandardDao
      * @return boolean True if touched, null if touch field is not set
      */
     public function touch( $id );
-
+    
     // /FUNCTIONS
 
 

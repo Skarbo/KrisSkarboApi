@@ -1,20 +1,18 @@
 <?php
 
-class BrXhtml extends AbstractXhtml
-{
-
+class BrXhtml extends AbstractXhtml {
+    
     // VARIABLES
-
+    
 
     // CONSTRUCT
+    
 
-
-    function __construct()
-    {
+    function __construct() {
         $this->set_endTag( false );
         parent::__construct();
     }
-
+    
     // FUNCTIONS
 
 

@@ -1,14 +1,12 @@
 <?php
 
-class UpdateQueryDbCore extends QueryDbCore
-{
+class UpdateQueryDbCore extends QueryDbCore {
 
     /**
      * @see QueryDbCore::getQuery()
      * @return UpdateSqlbuilderDbCore
      */
-    public function getQuery()
-    {
+    public function getQuery() {
         return parent::getQuery();
     }
 

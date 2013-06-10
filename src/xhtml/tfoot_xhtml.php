@@ -4,23 +4,21 @@
  * @author Kris Skarbo
  * @see http://www.w3schools.com/TAGS/tag_tfoot.asp
  */
-class TfootXhtml extends AbstractContentXhtml
-{
-
+class TfootXhtml extends AbstractContentXhtml {
+    
     // VARIABLES
-
+    
 
     protected $align;
     protected $valign;
-
+    
     // CONSTRUCT
-
+    
 
     // FUNCTIONS
+    
 
-
-    function getAlign()
-    {
+    function getAlign() {
         return $this->align;
     }
 
@@ -28,14 +26,12 @@ class TfootXhtml extends AbstractContentXhtml
      * @param string $align
      * @return TfootXhtml
      */
-    function align( $align )
-    {
+    function align( $align ) {
         $this->align = $align;
         return $this;
     }
 
-    function getValign()
-    {
+    function getValign() {
         return $this->valign;
     }
 
@@ -43,8 +39,7 @@ class TfootXhtml extends AbstractContentXhtml
      * @param string $valign
      * @return TfootXhtml
      */
-    function valign( $valign )
-    {
+    function valign( $valign ) {
         $this->valign = $valign;
         return $this;
     }

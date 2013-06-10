@@ -3,27 +3,26 @@
 }
 
 .dropdown .dropdown_selected {
-
+	
 }
 
 .dropdown .dropdown_value {
-
+	
 }
 
 .dropdown .dropdown_contents {
-    position: absolute;
-    display: none;
+	position: absolute;
+	display: none;
 }
 
-.dropdown:HOVER .dropdown_contents
-{
+.dropdown:HOVER .dropdown_contents {
 	display: block;
 }
 
 .dropdown .dropdown_contents .dropdown_content {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .dropdown .dropdown_contents .dropdown_content[data-selected] {
-    font-weight: bold;
+	font-weight: bold;
 }

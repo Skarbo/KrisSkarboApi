@@ -3,19 +3,17 @@
 /**
  * Represents a class object, with extra help methods
  *
- * @author Kris Skarbø
+ * @author Kris Skarbï¿½
  *
  */
-abstract class ClassCore
-{
+abstract class ClassCore {
 
     /**
      * Returns class name
      *
      * @return string
      */
-    public final static function class_()
-    {
+    public final static function class_() {
         return get_called_class();
     }
 
@@ -24,8 +22,7 @@ abstract class ClassCore
      *
      * @return ClassCore
      */
-    public static function get_( $get )
-    {
+    public static function get_( $get ) {
         return $get;
     }
 
@@ -34,9 +31,8 @@ abstract class ClassCore
      * @return boolean True if the object is of this class or has this class as one of its parents
      * @see http://php.net/manual/en/function.is-a.php
      */
-    public static function is_( $object )
-    {
-        return is_object( $object ) && is_a($object, self::class_() );
+    public static function is_( $object ) {
+        return is_object( $object ) && is_a( $object, self::class_() );
     }
 
 }

@@ -4,16 +4,15 @@
  * @author Kris Skarbo
  * @see http://www.w3schools.com/TAGS/tag_strong.asp
  */
-class StrongXhtml extends AbstractContentXhtml
-{
-
+class StrongXhtml extends AbstractContentXhtml {
+    
     // VARIABLES
+    
 
+    // CONSTRUCT
+    
 
-// CONSTRUCT
-
-
-// FUNCTIONS
+    // FUNCTIONS
 
 
 }

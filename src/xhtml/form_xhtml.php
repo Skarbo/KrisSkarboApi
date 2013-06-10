@@ -4,18 +4,17 @@
  * @author Kris Skarbo
  * @see http://www.w3schools.com/TAGS/tag_form.asp
  */
-class FormXhtml extends AbstractContentXhtml
-{
-
+class FormXhtml extends AbstractContentXhtml {
+    
     // VARIABLES
-
+    
 
     static $METHOD_POST = "post";
     static $METHOD_GET = "get";
     static $AUTOCOMPLETE_OFF = "off";
     static $AUTOCOMPLETE_ON = "on";
     static $ENCTYPE_MULTIPART_FORM_DATA = "multipart/form-data";
-
+    
     protected $action;
     protected $accept;
     protected $autocomplete;
@@ -24,75 +23,65 @@ class FormXhtml extends AbstractContentXhtml
     protected $name;
     protected $target;
     protected $onsubmit;
-
+    
     // CONSTRUCT
+    
 
-
-    public function __construct( $content = "" )
-    {
+    public function __construct( $content = "" ) {
         parent::__construct( $content );
     }
-
+    
     // FUNCTIONS
+    
 
-
-    function getAction()
-    {
+    function getAction() {
         return $this->action;
     }
 
     /**
      * @return FormXhtml
      */
-    function action( $action )
-    {
+    function action( $action ) {
         $this->action = $action;
         return $this;
     }
 
-    function getAccept()
-    {
+    function getAccept() {
         return $this->accept;
     }
 
     /**
      * @return FormXhtml
      */
-    function accept( $accept )
-    {
+    function accept( $accept ) {
         $this->accept = $accept;
         return $this;
     }
 
-    function getMethod()
-    {
+    function getMethod() {
         return $this->method;
     }
 
-    function getAutocomplete()
-    {
+    function getAutocomplete() {
         return $this->autocomplete;
     }
 
     /**
      * @return FormXhtml
      */
-    function autocomplete( $autocomplete )
-    {
-        $this->autocomplete = is_bool( $autocomplete ) ? ($autocomplete ? "on" : "off") : $autocomplete;
+    function autocomplete( $autocomplete ) {
+        $this->autocomplete = is_bool( $autocomplete ) ? ( $autocomplete ? "on" : "off" ) : $autocomplete;
         return $this;
     }
 
-    function getEnctype()
-    {
+    function getEnctype() {
         return $this->enctype;
     }
 
     /**
      * @return FormXhtml
      */
-    function enctype( $enctype )
-    {
+    function enctype( $enctype ) {
         $this->enctype = $enctype;
         return $this;
     }
@@ -100,50 +89,43 @@ class FormXhtml extends AbstractContentXhtml
     /**
      * @return FormXhtml
      */
-    function method( $method )
-    {
+    function method( $method ) {
         $this->method = $method;
         return $this;
     }
 
-    function getName()
-    {
+    function getName() {
         return $this->name;
     }
 
     /**
      * @return FormXhtml
      */
-    function name( $name )
-    {
+    function name( $name ) {
         $this->name = $name;
         return $this;
     }
 
-    function getTarget()
-    {
+    function getTarget() {
         return $this->target;
     }
 
     /**
      * @return FormXhtml
      */
-    function target( $target )
-    {
+    function target( $target ) {
         $this->target = $target;
         return $this;
     }
 
-    function getOnSubmit()
-    {
+    function getOnSubmit() {
         return $this->onsubmit;
     }
 
     /**
      * @return FormXhtml
      */
-    function onsubmit( $onsubmit )
-    {
+    function onsubmit( $onsubmit ) {
         $this->onsubmit = $onsubmit;
         return $this;
     }

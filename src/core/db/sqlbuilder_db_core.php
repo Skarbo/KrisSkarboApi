@@ -1,58 +1,57 @@
 <?php
 
-abstract class SqlbuilderDbCore extends ClassCore
-{
-
+abstract class SqlbuilderDbCore extends ClassCore {
+    
     // VARIABLES
-
+    
 
     // ... CONSTANTS
-
+    
 
     public static $LEFT = "LEFT";
     public static $RIGHT = "RIGHT";
     public static $OUTER = "OUTER";
-
+    
     public static $ASC = "ASC";
     public static $DESC = "DESC";
-
+    
     public static $OR = " OR ";
     public static $AND = " AND ";
-
+    
     public static $TRUE = "true";
     public static $FALSE = "false";
     public static $NULL = "NULL";
     public static $NOW = "NOW()";
-
+    
     public static $CURRENT_DATE = "CURRENT_DATE()";
     public static $CURRENT_TIMESTAMP = "CURRENT_TIMESTAMP()";
-
+    
     public static $DISTINCT = "DISTINCT";
     public static $ORDER_BY = "ORDER BY";
     public static $SEPARATOR = "SEPARATOR";
-
+    
     public static $DATE_HOUR_NULL = "0000-00-00 00:00:00";
     public static $DATE_NULL = "0000-00-00";
-
+    
     public static $BITWISE_AND = "&";
     public static $BITWISE_OR = "|";
     public static $ADD = "+";
     public static $MINUS = "-";
-
+    
     // ... /CONSTANTS
-
+    
 
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     /**
      * Builds the query
@@ -60,27 +59,25 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @return string
      */
     public abstract function build();
-
+    
     //	... STATIC
-
+    
 
     /**
      * @param string $field "field"
      * @param array $values Array( "value1", "value2" )
      * @return array Array( String( ":field_0, :field_1" ), Array( "field_0" => "value1", "field_1" => "value2" ) )
      */
-    public static function createIn( $field, array $values )
-    {
+    public static function createIn( $field, array $values ) {
         $in = array ();
         $binds = array ();
-
-        for ( $i = 0; $i < count( $values ); $i++ )
-        {
+        
+        for ( $i = 0; $i < count( $values ); $i++ ) {
             $bindKey = sprintf( "%s_%d", $field, $i );
             $in[] = sprintf( ":%s", $bindKey );
             $binds[ $bindKey ] = $values[ $i ];
         }
-
+        
         return array ( implode( ", ", $in ), $binds );
     }
 
@@ -89,8 +86,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string " left = right"
      */
-    public static function equ( $left, $right )
-    {
+    public static function equ( $left, $right ) {
         return " $left = $right";
     }
 
@@ -99,8 +95,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string " left != right"
      */
-    public static function notequ( $left, $right )
-    {
+    public static function notequ( $left, $right ) {
         return " $left != $right";
     }
 
@@ -109,8 +104,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $as
      * @return string "field AS as"
      */
-    public static function as_( $field, $as )
-    {
+    public static function as_( $field, $as ) {
         return "$field AS $as";
     }
 
@@ -119,8 +113,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string "left LIKE right"
      */
-    public static function like( $left, $right )
-    {
+    public static function like( $left, $right ) {
         return "$left LIKE $right";
     }
 
@@ -128,8 +121,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $condition
      * @return string "( condition )"
      */
-    public static function par( $condition )
-    {
+    public static function par( $condition ) {
         return "( $condition )";
     }
 
@@ -138,8 +130,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param boolean $not
      * @return string "[NOT] EXISTS condition"
      */
-    public static function exists( $condition, $not = false )
-    {
+    public static function exists( $condition, $not = false ) {
         return ( $not ? "NOT " : "" ) . "EXISTS " . self::par( $condition );
     }
 
@@ -148,8 +139,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string "( $left + $right )"
      */
-    public static function add( $left, $right )
-    {
+    public static function add( $left, $right ) {
         return self::par( "$left + $right" );
     }
 
@@ -158,8 +148,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string "(left AND right [AND right, ...])"
      */
-    public static function and_( $left, $right, $_ = null )
-    {
+    public static function and_( $left, $right, $_ = null ) {
         return self::par( implode( self::$AND, func_get_args() ) );
     }
 
@@ -168,8 +157,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string "(left OR right)"
      */
-    public static function or_( $left, $right )
-    {
+    public static function or_( $left, $right ) {
         return self::par( Core::cc( " ", $left, self::$OR, $right ) );
     }
 
@@ -178,8 +166,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $as_table
      * @return string "(table AS as_table)"
      */
-    public static function tblAs( $table, $as_table )
-    {
+    public static function tblAs( $table, $as_table ) {
         return Core::cc( " ", $table, "AS", $as_table );
     }
 
@@ -188,8 +175,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $field
      * @return string "table.field"
      */
-    public static function pun( $table, $field )
-    {
+    public static function pun( $table, $field ) {
         return "`$table`.$field";
     }
 
@@ -198,13 +184,11 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $from
      * @param string $to
      */
-    public static function replace( $field, $from, $to )
-    {
+    public static function replace( $field, $from, $to ) {
         return "REPLACE({$field}, {$from}, {$to})";
     }
 
-    public static function round( $field, $decimal )
-    {
+    public static function round( $field, $decimal ) {
         return "ROUND({$field}, {$decimal})";
     }
 
@@ -213,8 +197,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $as
      * @param string $default ["NULL"]
      */
-    public static function ifnull( $ifnull, $as = null, $default = "NULL" )
-    {
+    public static function ifnull( $ifnull, $as = null, $default = "NULL" ) {
         return sprintf( "IFNULL( ( %s ), %s )%s", $ifnull, $default, $as ? sprintf( " AS %s", $as ) : "" );
     }
 
@@ -224,8 +207,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $else
      * @return string "IF( $if, $then, $else )"
      */
-    public static function if_( $if, $then, $else )
-    {
+    public static function if_( $if, $then, $else ) {
         return "IF( $if, $then, $else )";
     }
 
@@ -233,8 +215,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $isnull
      * @return string "isnull IS NULL"
      */
-    public static function isnull( $isnull )
-    {
+    public static function isnull( $isnull ) {
         return "$isnull IS NULL";
     }
 
@@ -243,8 +224,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $on
      * @return string "table ON on"
      */
-    public static function join( $table, $on )
-    {
+    public static function join( $table, $on ) {
         return "$table ON $on";
     }
 
@@ -252,8 +232,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $expression DISTINCT field_title ORDER BY field_order SEPERATOR ', '
      * @return string "GROUP_CONCAT( expression )"
      */
-    public static function groupConcat( $expression )
-    {
+    public static function groupConcat( $expression ) {
         return "GROUP_CONCAT( $expression )";
     }
 
@@ -261,8 +240,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $sum
      * @return string "SUM( sum )"
      */
-    public static function sum( $sum )
-    {
+    public static function sum( $sum ) {
         return "SUM( $sum )";
     }
 
@@ -272,8 +250,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param int $count
      * @return string SUBSTRING_INDEX(name, delimiter, count)
      */
-    public static function substringIndex( $name, $delimiter, $count )
-    {
+    public static function substringIndex( $name, $delimiter, $count ) {
         return sprintf( "SUBSTRING_INDEX(%s, %s, %d)", $name, $delimiter, $count );
     }
 
@@ -281,8 +258,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $count
      * @return string "COUNT( $count )"
      */
-    public static function count( $count )
-    {
+    public static function count( $count ) {
         return "COUNT( $count )";
     }
 
@@ -290,8 +266,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $concat [, $concat ]
      * @return "CONCAT_WS (concat)"
      */
-    public static function concat( $seperator, $concat )
-    {
+    public static function concat( $seperator, $concat ) {
         return sprintf( "CONCAT_WS( '%s', %s )", $seperator, implode( ", ", Core::arrayPopFront( func_get_args() ) ) );
     }
 
@@ -299,8 +274,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $not
      * @return string "NOT( not )"
      */
-    public static function not( $not )
-    {
+    public static function not( $not ) {
         return "NOT( $not )";
     }
 
@@ -308,13 +282,11 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $field
      * @return string "DATE( $field )"
      */
-    public static function date( $field )
-    {
+    public static function date( $field ) {
         return "DATE( $field )";
     }
 
-    public static function day( $field )
-    {
+    public static function day( $field ) {
         return "DAY( $field )";
     }
 
@@ -322,8 +294,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $field
      * @return string "DAYNAME( $field )"
      */
-    public static function dayname( $field )
-    {
+    public static function dayname( $field ) {
         return "DAYNAME( $field )";
     }
 
@@ -332,13 +303,11 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $date_end SQL Date
      * @return string "DATEDIFF( start, end )"
      */
-    public static function datediff( $date_start, $date_end )
-    {
+    public static function datediff( $date_start, $date_end ) {
         return "DATEDIFF( $date_start, $date_end )";
     }
 
-    public static function divide( $left, $right )
-    {
+    public static function divide( $left, $right ) {
         return SB::par( "$left / $right" );
     }
 
@@ -346,8 +315,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $unixtime
      * @return string "FROM_UNIXTIME( unixtime )"
      */
-    public static function fromunixtime( $unixtime )
-    {
+    public static function fromunixtime( $unixtime ) {
         return "FROM_UNIXTIME( $unixtime )";
     }
 
@@ -358,8 +326,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string "left >= right"
      */
-    public static function gte( $left, $right )
-    {
+    public static function gte( $left, $right ) {
         return "( $left >= $right )";
     }
 
@@ -370,8 +337,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string "left <= right"
      */
-    public static function lte( $left, $right )
-    {
+    public static function lte( $left, $right ) {
         return "( $left <= $right )";
     }
 
@@ -380,8 +346,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $offset
      * @return string "LIMIT $limit[ OFFSET $offset]"
      */
-    public static function limit( $limit, $offset = NULL )
-    {
+    public static function limit( $limit, $offset = NULL ) {
         return "LIMIT $limit" . ( $offset ? " OFFSET $offset" : NULL );
     }
 
@@ -389,8 +354,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $condition
      * @return string "condition IS NOT NULL"
      */
-    public static function isnotnull( $condition )
-    {
+    public static function isnotnull( $condition ) {
         return "$condition IS NOT NULL";
     }
 
@@ -400,8 +364,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $max
      * @return string "$expr BETWEEN $min AND $max"
      */
-    public static function between( $expr, $min, $max )
-    {
+    public static function between( $expr, $min, $max ) {
         return "$expr BETWEEN $min AND $max";
     }
 
@@ -410,8 +373,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param integer $bit
      * @return string "$field & $bit"
      */
-    public static function bitwiseAnd( $field, $bit )
-    {
+    public static function bitwiseAnd( $field, $bit ) {
         return self::par( Core::cc( " ", $field, self::$BITWISE_AND, $bit ) );
     }
 
@@ -420,8 +382,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param integer $bit
      * @return string "$field | $bit"
      */
-    public static function bitwiseOr( $field, $bit )
-    {
+    public static function bitwiseOr( $field, $bit ) {
         return self::par( Core::cc( " ", $field, self::$BITWISE_OR, $bit ) );
     }
 
@@ -429,8 +390,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $date YYYY-MM-DD HH:II
      * @return string UNIX_TIMESTAMP( $date )
      */
-    public static function unixTimestamp( $date = "" )
-    {
+    public static function unixTimestamp( $date = "" ) {
         return "UNIX_TIMESTAMP( $date )";
     }
 
@@ -438,8 +398,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $field
      * @return string "WEEK( $field )"
      */
-    public static function week( $field )
-    {
+    public static function week( $field ) {
         return "WEEK( $field )";
     }
 
@@ -447,8 +406,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $field
      * @return string "YEAR( field )"
      */
-    public static function year( $field )
-    {
+    public static function year( $field ) {
         return "YEAR( $field )";
     }
 
@@ -456,13 +414,11 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $value
      * @return string "'value'";
      */
-    public static function quote( $value )
-    {
+    public static function quote( $value ) {
         return "'$value'";
     }
 
-    public static function max( $field )
-    {
+    public static function max( $field ) {
         return "MAX( $field )";
     }
 
@@ -470,8 +426,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $field
      * @return string "MONTH( field )"
      */
-    public static function month( $field )
-    {
+    public static function month( $field ) {
         return "MONTH( $field )";
     }
 
@@ -480,8 +435,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string "(LEFT - RIGHT )"
      */
-    public static function minus( $left, $right )
-    {
+    public static function minus( $left, $right ) {
         return self::par( "${left} - ${right}" );
     }
 
@@ -490,8 +444,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $right
      * @return string "( LEFT * RIGHT )"
      */
-    public static function multiply( $left, $right )
-    {
+    public static function multiply( $left, $right ) {
         return self::par( "$left * $right" );
     }
 
@@ -500,8 +453,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $in
      * @return string "$field IN ( in )"
      */
-    public static function in( $field, $in )
-    {
+    public static function in( $field, $in ) {
         return "$field IN " . self::par( $in ? $in : self::$NULL );
     }
 
@@ -510,8 +462,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $in
      * @return string "$field NOT IN ( in )"
      */
-    public static function notin( $field, $in )
-    {
+    public static function notin( $field, $in ) {
         return "$field NOT IN " . self::par( $in );
     }
 
@@ -519,8 +470,7 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $field
      * @return string TO_DAYS( $field )
      */
-    public static function toDays( $field )
-    {
+    public static function toDays( $field ) {
         return "TO_DAYS( $field )";
     }
 
@@ -531,23 +481,21 @@ abstract class SqlbuilderDbCore extends ClassCore
      * @param string $to
      * @return string "( TO_DAYS( field ) - TO_DAYS( to ) )"
      */
-    public static function toDaysCount( $field, $to )
-    {
+    public static function toDaysCount( $field, $to ) {
         return self::par( Core::cc( " ", self::toDays( $field ), self::$MINUS, self::toDays( $to ) ) );
     }
-
+    
     //	... /STATIC
-
+    
 
     /**
      * @param SqlbuilderDbCore $get
      * @return SqlbuilderDbCore
      */
-    public static function get_( $get )
-    {
+    public static function get_( $get ) {
         return $get;
     }
-
+    
     // /FUNCTIONS
 
 
@@ -556,8 +504,7 @@ abstract class SqlbuilderDbCore extends ClassCore
 /**
  * Short class of SqlBuilder
  */
-abstract class SB extends SqlbuilderDbCore
-{
+abstract class SB extends SqlbuilderDbCore {
 
 }
 

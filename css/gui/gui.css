@@ -3,55 +3,55 @@
  */
 /* Gui */
 .gui {
-    display: inline-table;
-    vertical-align: top;
+	display: inline-table;
+	vertical-align: top;
 }
 
 .gui .guiComp {
-    display: table-cell;
-    vertical-align: middle;
-    text-decoration: none;
-    font-size: 1em;
-    margin: 0;
-    white-space: nowrap;
+	display: table-cell;
+	vertical-align: middle;
+	text-decoration: none;
+	font-size: 1em;
+	margin: 0;
+	white-space: nowrap;
 }
 
-.gui .guiComp > div {
-    display: table-cell;
-    vertical-align: middle;
-    white-space: nowrap;
+.gui .guiComp>div {
+	display: table-cell;
+	vertical-align: middle;
+	white-space: nowrap;
 }
 
-.gui .guiComp:not(.input) {
-    text-align: center;
-    cursor: pointer;
+.gui .guiComp:not (.input ) {
+	text-align: center;
+	cursor: pointer;
 }
 
-.gui > .guiComp:FIRST-CHILD {
-
+.gui>.guiComp:FIRST-CHILD {
+	
 }
 
-.gui > .guiComp:LAST-CHILD {
-
+.gui>.guiComp:LAST-CHILD {
+	
 }
 
 .gui .guiComp:FIRST-CHILD:LAST-CHILD {
-
+	
 }
 
-.gui .guiComp:not(.input):HOVER, .gui .guiComp:not(.input):FOCUS {
-
+.gui .guiComp:not (.input ):HOVER,.gui .guiComp:not (.input ):FOCUS {
+	
 }
 
-.gui .guiComp[data-disabled], .gui .guiComp[disabled] {
-    opacity: .35;
-    cursor: default;
+.gui .guiComp[data-disabled],.gui .guiComp[disabled] {
+	opacity: .35;
+	cursor: default;
 }
 
 /* ... Icon */
 .gui .icon {
+	
 }
-
 
 /*
 .gui .icon {
@@ -85,131 +85,141 @@
 
 /* ... Button */
 .gui .button {
-    background-color: inherit;
+	background-color: inherit;
 }
 
 /* ... Toggle */
 .gui .toggle {
-
+	
 }
 
 .gui .toggle.checked .icon[data-icon=triangle]:AFTER {
-    content: 'E';
+	content: 'E';
 }
 
 .gui .toggle .icon[data-icon=toggle]:AFTER {
-    content: ';';
-    color: gray;
+	content: ';';
+	color: gray;
 }
 
 .gui .toggle.checked .icon[data-icon=toggle]:AFTER {
-    color: #7C98E2;
+	color: #7C98E2;
 }
 
 .gui .toggle input[type=checkbox] {
-    display: none;
+	display: none;
 }
 
 /* ... Radio */
 .gui.radio {
-
+	
 }
 
 .gui .radio input[type=radio] {
-    display: none;
+	display: none;
 }
 
 .gui .radio.checked {
-
+	
 }
 
 /* ... Input */
 .gui .input {
-
+	
 }
 
 /* ... File */
 .gui .file {
-
+	
 }
 
 .gui .file input[type=file] {
-    display: none;
+	display: none;
 }
 
 /*
  * Theme 0
  */
 .gui.theme0 {
-    border: 1px solid #AAAAAA;
-    border-radius: 4px;
+	border: 1px solid #AAAAAA;
+	border-radius: 4px;
 }
 
 .gui.theme0 .guiComp {
-    padding: 0.4em 1em;
-    color: #555555;
-    border-left: 1px solid #AAAAAA;
+	padding: 0.4em 1em;
+	color: #555555;
+	border-left: 1px solid #AAAAAA;
 }
 
-.gui.theme0 .guiComp > div {
-    white-space: nowrap;
+.gui.theme0 .guiComp>div {
+	white-space: nowrap;
 }
 
-.gui.theme0 .guiComp:not(.input) {
-    background: url("../../KrisSkarboApi/css/images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #E6E6E6;
-    cursor: pointer;
+.gui.theme0 .guiComp:not (.input ) {
+	background:
+		url("../../KrisSkarboApi/css/images/ui-bg_glass_75_e6e6e6_1x400.png")
+		repeat-x scroll 50% 50% #E6E6E6;
+	cursor: pointer;
 }
 
-.gui.theme0 > .guiComp:FIRST-CHILD {
-    border-radius: 4px 0 0 4px;
-    border-width: 0;
+.gui.theme0>.guiComp:FIRST-CHILD {
+	border-radius: 4px 0 0 4px;
+	border-width: 0;
 }
 
-.gui.theme0 > .guiComp:LAST-CHILD {
-    border-radius: 0 4px 4px 0;
+.gui.theme0>.guiComp:LAST-CHILD {
+	border-radius: 0 4px 4px 0;
 }
 
 .gui.theme0 .guiComp:FIRST-CHILD:LAST-CHILD {
-    border-radius: 4px;
+	border-radius: 4px;
 }
 
-.gui.theme0 .guiComp:not(.input):HOVER, .gui.theme0 .guiComp:not(.input):FOCUS {
-    background: url("../../KrisSkarboApi/css/images/ui-bg_glass_75_dadada_1x400.png") repeat-x scroll 50% 50% #dadada;
+.gui.theme0 .guiComp:not (.input ):HOVER,.gui.theme0 .guiComp:not (.input
+	):FOCUS {
+	background:
+		url("../../KrisSkarboApi/css/images/ui-bg_glass_75_dadada_1x400.png")
+		repeat-x scroll 50% 50% #dadada;
 }
 
-.gui.theme0 .guiComp[data-disabled], .gui.theme0 .guiComp[disabled] {
-    opacity: .35;
-    cursor: default;
+.gui.theme0 .guiComp[data-disabled],.gui.theme0 .guiComp[disabled] {
+	opacity: .35;
+	cursor: default;
 }
 
 /* ... Toggle */
 .gui.theme0 .toggle.checked {
-
+	
 }
 
 /* ... Radio */
 .gui.theme0 .radio.checked {
-
+	
 }
 
 /* ... Checked */
 .gui.theme0 .guiComp.checked {
-    color: #c77405;
-    background-color: #fdf5ce;
-    background: url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png") repeat-x scroll 50% 50% #fdf5ce;
+	color: #c77405;
+	background-color: #fdf5ce;
+	background:
+		url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png")
+		repeat-x scroll 50% 50% #fdf5ce;
 }
 
 /*
  * Theme light
  */
 .gui.light .guiComp {
-    background: url("../../KrisSkarboApi/css/images/bg_button_1x400.png") repeat-x scroll 50% 50% #F6F6F6;
-    border-color: #CCCCCC;
-    color: #1C94C4;
+	background: url("../../KrisSkarboApi/css/images/bg_button_1x400.png")
+		repeat-x scroll 50% 50% #F6F6F6;
+	border-color: #CCCCCC;
+	color: #1C94C4;
 }
 
-.gui.light .guiComp:HOVER, .gui.light .guiComp:FOCUS {
-    background: url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png") repeat-x scroll 50% 50% #fdf5ce;
-    border-color: #fbcb09;
-    color: #c77405;
+.gui.light .guiComp:HOVER,.gui.light .guiComp:FOCUS {
+	background:
+		url("../../KrisSkarboApi/css/images/bg_button_orange_1x400.png")
+		repeat-x scroll 50% 50% #fdf5ce;
+	border-color: #fbcb09;
+	color: #c77405;
 }

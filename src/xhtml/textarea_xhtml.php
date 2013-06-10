@@ -4,11 +4,10 @@
  * @author Kris Skarbo
  * @see http://www.w3schools.com/TAGS/tag_textarea.asp
  */
-class TextareaXhtml extends AbstractContentXhtml
-{
-
+class TextareaXhtml extends AbstractContentXhtml {
+    
     // VARIABLES
-
+    
 
     protected $cols;
     protected $rows;
@@ -18,127 +17,110 @@ class TextareaXhtml extends AbstractContentXhtml
     protected $spellcheck;
     protected $wrap;
     protected $placeholder;
-
+    
     // CONSTRUCT
+    
 
-
-    function __construct( $content = "" )
-    {
+    function __construct( $content = "" ) {
         $this->_sanatize = true;
         parent::__construct( $content );
     }
-
+    
     // FUNCTIONS
+    
 
-
-    function getCols()
-    {
+    function getCols() {
         return $this->cols;
     }
 
     /**
      * @return TextareaXhtml
      */
-    function cols( $cols )
-    {
+    function cols( $cols ) {
         $this->cols = $cols;
         return $this;
     }
 
-    function getRows()
-    {
+    function getRows() {
         return $this->rows;
     }
 
     /**
      * @return TextareaXhtml
      */
-    function rows( $rows )
-    {
+    function rows( $rows ) {
         $this->rows = $rows;
         return $this;
     }
 
-    function getDisabled()
-    {
+    function getDisabled() {
         return $this->disabled;
     }
 
     /**
      * @return TextareaXhtml
      */
-    function disabled( $disabled )
-    {
+    function disabled( $disabled ) {
         $this->disabled = $disabled;
         return $this;
     }
 
-    function getName()
-    {
+    function getName() {
         return $this->name;
     }
 
     /**
      * @return TextareaXhtml
      */
-    function name( $name )
-    {
+    function name( $name ) {
         $this->name = $name;
         return $this;
     }
 
-    function getReadonly()
-    {
+    function getReadonly() {
         return $this->readonly;
     }
 
     /**
      * @return TextareaXhtml
      */
-    function readonly( $readonly )
-    {
+    function readonly( $readonly ) {
         $this->readonly = $readonly;
         return $this;
     }
 
-    function getSpellcheck()
-    {
+    function getSpellcheck() {
         return $this->spellcheck;
     }
 
     /**
      * @return TextareaXhtml
      */
-    function spellcheck( $spellcheck )
-    {
+    function spellcheck( $spellcheck ) {
         $this->spellcheck = is_bool( $spellcheck ) && !$spellcheck ? "false" : $spellcheck;
         return $this;
     }
 
-    function getWrap()
-    {
+    function getWrap() {
         return $this->wrap;
     }
 
     /**
      * @return TextareaXhtml
      */
-    function wrap( $wrap )
-    {
+    function wrap( $wrap ) {
         $this->wrap = is_bool( $wrap ) && !$wrap ? "off" : $wrap;
         return $this;
     }
 
-    function getPlaceholder()
-    {
+    function getPlaceholder() {
         return $this->placeholder;
     }
 
     /**
      * @return TextareaXhtml
      */
-    function placeholder( $placeholder )
-    {
+    function placeholder( $placeholder ) {
         $this->placeholder = $placeholder;
         return $this;
     }

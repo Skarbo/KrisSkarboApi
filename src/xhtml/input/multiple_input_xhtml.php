@@ -1,38 +1,35 @@
 <?php
 
-class MultipleInputXhtml
-{
-
+class MultipleInputXhtml {
+    
     // VARIABLES
-
+    
 
     private $input;
     private $options = array ();
     private $selected = array ();
-
+    
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
+    
 
-
-    function __construct( InputXhtml $input )
-    {
+    function __construct( InputXhtml $input ) {
         $this->input = $input;
     }
-
+    
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     /**
      * @param InputXhtml $input
      * @return MultipleInputXhtml
      */
-    function input( InputXhtml $input )
-    {
+    function input( InputXhtml $input ) {
         $this->input = $input;
         return $this;
     }
@@ -40,8 +37,7 @@ class MultipleInputXhtml
     /**
      * @return InputXhtml
      */
-    function getInput()
-    {
+    function getInput() {
         return $this->input;
     }
 
@@ -49,8 +45,7 @@ class MultipleInputXhtml
      * @param array $options Array( param => value )
      * @return MultipleInputXhtml
      */
-    function options( array $options )
-    {
+    function options( array $options ) {
         $this->options = $options;
         return $this;
     }
@@ -58,8 +53,7 @@ class MultipleInputXhtml
     /**
      * @return array
      */
-    function getOptions()
-    {
+    function getOptions() {
         return $this->options;
     }
 
@@ -67,8 +61,7 @@ class MultipleInputXhtml
      * @param mixed $selected String( "selected" ) / Array( "selected1", "selected2" )
      * @return MultipleInputXhtml
      */
-    function selected( $selected )
-    {
+    function selected( $selected ) {
         $this->selected = is_array( $selected ) ? $selected : array ( $selected );
         return $this;
     }
@@ -76,41 +69,37 @@ class MultipleInputXhtml
     /**
      * @return array
      */
-    function getSelected()
-    {
+    function getSelected() {
         return $this->selected;
     }
-
+    
     // ... STRING
+    
 
-
-    function __toString()
-    {
-
+    function __toString() {
+        
         // Table
         $table = Xhtml::table()->cellpadding( 0 )->cellspacing( 0 );
-
+        
         // Foreach options
-        foreach ( $this->options as $param => $value )
-        {
+        foreach ( $this->options as $param => $value ) {
             $input = $this->getInput();
             $table_tr = Xhtml::tr();
-            $table_tr->addContent(
-                    Xhtml::td()->style( "vertical-align: text-top;" )->content(
-                            $input->value( $param )->checked(
-                                    array_search( $param, $this->getSelected() ) > -1 ) ) );
+            $table_tr->addContent( 
+                    Xhtml::td()->style( "vertical-align: text-top;" )->content( 
+                            $input->value( $param )->checked( array_search( $param, $this->getSelected() ) > -1 ) ) );
             $table_tr->addContent( Xhtml::td( $value ) );
             $table->addContent( $table_tr );
         }
-
+        
         return "" . $table;
-
+    
     }
-
+    
     // ... /STRING
+    
 
-
-// /FUNCTIONS
+    // /FUNCTIONS
 
 
 }

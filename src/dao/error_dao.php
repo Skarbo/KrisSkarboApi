@@ -1,7 +1,6 @@
 <?php
 
-abstract class ErrorDao extends Dao
-{
+abstract class ErrorDao extends Dao {
 
     /**
      * Add Error

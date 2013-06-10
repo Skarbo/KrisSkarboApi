@@ -1,7 +1,6 @@
 <?php
 
-interface InterfaceDaoContainerTest
-{
+interface InterfaceDaoContainerTest {
 
     public function removeAll();
 

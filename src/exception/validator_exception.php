@@ -1,18 +1,15 @@
 <?php
 
-class ValidatorException extends AbstractException
-{
-
+class ValidatorException extends AbstractException {
+    
     private $validations = array ();
 
-    public function __construct( $message = NULL, array $validations = array(), $custom_code = 0, Exception $previous = NULL )
-    {
+    public function __construct( $message = NULL, array $validations = array(), $custom_code = 0, Exception $previous = NULL ) {
         parent::__construct( $message, $custom_code, $previous );
         $this->validations = $validations;
     }
 
-    public function getValidations()
-    {
+    public function getValidations() {
         return $this->validations;
     }
 
@@ -20,9 +17,8 @@ class ValidatorException extends AbstractException
      * @param ValidatorException $get
      * @return ValidatorException
      */
-    public static function get_( $get )
-    {
-     return parent::get_($get);
+    public static function get_( $get ) {
+        return parent::get_( $get );
     }
 
 }

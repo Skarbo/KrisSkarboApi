@@ -1,15 +1,13 @@
 <?php
 
-class DbException extends AbstractException
-{
-
+class DbException extends AbstractException {
+    
     /**
      * @var QueryDbCore
      */
     private $query = null;
 
-    public function __construct( $message = NULL, Exception $previous = NULL, QueryDbCore $query = NULL )
-    {
+    public function __construct( $message = NULL, Exception $previous = NULL, QueryDbCore $query = NULL ) {
         parent::__construct( $message, $previous ? $previous->getCode() : 0, $previous );
         $this->query = $query;
     }
@@ -17,8 +15,7 @@ class DbException extends AbstractException
     /**
      * @return QueryDbCore
      */
-    public function getQuery()
-    {
+    public function getQuery() {
         return $this->query;
     }
 
@@ -26,8 +23,7 @@ class DbException extends AbstractException
      * @param DbException $get
      * @return DbException
      */
-    public static function get_( $get )
-    {
+    public static function get_( $get ) {
         return $get;
     }
 

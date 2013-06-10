@@ -4,16 +4,15 @@
  * @author Kris Skarbo
  * @see http://www.w3schools.com/TAGS/tag_fieldset.asp
  */
-class FieldsetXhtml extends AbstractContentXhtml
-{
-
+class FieldsetXhtml extends AbstractContentXhtml {
+    
     // VARIABLES
+    
 
+    // CONSTRUCT
+    
 
-// CONSTRUCT
-
-
-// FUNCTIONS
+    // FUNCTIONS
 
 
 }

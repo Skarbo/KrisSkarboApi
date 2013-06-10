@@ -23,9 +23,10 @@ require_once "Google_PemVerifier.php";
  * @author Brian Eaton <beaton@google.com>
  */
 abstract class Google_Verifier {
-  /**
+
+    /**
    * Checks a signature, returns true if the signature is correct,
    * false otherwise.
    */
-  abstract public function verify($data, $signature);
+    abstract public function verify( $data, $signature );
 }

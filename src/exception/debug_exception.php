@@ -5,22 +5,19 @@
  *
  * @author Kris
  */
-class DebugException extends AbstractException
-{
-
+class DebugException extends AbstractException {
+    
     private $data;
 
     /**
      * @param mixed $debug_data $debug_data [, $debug_data]
      */
-    public function __construct( $debug_data )
-    {
+    public function __construct( $debug_data ) {
         parent::__construct();
         $this->data = func_get_args();
     }
 
-    public function getData()
-    {
+    public function getData() {
         return $this->data;
     }
 

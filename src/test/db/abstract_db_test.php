@@ -1,36 +1,34 @@
 <?php
 
-abstract class AbstractDbTest extends UnitTestCase
-{
-
+abstract class AbstractDbTest extends UnitTestCase {
+    
     // VARIABLES
-
+    
 
     private $db_api;
-
+    
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
+    
 
-
-    public function __construct( $label )
-    {
+    public function __construct( $label ) {
         parent::__construct( $label );
-
+        
         $databaseConfig = $this->getDatabaseConfig();
-        $this->db_api = new PdoDbApi( $databaseConfig[ "host" ], $databaseConfig[ "db" ], $databaseConfig[ "user" ],
+        $this->db_api = new PdoDbApi( $databaseConfig[ "host" ], $databaseConfig[ "db" ], $databaseConfig[ "user" ], 
                 $databaseConfig[ "pass" ] );
     }
-
+    
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     // ... GET
-
+    
 
     /**
      * @return array Array( host, db, user, pass )
@@ -40,24 +38,22 @@ abstract class AbstractDbTest extends UnitTestCase
     /**
      * @return DbApi
      */
-    protected function getDbApi()
-    {
+    protected function getDbApi() {
         return $this->db_api;
     }
-
+    
     // ... /GET
-
+    
 
     // ... BEFORE/AFTER
+    
 
-
-    public function setUp()
-    {
+    public function setUp() {
         $this->getDbApi()->connect();
     }
-
+    
     // ... /BEFORE/AFTER
-
+    
 
     // /FUNCTIONS
 

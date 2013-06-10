@@ -1,22 +1,21 @@
 <?php
 
-interface StandardModel
-{
-
+interface StandardModel {
+    
     // VARIABLES
-
+    
 
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     public function getId();
 
@@ -28,7 +27,7 @@ interface StandardModel
      * @return integer Last time modified
      */
     public function getLastModified();
-
+    
     // /FUNCTIONS
 
 

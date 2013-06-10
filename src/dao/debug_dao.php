@@ -1,22 +1,21 @@
 <?php
 
-abstract class DebugDao extends Dao
-{
-
+abstract class DebugDao extends Dao {
+    
     // VARIABLES
-
+    
 
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     /**
      * Add Debug
@@ -42,7 +41,7 @@ abstract class DebugDao extends Dao
      * @throws DbException
      */
     public abstract function getNextSession();
-
+    
     // /FUNCTIONS
 
 

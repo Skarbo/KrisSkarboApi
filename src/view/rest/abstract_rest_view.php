@@ -1,39 +1,37 @@
 <?php
 
-abstract class AbstractRestView extends AbstractView
-{
-
+abstract class AbstractRestView extends AbstractView {
+    
     // VARIABLES
-
+    
 
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     // ... GET
+    
 
     /**
      * @see AbstractView::getLastModified()
      */
-    protected function getLastModified()
-    {
-        return max( array( parent::getLastModified(), filemtime( __FILE__ ) ) );
+    protected function getLastModified() {
+        return max( array ( parent::getLastModified(), filemtime( __FILE__ ) ) );
     }
 
     /**
      * @param array $array
      * @return String JSON data
      */
-    public static function getJSON( array $array )
-    {
+    public static function getJSON( array $array ) {
         return json_encode( $array, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP );
     }
 
@@ -42,13 +40,12 @@ abstract class AbstractRestView extends AbstractView
      * @return RestView
      * @see ClassCore::get_()
      */
-    public static function get_( $get )
-    {
+    public static function get_( $get ) {
         return parent::get_( $get );
     }
-
+    
     // ... /GET
-
+    
 
     /**
      * @return array
@@ -58,24 +55,23 @@ abstract class AbstractRestView extends AbstractView
     /**
      * @see AbstractView::draw()
      */
-    public function draw( AbstractXhtml $root )
-    {
+    public function draw( AbstractXhtml $root ) {
         parent::draw( $root );
-
+        
         // Set Javascript as Content type
         @header( sprintf( "Content-type: %s;charset=%s", "application/json", "utf-8" ) );
-
+        
         // Get data
         $data = $this->getData();
-
+        
         // Get JSON from data
         $json = self::getJSON( $data );
-
+        
         // Add JSON to root
         $root->content( $json );
-
+    
     }
-
+    
     // /FUNCTIONS
 
 

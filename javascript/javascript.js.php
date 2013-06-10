@@ -1,17 +1,13 @@
 <?php
 
-include_once dirname( str_replace("javascript", "", __FILE__ ) ) . '/src/util/initialize_util.php';
+include_once dirname( str_replace( "javascript", "", __FILE__ ) ) . '/src/util/initialize_util.php';
 
-function __autoload( $class_name )
-{
-    try
-    {
-        $class_path = InitializeUtil::getClassPathFile( $class_name,
-                realpath( "." ) );
+function __autoload( $class_name ) {
+    try {
+        $class_path = InitializeUtil::getClassPathFile( $class_name, realpath( "." ) );
         require_once ( $class_path );
     }
-    catch ( Exception $e )
-    {
+    catch ( Exception $e ) {
         throw $e;
     }
 }
@@ -31,5 +27,6 @@ $JAVASCRIPT_FILES = array_merge( $JAVASCRIPT_FILES, Core::getDirectory( dirname(
 
 // Javascript generate
 //JavascriptUtil::generate( $JAVASCRIPT_FILES, __FILE__ );
+
 
 ?>

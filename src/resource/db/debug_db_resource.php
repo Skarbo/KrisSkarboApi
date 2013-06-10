@@ -1,10 +1,9 @@
 <?php
 
-class DebugDbResource
-{
-
+class DebugDbResource {
+    
     private $table = "debug";
-
+    
     private $fieldId = "debug_id";
     private $fieldSession = "debug_session";
     private $fieldLevel = "debug_level";
@@ -16,58 +15,47 @@ class DebugDbResource
     private $fieldType = "debug_type";
     private $fieldRegistered = "debug_registered";
 
-    public function getTable()
-    {
+    public function getTable() {
         return Core::constant( "DB_PREFIX" ) . $this->table;
     }
 
-    public function getFieldId()
-    {
+    public function getFieldId() {
         return $this->fieldId;
     }
 
-    public function getFieldLevel()
-    {
+    public function getFieldLevel() {
         return $this->fieldLevel;
     }
 
-    public function getFieldData()
-    {
+    public function getFieldData() {
         return $this->fieldData;
     }
 
-    public function getFieldFile()
-    {
+    public function getFieldFile() {
         return $this->fieldFile;
     }
 
-    public function getFieldLine()
-    {
+    public function getFieldLine() {
         return $this->fieldLine;
     }
 
-    public function getFieldBacktrack()
-    {
+    public function getFieldBacktrack() {
         return $this->fieldBacktrack;
     }
 
-    public function getFieldTrace()
-    {
+    public function getFieldTrace() {
         return $this->fieldTrace;
     }
 
-    public function getFieldType()
-    {
+    public function getFieldType() {
         return $this->fieldType;
     }
 
-    public function getFieldRegistered()
-    {
+    public function getFieldRegistered() {
         return $this->fieldRegistered;
     }
 
-    public function getFieldSession()
-    {
+    public function getFieldSession() {
         return $this->fieldSession;
     }
 

@@ -4,61 +4,54 @@
  * @author Kris Skarbo
  * @see http://www.w3schools.com/TAGS/tag_option.asp
  */
-class OptionXhtml extends AbstractContentXhtml
-{
-
+class OptionXhtml extends AbstractContentXhtml {
+    
     // VARIABLES
-
+    
 
     static $SELECTED_SELECTED = "selected";
-
+    
     protected $disabled;
     protected $label;
     protected $selected;
     protected $value;
-
+    
     // CONSTRUCT
+    
 
-
-    public function __construct( $content = "", $value = "" )
-    {
+    public function __construct( $content = "", $value = "" ) {
         parent::__construct( $content );
         $this->value( $value );
     }
-
+    
     // FUNCTIONS
+    
 
-
-    function getDisabled()
-    {
+    function getDisabled() {
         return $this->disabled;
     }
 
     /**
      * @return OptionXhtml
      */
-    function disabled( $disabled )
-    {
+    function disabled( $disabled ) {
         $this->disabled = $disabled;
         return $this;
     }
 
-    function getLabel()
-    {
+    function getLabel() {
         return $this->label;
     }
 
     /**
      * @return OptionXhtml
      */
-    function label( $label )
-    {
+    function label( $label ) {
         $this->label = $label;
         return $this;
     }
 
-    function getSelected()
-    {
+    function getSelected() {
         return $this->selected;
     }
 
@@ -66,22 +59,19 @@ class OptionXhtml extends AbstractContentXhtml
      * @param mixed $selected boolean|string
      * @return OptionXhtml
      */
-    function selected( $selected )
-    {
+    function selected( $selected ) {
         $this->selected = is_bool( $selected ) ? ( $selected ? self::$SELECTED_SELECTED : null ) : $selected;
         return $this;
     }
 
-    function getValue()
-    {
+    function getValue() {
         return $this->value;
     }
 
     /**
      * @return OptionXhtml
      */
-    function value( $value )
-    {
+    function value( $value ) {
         $this->value = $value;
         return $this;
     }

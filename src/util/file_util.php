@@ -1,7 +1,6 @@
 <?php
 
-class FileUtil
-{
+class FileUtil {
 
     // VARIABLES
 
@@ -29,10 +28,8 @@ class FileUtil
     // FUNCTIONS
 
 
-    private static function getContentType( $file_type )
-    {
-        switch ( $file_type )
-        {
+    private static function getContentType( $file_type ) {
+        switch ( $file_type ) {
             case self::TYPE_CSS :
                 return StyleXhtml::$TYPE_CSS;
 
@@ -41,10 +38,8 @@ class FileUtil
         }
     }
 
-    private static function createComment( $comment, $file_type )
-    {
-        switch ( $file_type )
-        {
+    private static function createComment( $comment, $file_type ) {
+        switch ( $file_type ) {
             case self::TYPE_CSS :
                 return sprintf( "/*\n %s\n */\n", $comment );
 
@@ -53,37 +48,35 @@ class FileUtil
         }
     }
 
-    private static function getFileContents( $file, $fileType )
-    {
-        if ( $fileType == self::TYPE_CSS )
-        {
+    private static function getFileContents( $file, $fileType, $minify = false ) {
+        if ( $fileType == self::TYPE_CSS ) {
 
             $fileContents = file_get_contents( $file );
 
             // Foreach CSS replace
-            foreach ( self::$CSS_REPLACE as $regex => $replace )
-            {
+            foreach ( self::$CSS_REPLACE as $regex => $replace ) {
                 $fileContents = preg_replace( $regex, $replace, $fileContents );
             }
 
+            if ( $minify )
+                return CssminUtil::minifyCss( $fileContents );
             return $fileContents;
         }
-        else
-        {
-            return file_get_contents( $file );
+        else {
+            $fileContents = file_get_contents( $file );
+            if ( $minify )
+                return JsminUtil::minify( $fileContents );
+            return $fileContents;
         }
     }
 
-    public static function generateFiles( array $files, $root_file, $file_type )
-    {
+    public static function generateFiles( array $files, $root_file, $file_type, $minify = false ) {
 
         // Figure out last modified header
         $last_modified_time = 0;
 
-        foreach ( $files as $file )
-        {
-            if ( file_exists( $file ) )
-            {
+        foreach ( $files as $file ) {
+            if ( file_exists( $file ) ) {
                 $last_modified_time = max( array ( filemtime( $file ), $last_modified_time ) );
             }
         }
@@ -95,8 +88,7 @@ class FileUtil
         @header( sprintf( "Content-type: %s", self::getContentType( $file_type ) ) );
 
         // Not modified
-        if ( $last_modified_time )
-        {
+        if ( $last_modified_time ) {
             // Set last modified
             @header( sprintf( "Last-Modified: %s GMT", gmdate( "D, d M Y H:i:s", $last_modified_time ) ) );
 
@@ -104,8 +96,7 @@ class FileUtil
             $if_modified_since = AbstractController::getIfModifiedSinceHeader();
 
             // Set status if not modified since
-            if ( $last_modified_time <= $if_modified_since )
-            {
+            if ( $last_modified_time <= $if_modified_since ) {
                 @header( "HTTP/1.1 304 Not Modified" );
                 exit();
             }
@@ -119,10 +110,8 @@ class FileUtil
                 $file_type );
 
         // Foreach files
-        foreach ( $files as $file )
-        {
-            if ( file_exists( $file ) )
-            {
+        foreach ( $files as $file ) {
+            if ( file_exists( $file ) ) {
                 // Get modified time
                 $modified_time = filemtime( $file );
 
@@ -132,7 +121,7 @@ class FileUtil
                                 date( "D, d M Y H:i:s e", $modified_time ) ), $file_type );
 
                 // Dump file contents
-                echo self::getFileContents( $file, $file_type );
+                echo self::getFileContents( $file, $file_type, $minify );
             }
         }
 

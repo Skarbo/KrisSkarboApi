@@ -1,7 +1,6 @@
 <?php
 
-abstract class OutputHandler extends ClassCore
-{
+abstract class OutputHandler extends ClassCore {
 
     /**
      * Handles the output

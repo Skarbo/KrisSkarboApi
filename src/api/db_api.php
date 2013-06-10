@@ -1,22 +1,21 @@
 <?php
 
-abstract class DbApi
-{
-
+abstract class DbApi {
+    
     // VARIABLES
-
+    
 
     protected $hostname = NULL;
     protected $database = NULL;
     protected $username = NULL;
     protected $password = NULL;
     protected $port = "3306";
-
+    
     // /VARIABLES
-
+    
 
     // CONSTRUCT
-
+    
 
     /**
      * @param $hostname
@@ -24,21 +23,20 @@ abstract class DbApi
      * @param $username
      * @param $password
      */
-    public function __construct( $hostname, $database, $username, $password )
-    {
+    public function __construct( $hostname, $database, $username, $password ) {
         $this->hostname = $hostname;
         $this->database = $database;
         $this->username = $username;
         $this->password = $password;
-
+        
         register_shutdown_function( array ( $this, "disconnect" ) );
     }
-
+    
     // /CONSTRUCT
-
+    
 
     // FUNCTIONS
-
+    
 
     public abstract function connect();
 
@@ -79,7 +77,7 @@ abstract class DbApi
      * @return boolean True if connected
      */
     public abstract function isConnected();
-
+    
     // /FUNCTIONS
 
 

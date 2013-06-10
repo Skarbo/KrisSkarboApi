@@ -1,27 +1,26 @@
 <?php
 
-abstract class WebsiteAlgorithmParser extends ClassCore
-{
-
+abstract class WebsiteAlgorithmParser extends ClassCore {
+    
     // VARIABLES
-
+    
 
     /** Parse raw html */
     const PARSER_TYPE_HTML = "html";
     /** Parse html with HTML DOM parser */
     const PARSER_TYPE_HTMLDOM = "htmldom";
-
+    
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     /**
      * @return String Parser type
@@ -33,8 +32,7 @@ abstract class WebsiteAlgorithmParser extends ClassCore
      * @param string $function
      * @param mixed $default
      */
-    protected function parseDom( $dom, $function, $default = null )
-    {
+    protected function parseDom( $dom, $function, $default = null ) {
         return $dom != null ? Core::empty_( Core::trimWhitespace( $dom->$function ), $default ) : $default;
     }
 
@@ -43,9 +41,8 @@ abstract class WebsiteAlgorithmParser extends ClassCore
      *
      * @param simple_html_dom $html HTML Dom to parse
      */
-    public function parseHtmlDom( simple_html_dom $html )
-    {
-
+    public function parseHtmlDom( simple_html_dom $html ) {
+    
     }
 
     /**
@@ -53,11 +50,10 @@ abstract class WebsiteAlgorithmParser extends ClassCore
      *
      * @param string $html
      */
-    public function parseHtmlRaw( $html )
-    {
-
+    public function parseHtmlRaw( $html ) {
+    
     }
-
+    
     // /FUNCTIONS
 
 

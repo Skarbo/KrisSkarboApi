@@ -1,14 +1,12 @@
 <?php
 
-class InsertQueryDbCore extends QueryDbCore
-{
+class InsertQueryDbCore extends QueryDbCore {
 
     /**
      * @see QueryDbCore::getQuery()
      * @return InsertSqlbuilderDbCore
      */
-    public function getQuery()
-    {
+    public function getQuery() {
         return parent::getQuery();
     }
 

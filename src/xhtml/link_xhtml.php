@@ -4,15 +4,14 @@
  * @author Kris Skarbo
  * @see http://www.w3schools.com/TAGS/tag_link.asp
  */
-class LinkXhtml extends AbstractXhtml
-{
-
+class LinkXhtml extends AbstractXhtml {
+    
     // VARIABLES
-
+    
 
     public static $REL_STYLESHEET = "stylesheet";
     public static $TYPE_CSS = "text/css";
-
+    
     protected $charset;
     protected $href;
     protected $hreflang;
@@ -21,127 +20,110 @@ class LinkXhtml extends AbstractXhtml
     protected $rev;
     protected $target;
     protected $type;
-
+    
     // CONSTRUCT
+    
 
-
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->set_endTag( false );
     }
-
+    
     // FUNCTIONS
+    
 
-
-    function getCharset()
-    {
+    function getCharset() {
         return $this->charset;
     }
 
     /**
      * @return LinkXhtml
      */
-    function charset( $charset )
-    {
+    function charset( $charset ) {
         $this->charset = $charset;
         return $this;
     }
 
-    function getHref()
-    {
+    function getHref() {
         return $this->href;
     }
 
     /**
      * @return LinkXhtml
      */
-    function href( $href )
-    {
+    function href( $href ) {
         $this->href = $href;
         return $this;
     }
 
-    function getHreflang()
-    {
+    function getHreflang() {
         return $this->hreflang;
     }
 
     /**
      * @return LinkXhtml
      */
-    function hreflang( $hreflang )
-    {
+    function hreflang( $hreflang ) {
         $this->hreflang = $hreflang;
         return $this;
     }
 
-    function getMedia()
-    {
+    function getMedia() {
         return $this->media;
     }
 
     /**
      * @return LinkXhtml
      */
-    function media( $media )
-    {
+    function media( $media ) {
         $this->media = $media;
         return $this;
     }
 
-    function getRel()
-    {
+    function getRel() {
         return $this->rel;
     }
 
     /**
      * @return LinkXhtml
      */
-    function rel( $rel )
-    {
+    function rel( $rel ) {
         $this->rel = $rel;
         return $this;
     }
 
-    function getRev()
-    {
+    function getRev() {
         return $this->rev;
     }
 
     /**
      * @return LinkXhtml
      */
-    function rev( $rev )
-    {
+    function rev( $rev ) {
         $this->rev = $rev;
         return $this;
     }
 
-    function getTarget()
-    {
+    function getTarget() {
         return $this->target;
     }
 
     /**
      * @return LinkXhtml
      */
-    function target( $target )
-    {
+    function target( $target ) {
         $this->target = $target;
         return $this;
     }
 
-    function getType()
-    {
+    function getType() {
         return $this->type;
     }
 
     /**
      * @return LinkXhtml
      */
-    function type( $type )
-    {
+    function type( $type ) {
         $this->type = $type;
         return $this;
     }

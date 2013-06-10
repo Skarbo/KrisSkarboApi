@@ -1,16 +1,15 @@
 <?php
 
-abstract class AbstractController extends ClassCore
-{
-
+abstract class AbstractController extends ClassCore {
+    
     // VARIABLES
-
+    
 
     // ... CONSTANTS
-
+    
 
     const URI_CONTROLLER = 0;
-
+    
     const STATUS_OK = 200;
     const STATUS_CREATED = 201;
     const STATUS_ACCEPTED = 202;
@@ -21,16 +20,16 @@ abstract class AbstractController extends ClassCore
     const STATUS_METHOD_NOW_ALLOWED = 405;
     const STATUS_NOT_ACCAPTABLE = 406;
     const STATUS_SERVER_ERROR = 500;
-
+    
     const CONTENT_TYPE_JSON = "application/json";
-
+    
     private static $URI_SPLITTER = "/";
     private static $REQUEST_METHOD_POST = "POST";
     private static $REQUEST_METHOD_GET = "GET";
     private static $GET_MODE = "mode";
-
+    
     // ... /CONSTANTS
-
+    
 
     /**
      * @var AbstractApi
@@ -40,93 +39,85 @@ abstract class AbstractController extends ClassCore
      * @var View
      */
     private $view;
-
+    
     /** Status code */
     private $status_code = self::STATUS_OK;
-
+    
     // /VARIABLES
-
+    
 
     // CONSTRUCTOR
-
+    
 
     /**
      * @param AbstractApi $api
      */
-    public function __construct( AbstractApi $api, AbstractView $view )
-    {
+    public function __construct( AbstractApi $api, AbstractView $view ) {
         $this->api = $api;
         $this->setView( $view );
     }
-
+    
     // /CONSTRUCTOR
-
+    
 
     // FUNCTIONS
-
+    
 
     // ... GETTERS/SETTERS
-
+    
 
     /**
      * @return View
      */
-    public function getView()
-    {
+    public function getView() {
         return $this->view;
     }
 
     /**
      * @param View $view
      */
-    public function setView( AbstractView $view )
-    {
+    public function setView( AbstractView $view ) {
         $this->view = $view;
     }
 
     /**
      * @return integer
      */
-    public function getStatusCode()
-    {
+    public function getStatusCode() {
         return $this->status_code;
     }
 
     /**
      * @param integer $status_code
      */
-    protected function setStatusCode( integer $status_code )
-    {
+    protected function setStatusCode( integer $status_code ) {
         $this->status_code = $status_code;
     }
-
+    
     // ... /GETTERS/SETTERS
-
+    
 
     // ... GET
-
+    
 
     /**
      * @return AbstractApi
      */
-    private function getApi()
-    {
+    private function getApi() {
         return $this->api;
     }
 
     /**
      * @return DbApi
      */
-    protected function getDbApi()
-    {
+    protected function getDbApi() {
         return $this->getApi()->getDbApi();
     }
 
     /**
      * @return AbstractDefaultLocale
      */
-    public function getLocale()
-    {
+    public function getLocale() {
         return $this->getApi()->getLocale();
     }
 
@@ -134,10 +125,8 @@ abstract class AbstractController extends ClassCore
      * @param boolean $notDefault Set true if not to give default mode
      * @return integer Mode
      */
-    public function getMode( $notDefault = false )
-    {
-        if ( !$notDefault )
-        {
+    public function getMode( $notDefault = false ) {
+        if ( !$notDefault ) {
             return $this->getApi()->getMode();
         }
         return $this->getApi()->getMode() == $this->getApi()->getModeDefault() ? null : $this->getApi()->getMode();
@@ -148,15 +137,12 @@ abstract class AbstractController extends ClassCore
      *
      * @return string Path info given in first parameter in URL
      */
-    public static function getPathInfo()
-    {
+    public static function getPathInfo() {
         $get_keys = array_keys( $_GET );
-        if ( count( $_GET ) > 0 && substr( $get_keys[ 0 ], 0, 1 ) == self::$URI_SPLITTER )
-        {
+        if ( count( $_GET ) > 0 && substr( $get_keys[ 0 ], 0, 1 ) == self::$URI_SPLITTER ) {
             return urldecode( $get_keys[ 0 ] );
         }
-        else
-        {
+        else {
             return "";
         }
     }
@@ -168,20 +154,18 @@ abstract class AbstractController extends ClassCore
      * @param mixed $def [null] Default
      * @return string URI at given position, null if none set
      */
-    protected static function getURI( $index, $def = null )
-    {
+    protected static function getURI( $index, $def = null ) {
         // Explode path info into array, splittet by uri splitter
         $path_info_array = explode( self::$URI_SPLITTER, self::getPathInfo() );
-
+        
         // Shift path info array, first element should be null
-        if ( !Core::arrayAt( $path_info_array, 0 ) )
-        {
+        if ( !Core::arrayAt( $path_info_array, 0 ) ) {
             array_shift( $path_info_array );
         }
-
+        
         // Return URI
         return Core::arrayAt( $path_info_array, $index, $def );
-
+    
     }
 
     /**
@@ -189,8 +173,7 @@ abstract class AbstractController extends ClassCore
      *
      * @return string Controller name
      */
-    public static function getController()
-    {
+    public static function getController() {
         return self::getURI( self::URI_CONTROLLER );
     }
 
@@ -199,16 +182,14 @@ abstract class AbstractController extends ClassCore
      *
      * @return string
      */
-    public static function getRequestMethod()
-    {
+    public static function getRequestMethod() {
         return $_POST[ "_method" ] ? strtoupper( $_POST[ "_method" ] ) : strtoupper( $_SERVER[ "REQUEST_METHOD" ] );
     }
 
     /**
      * @return array Query array
      */
-    public static function getQuery( $index = null )
-    {
+    public static function getQuery( $index = null ) {
         if ( $index )
             return Core::arrayAt( $_GET, $index );
         else
@@ -218,16 +199,14 @@ abstract class AbstractController extends ClassCore
     /**
      * @return array Post data
      */
-    public static function getPost()
-    {
+    public static function getPost() {
         return $_POST;
     }
 
     /**
      * @return array Normalized files data
      */
-    public static function getFiles()
-    {
+    public static function getFiles() {
         $newfiles = array ();
         foreach ( $_FILES as $fieldname => $fieldvalue )
             foreach ( $fieldvalue as $paramname => $paramvalue )
@@ -239,27 +218,23 @@ abstract class AbstractController extends ClassCore
     /**
      * @return array Raw post data
      */
-    public static function getPostRaw()
-    {
+    public static function getPostRaw() {
         return $GLOBALS[ 'HTTP_RAW_POST_DATA' ];
     }
 
     /**
      * @return integer Time if modified since header value, null if not given
      */
-    public static function getIfModifiedSinceHeader()
-    {
+    public static function getIfModifiedSinceHeader() {
         // Not modified
-        if ( php_sapi_name() == 'apache2handler' || php_sapi_name() == 'apache' )
-        {
+        if ( php_sapi_name() == 'apache2handler' || php_sapi_name() == 'apache' ) {
             $headers = apache_request_headers();
-            if ( isset( $headers[ 'If-Modified-Since' ] ) && !empty( $headers[ 'If-Modified-Since' ] ) )
-            {
+            if ( isset( $headers[ 'If-Modified-Since' ] ) && !empty( $headers[ 'If-Modified-Since' ] ) ) {
                 // Return modified since time
                 return strtotime( $headers[ "If-Modified-Since" ] );
             }
         }
-
+        
         // Return null
         return null;
     }
@@ -267,8 +242,7 @@ abstract class AbstractController extends ClassCore
     /**
      * @return integer Time since last modified, null if not given
      */
-    public function getLastModified()
-    {
+    public function getLastModified() {
         return filemtime( __FILE__ );
     }
 
@@ -276,24 +250,21 @@ abstract class AbstractController extends ClassCore
      * @see ClassCore::get_()
      * @return Controller
      */
-    public static function get_( $get )
-    {
+    public static function get_( $get ) {
         return $get;
     }
-
+    
     // ... /GET
-
+    
 
     // ... IS
+    
 
-
-    public static function isGet()
-    {
+    public static function isGet() {
         return self::getRequestMethod() == self::$REQUEST_METHOD_GET;
     }
 
-    public static function isPost()
-    {
+    public static function isPost() {
         return self::getRequestMethod() == self::$REQUEST_METHOD_POST;
     }
 
@@ -301,19 +272,17 @@ abstract class AbstractController extends ClassCore
      * @param string $controller
      * @return boolean True if controller equals given controller
      */
-    public static function isController( $controller )
-    {
+    public static function isController( $controller ) {
         return self::getController() == $controller;
     }
-
+    
     // ... /IS
-
+    
 
     /**
      * Called before request
      */
-    public function before()
-    {
+    public function before() {
     }
 
     /**
@@ -321,8 +290,7 @@ abstract class AbstractController extends ClassCore
      *
      * @param string $url
      */
-    public static function redirect( $url )
-    {
+    public static function redirect( $url ) {
         header( sprintf( "Location: %s", $url ) );
         exit();
     }
@@ -335,8 +303,7 @@ abstract class AbstractController extends ClassCore
     /**
      * Called after request
      */
-    public function after()
-    {
+    public function after() {
     }
 
     /**
@@ -344,27 +311,25 @@ abstract class AbstractController extends ClassCore
      *
      * @param AbstractXhtml $root
      */
-    public function render( AbstractXhtml &$root )
-    {
-
+    public function render( AbstractXhtml &$root ) {
+        
         // Before draw
         $this->getView()->before();
-
+        
         // Draw
         $this->getView()->draw( $root );
-
+        
         // After draw
         $this->getView()->after();
-
+    
     }
 
     /**
      * Called after render
      */
-    public function destroy()
-    {
+    public function destroy() {
     }
-
+    
     // /FUNCTIONS
 
 
