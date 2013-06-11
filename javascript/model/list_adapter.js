@@ -66,7 +66,7 @@ ListAdapter.prototype.getFilteredList = function(filterFunc) {
  *            object
  */
 ListAdapter.prototype.add = function(id, object) {
-	if (jQuery.isPlainObject(object)) {
+	if (typeof object == "object") {
 		this.list[id] = object;
 		this.notifyDataSetChanged("add", object);
 	}
